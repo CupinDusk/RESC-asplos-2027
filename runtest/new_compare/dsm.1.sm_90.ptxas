@@ -1,0 +1,21 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z15gemm_dsm_kernelILi16EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z15gemm_dsm_kernelILi16EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, used 1 barriers
+ptxas info    : Compile time = 18.262 ms
+ptxas info    : Compiling entry function '_Z15gemm_dsm_kernelILi8EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z15gemm_dsm_kernelILi8EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, used 1 barriers
+ptxas info    : Compile time = 19.073 ms
+ptxas info    : Compiling entry function '_Z15gemm_dsm_kernelILi4EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z15gemm_dsm_kernelILi4EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, used 1 barriers
+ptxas info    : Compile time = 15.395 ms
+ptxas info    : Compiling entry function '_Z15gemm_dsm_kernelILi2EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z15gemm_dsm_kernelILi2EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, used 1 barriers
+ptxas info    : Compile time = 13.881 ms
