@@ -1,0 +1,21 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z20gemm_dsm_pull_kernelILi16EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z20gemm_dsm_pull_kernelILi16EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers
+ptxas info    : Compile time = 19.144 ms
+ptxas info    : Compiling entry function '_Z20gemm_dsm_pull_kernelILi8EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z20gemm_dsm_pull_kernelILi8EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers
+ptxas info    : Compile time = 20.865 ms
+ptxas info    : Compiling entry function '_Z20gemm_dsm_pull_kernelILi4EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z20gemm_dsm_pull_kernelILi4EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers
+ptxas info    : Compile time = 16.699 ms
+ptxas info    : Compiling entry function '_Z20gemm_dsm_pull_kernelILi2EEvPKfS1_PfiiiPii' for 'sm_90'
+ptxas info    : Function properties for _Z20gemm_dsm_pull_kernelILi2EEvPKfS1_PfiiiPii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers
+ptxas info    : Compile time = 14.851 ms

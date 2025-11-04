@@ -3,4 +3,4 @@ ptxas info    : Compiling entry function '_Z31streamk_cluster_dsm_gemm_kernelPKf
 ptxas info    : Function properties for _Z31streamk_cluster_dsm_gemm_kernelPKfS0_Pfiii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 32 registers, used 1 barriers
-ptxas info    : Compile time = 17.100 ms
+ptxas info    : Compile time = 18.389 ms
