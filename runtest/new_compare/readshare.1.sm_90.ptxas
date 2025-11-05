@@ -1,0 +1,6 @@
+ptxas info    : 4 bytes gmem
+ptxas info    : Compiling entry function '_Z27cluster_l1_broadcast_kernelPKfPfii' for 'sm_90'
+ptxas info    : Function properties for _Z27cluster_l1_broadcast_kernelPKfPfii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 1 barriers
+ptxas info    : Compile time = 20.543 ms

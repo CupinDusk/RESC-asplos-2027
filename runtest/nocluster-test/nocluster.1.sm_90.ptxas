@@ -3,19 +3,19 @@ ptxas info    : Compiling entry function '_Z18gemm_no_dsm_kernelILi16EEvPKfS1_Pf
 ptxas info    : Function properties for _Z18gemm_no_dsm_kernelILi16EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 30 registers, used 1 barriers
-ptxas info    : Compile time = 22.474 ms
+ptxas info    : Compile time = 22.906 ms
 ptxas info    : Compiling entry function '_Z18gemm_no_dsm_kernelILi8EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i' for 'sm_90'
 ptxas info    : Function properties for _Z18gemm_no_dsm_kernelILi8EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 30 registers, used 1 barriers
-ptxas info    : Compile time = 28.269 ms
+ptxas info    : Compile time = 28.114 ms
 ptxas info    : Compiling entry function '_Z18gemm_no_dsm_kernelILi4EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i' for 'sm_90'
 ptxas info    : Function properties for _Z18gemm_no_dsm_kernelILi4EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 30 registers, used 1 barriers
-ptxas info    : Compile time = 22.103 ms
+ptxas info    : Compile time = 22.034 ms
 ptxas info    : Compiling entry function '_Z18gemm_no_dsm_kernelILi2EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i' for 'sm_90'
 ptxas info    : Function properties for _Z18gemm_no_dsm_kernelILi2EEvPKfS1_PfiiiPiiS2_S2_S2_S3_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 29 registers, used 1 barriers
-ptxas info    : Compile time = 19.192 ms
+ptxas info    : Compile time = 19.095 ms

@@ -3,19 +3,19 @@ ptxas info    : Compiling entry function '_Z21gemm_sweetspot_kernelILi16EEvPKfS1
 ptxas info    : Function properties for _Z21gemm_sweetspot_kernelILi16EEvPKfS1_PfiiiPii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 30 registers, used 1 barriers
-ptxas info    : Compile time = 17.759 ms
+ptxas info    : Compile time = 18.900 ms
 ptxas info    : Compiling entry function '_Z21gemm_sweetspot_kernelILi8EEvPKfS1_PfiiiPii' for 'sm_90'
 ptxas info    : Function properties for _Z21gemm_sweetspot_kernelILi8EEvPKfS1_PfiiiPii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 32 registers, used 1 barriers
-ptxas info    : Compile time = 28.794 ms
+ptxas info    : Compile time = 28.077 ms
 ptxas info    : Compiling entry function '_Z21gemm_sweetspot_kernelILi4EEvPKfS1_PfiiiPii' for 'sm_90'
 ptxas info    : Function properties for _Z21gemm_sweetspot_kernelILi4EEvPKfS1_PfiiiPii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 32 registers, used 1 barriers
-ptxas info    : Compile time = 20.516 ms
+ptxas info    : Compile time = 19.897 ms
 ptxas info    : Compiling entry function '_Z21gemm_sweetspot_kernelILi2EEvPKfS1_PfiiiPii' for 'sm_90'
 ptxas info    : Function properties for _Z21gemm_sweetspot_kernelILi2EEvPKfS1_PfiiiPii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 32 registers, used 1 barriers
-ptxas info    : Compile time = 16.553 ms
+ptxas info    : Compile time = 15.858 ms

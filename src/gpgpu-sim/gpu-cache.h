@@ -1660,9 +1660,10 @@ class l1_cache : public data_cache {
  public:
   l1_cache(const char *name, cache_config &config, int core_id, int type_id,
            mem_fetch_interface *memport, mem_fetch_allocator *mfcreator,
-           enum mem_fetch_status status, class gpgpu_sim *gpu)
-      : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                   L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+ //          enum mem_fetch_status status, class gpgpu_sim *gpu)
+ //     : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
+  //                 L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+           enum mem_fetch_status status, class gpgpu_sim *gpu);
 
   virtual ~l1_cache() {}
 
@@ -1670,13 +1671,26 @@ class l1_cache : public data_cache {
                                            unsigned time,
                                            std::list<cache_event> &events);
 
+unsigned long long cluster_peer_fills() const { return m_cluster_peer_fills; }
+
  protected:
   l1_cache(const char *name, cache_config &config, int core_id, int type_id,
            mem_fetch_interface *memport, mem_fetch_allocator *mfcreator,
            enum mem_fetch_status status, tag_array *new_tag_array,
-           class gpgpu_sim *gpu)
-      : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                   new_tag_array, L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+   //        class gpgpu_sim *gpu)
+   //   : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
+    //               new_tag_array, L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+           class gpgpu_sim *gpu);
+
+  unsigned get_sid() const { return m_sid; }
+
+ private:
+  bool request_from_cluster_peers(new_addr_type addr, new_addr_type block_addr,
+                                  mem_fetch *mf, unsigned time);
+  bool has_line(new_addr_type addr, mem_fetch *mf) const;
+
+  unsigned m_sid;
+  unsigned long long m_cluster_peer_fills;
 };
 
 /// Models second level shared cache with global write-back

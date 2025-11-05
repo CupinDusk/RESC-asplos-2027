@@ -1,0 +1,1051 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.8
+.target sm_90
+.address_size 64
+
+//
+.global .align 4 .b8 g_value[400];
+//
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__48__detail44__construct_psa_from_dynamic_exts_values_tagE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__48__detail40__construct_psa_from_all_exts_values_tagE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo5beginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo3endE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo6cbeginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo4cendE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo6rbeginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo4rendE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo7crbeginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__45__cpo5crendE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__443_GLOBAL__N__95bce340_10_network_cu_193677126ignoreE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__419piecewise_constructE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std3__48in_placeE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4swapE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo9iter_moveE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo5beginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo3endE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo6cbeginE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4cendE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo7advanceE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo9iter_swapE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4nextE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4prevE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4dataE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo5cdataE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo4sizeE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo5ssizeE[1];
+.global .align 1 .b8 _ZN41_INTERNAL_95bce340_10_network_cu_193677124cuda3std6ranges3__45__cpo8distanceE[1];
+
+.visible .entry _Z7networkPdPi12BECNH_CONFIGii(
+.param .u64 _Z7networkPdPi12BECNH_CONFIGii_param_0,
+.param .u64 _Z7networkPdPi12BECNH_CONFIGii_param_1,
+.param .u32 _Z7networkPdPi12BECNH_CONFIGii_param_2,
+.param .u32 _Z7networkPdPi12BECNH_CONFIGii_param_3,
+.param .u32 _Z7networkPdPi12BECNH_CONFIGii_param_4
+)
+{
+.reg .pred %p<75>;
+.reg .b16 %rs<41>;
+.reg .b32 %r<251>;
+.reg .f64 %fd<22>;
+.reg .b64 %rd<359>;
+//
+.shared .align 8 .b8 _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data[40000];
+
+ld.param.u64 %rd68, [_Z7networkPdPi12BECNH_CONFIGii_param_0];
+ld.param.u64 %rd67, [_Z7networkPdPi12BECNH_CONFIGii_param_1];
+ld.param.u32 %r97, [_Z7networkPdPi12BECNH_CONFIGii_param_2];
+ld.param.u32 %r98, [_Z7networkPdPi12BECNH_CONFIGii_param_3];
+ld.param.u32 %r99, [_Z7networkPdPi12BECNH_CONFIGii_param_4];
+cvta.to.global.u64 %rd1, %rd68;
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r229, %tid.x;
+setp.ne.s32 %p1, %r229, 0;
+@%p1 bra $L__BB0_3;
+
+cvta.to.global.u64 %rd69, %rd67;
+mov.b32 %r102, %nclusterid.x;
+mov.b32 %r103, %nclusterid.y;
+mov.b32 %r104, %nclusterid.z;
+mov.b32 %r105, %cluster_nctarank;
+cvt.u64.u32 %rd70, %r105;
+//
+mov.u32 %r100, %smid;
+//
+mov.b32 %r106, %clusterid.x;
+mov.b32 %r107, %clusterid.y;
+mov.b32 %r108, %clusterid.z;
+mov.b32 %r109, %nclusterid.x;
+mov.b32 %r110, %nclusterid.y;
+mov.b32 %r111, %nclusterid.z;
+mul.wide.u32 %rd71, %r110, %r108;
+cvt.u64.u32 %rd72, %r109;
+cvt.u64.u32 %rd73, %r107;
+add.s64 %rd74, %rd71, %rd73;
+mul.lo.s64 %rd75, %rd74, %rd72;
+cvt.u64.u32 %rd76, %r106;
+add.s64 %rd77, %rd75, %rd76;
+mul.lo.s64 %rd78, %rd77, %rd70;
+cvt.u64.u32 %rd79, %r1;
+add.s64 %rd80, %rd78, %rd79;
+shl.b64 %rd81, %rd80, 2;
+add.s64 %rd82, %rd69, %rd81;
+st.global.u32 [%rd82], %r100;
+mov.u32 %r214, 0;
+
+$L__BB0_2:
+cvt.u16.u32 %rs1, %r214;
+shr.u16 %rs2, %rs1, 3;
+mul.wide.u16 %r112, %rs2, 6711;
+shr.u32 %r113, %r112, 22;
+cvt.u16.u32 %rs3, %r113;
+mul.lo.s16 %rs4, %rs3, 5000;
+sub.s16 %rs5, %rs1, %rs4;
+cvt.u64.u16 %rd83, %rs5;
+shl.b32 %r114, %r214, 3;
+mov.u32 %r115, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+add.s32 %r116, %r115, %r114;
+st.shared.u64 [%r116], %rd83;
+add.s32 %r117, %r214, 1;
+cvt.u16.u32 %rs6, %r117;
+shr.u16 %rs7, %rs6, 3;
+mul.wide.u16 %r118, %rs7, 6711;
+shr.u32 %r119, %r118, 22;
+cvt.u16.u32 %rs8, %r119;
+mul.lo.s16 %rs9, %rs8, 5000;
+sub.s16 %rs10, %rs6, %rs9;
+cvt.u64.u16 %rd84, %rs10;
+st.shared.u64 [%r116+8], %rd84;
+add.s32 %r120, %r214, 2;
+cvt.u16.u32 %rs11, %r120;
+shr.u16 %rs12, %rs11, 3;
+mul.wide.u16 %r121, %rs12, 6711;
+shr.u32 %r122, %r121, 22;
+cvt.u16.u32 %rs13, %r122;
+mul.lo.s16 %rs14, %rs13, 5000;
+sub.s16 %rs15, %rs11, %rs14;
+cvt.u64.u16 %rd85, %rs15;
+st.shared.u64 [%r116+16], %rd85;
+add.s32 %r123, %r214, 3;
+cvt.u16.u32 %rs16, %r123;
+shr.u16 %rs17, %rs16, 3;
+mul.wide.u16 %r124, %rs17, 6711;
+shr.u32 %r125, %r124, 22;
+cvt.u16.u32 %rs18, %r125;
+mul.lo.s16 %rs19, %rs18, 5000;
+sub.s16 %rs20, %rs16, %rs19;
+cvt.u64.u16 %rd86, %rs20;
+st.shared.u64 [%r116+24], %rd86;
+add.s32 %r126, %r214, 4;
+cvt.u16.u32 %rs21, %r126;
+shr.u16 %rs22, %rs21, 3;
+mul.wide.u16 %r127, %rs22, 6711;
+shr.u32 %r128, %r127, 22;
+cvt.u16.u32 %rs23, %r128;
+mul.lo.s16 %rs24, %rs23, 5000;
+sub.s16 %rs25, %rs21, %rs24;
+cvt.u64.u16 %rd87, %rs25;
+st.shared.u64 [%r116+32], %rd87;
+add.s32 %r129, %r214, 5;
+cvt.u16.u32 %rs26, %r129;
+shr.u16 %rs27, %rs26, 3;
+mul.wide.u16 %r130, %rs27, 6711;
+shr.u32 %r131, %r130, 22;
+cvt.u16.u32 %rs28, %r131;
+mul.lo.s16 %rs29, %rs28, 5000;
+sub.s16 %rs30, %rs26, %rs29;
+cvt.u64.u16 %rd88, %rs30;
+st.shared.u64 [%r116+40], %rd88;
+add.s32 %r132, %r214, 6;
+cvt.u16.u32 %rs31, %r132;
+shr.u16 %rs32, %rs31, 3;
+mul.wide.u16 %r133, %rs32, 6711;
+shr.u32 %r134, %r133, 22;
+cvt.u16.u32 %rs33, %r134;
+mul.lo.s16 %rs34, %rs33, 5000;
+sub.s16 %rs35, %rs31, %rs34;
+cvt.u64.u16 %rd89, %rs35;
+st.shared.u64 [%r116+48], %rd89;
+add.s32 %r135, %r214, 7;
+cvt.u16.u32 %rs36, %r135;
+shr.u16 %rs37, %rs36, 3;
+mul.wide.u16 %r136, %rs37, 6711;
+shr.u32 %r137, %r136, 22;
+cvt.u16.u32 %rs38, %r137;
+mul.lo.s16 %rs39, %rs38, 5000;
+sub.s16 %rs40, %rs36, %rs39;
+cvt.u64.u16 %rd90, %rs40;
+st.shared.u64 [%r116+56], %rd90;
+add.s32 %r214, %r214, 8;
+setp.ne.s32 %p2, %r214, 5000;
+@%p2 bra $L__BB0_2;
+
+$L__BB0_3:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+mov.b32 %r138, %nclusterid.x;
+mov.b32 %r139, %nclusterid.y;
+mov.b32 %r140, %nclusterid.z;
+mov.b32 %r141, %cluster_nctarank;
+mov.b32 %r142, %cluster_nctarank;
+cvt.u64.u32 %rd2, %r142;
+mov.b32 %r143, %clusterid.x;
+mov.b32 %r144, %clusterid.y;
+mov.b32 %r145, %clusterid.z;
+mov.b32 %r146, %nclusterid.x;
+mov.b32 %r147, %nclusterid.y;
+mov.b32 %r148, %nclusterid.z;
+mul.wide.u32 %rd91, %r147, %r145;
+cvt.u64.u32 %rd92, %r146;
+cvt.u64.u32 %rd93, %r144;
+add.s64 %rd94, %rd91, %rd93;
+mul.lo.s64 %rd95, %rd94, %rd92;
+cvt.u64.u32 %rd96, %r143;
+add.s64 %rd97, %rd95, %rd96;
+mul.wide.u32 %rd98, %r142, %r141;
+mul.lo.s64 %rd3, %rd98, %rd97;
+setp.gt.s32 %p3, %r97, 2;
+@%p3 bra $L__BB0_21;
+bra.uni $L__BB0_4;
+
+$L__BB0_21:
+setp.gt.s32 %p4, %r97, 4;
+@%p4 bra $L__BB0_30;
+
+setp.eq.s32 %p7, %r97, 3;
+@%p7 bra $L__BB0_61;
+
+setp.eq.s32 %p8, %r97, 4;
+@%p8 bra $L__BB0_24;
+bra.uni $L__BB0_107;
+
+$L__BB0_24:
+add.s32 %r169, %r1, 1;
+mov.b32 %r170, %cluster_nctarank;
+rem.u32 %r32, %r169, %r170;
+mov.u32 %r171, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r171;
+cvta.shared.u64 %rd171, %tmp; }
+mapa.u64 %rd21, %rd171, %r32;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bar.sync 0;
+//
+mov.u64 %rd170, %clock64;
+//
+setp.lt.s32 %p28, %r98, 1;
+@%p28 bra $L__BB0_58;
+
+add.s32 %r172, %r98, -1;
+and.b32 %r228, %r98, 3;
+setp.lt.u32 %p29, %r172, 3;
+@%p29 bra $L__BB0_28;
+
+sub.s32 %r225, %r98, %r228;
+
+$L__BB0_27:
+mul.wide.s32 %rd173, %r229, 8;
+add.s64 %rd174, %rd21, %rd173;
+ld.u64 %rd175, [%rd174];
+shl.b64 %rd176, %rd175, 32;
+shr.s64 %rd177, %rd176, 29;
+add.s64 %rd178, %rd21, %rd177;
+ld.u64 %rd179, [%rd178];
+shl.b64 %rd180, %rd179, 32;
+shr.s64 %rd181, %rd180, 29;
+add.s64 %rd182, %rd21, %rd181;
+ld.u64 %rd183, [%rd182];
+shl.b64 %rd184, %rd183, 32;
+shr.s64 %rd185, %rd184, 29;
+add.s64 %rd186, %rd21, %rd185;
+ld.u64 %rd349, [%rd186];
+cvt.u32.u64 %r229, %rd349;
+add.s32 %r225, %r225, -4;
+setp.ne.s32 %p30, %r225, 0;
+@%p30 bra $L__BB0_27;
+
+$L__BB0_28:
+setp.eq.s32 %p31, %r228, 0;
+@%p31 bra $L__BB0_57;
+
+$L__BB0_29:
+.pragma "nounroll";
+mul.wide.s32 %rd187, %r229, 8;
+add.s64 %rd188, %rd21, %rd187;
+ld.u32 %r229, [%rd188];
+add.s32 %r228, %r228, -1;
+setp.eq.s32 %p32, %r228, 0;
+@%p32 bra $L__BB0_58;
+bra.uni $L__BB0_29;
+
+$L__BB0_4:
+setp.eq.s32 %p9, %r97, 0;
+@%p9 bra $L__BB0_89;
+
+setp.eq.s32 %p10, %r97, 1;
+@%p10 bra $L__BB0_71;
+
+setp.eq.s32 %p11, %r97, 2;
+@%p11 bra $L__BB0_7;
+bra.uni $L__BB0_107;
+
+$L__BB0_7:
+mov.b32 %r187, %cluster_nctarank;
+setp.eq.s32 %p41, %r187, 0;
+@%p41 bra $L__BB0_107;
+
+mov.u32 %r189, %ntid.x;
+mov.u32 %r190, %ctaid.x;
+mul.wide.u32 %rd234, %r190, 4;
+mov.u64 %rd235, g_value;
+add.s64 %rd31, %rd235, %rd234;
+mul.wide.s32 %rd236, %r189, %r98;
+shl.b64 %rd237, %rd236, 3;
+cvt.rn.f64.s64 %fd3, %rd237;
+cvt.u64.u32 %rd238, %r1;
+add.s64 %rd32, %rd3, %rd238;
+add.s32 %r60, %r98, -1;
+and.b32 %r61, %r98, 3;
+sub.s32 %r62, %r98, %r61;
+mov.u32 %r236, 0;
+
+$L__BB0_9:
+mov.u32 %r191, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r191;
+cvta.shared.u64 %rd240, %tmp; }
+mapa.u64 %rd33, %rd240, %r236;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bar.sync 0;
+//
+mov.u64 %rd239, %clock64;
+//
+setp.lt.s32 %p42, %r98, 1;
+mov.u32 %r240, %r229;
+@%p42 bra $L__BB0_18;
+
+setp.lt.u32 %p43, %r60, 3;
+mov.u32 %r239, %r229;
+@%p43 bra $L__BB0_13;
+
+mov.u32 %r239, %r229;
+mov.u32 %r238, %r62;
+
+$L__BB0_12:
+mul.wide.s32 %rd242, %r239, 8;
+add.s64 %rd243, %rd33, %rd242;
+ld.u64 %rd244, [%rd243];
+shl.b64 %rd245, %rd244, 32;
+shr.s64 %rd246, %rd245, 29;
+add.s64 %rd247, %rd33, %rd246;
+ld.u64 %rd248, [%rd247];
+shl.b64 %rd249, %rd248, 32;
+shr.s64 %rd250, %rd249, 29;
+add.s64 %rd251, %rd33, %rd250;
+ld.u64 %rd252, [%rd251];
+shl.b64 %rd253, %rd252, 32;
+shr.s64 %rd254, %rd253, 29;
+add.s64 %rd255, %rd33, %rd254;
+ld.u64 %rd352, [%rd255];
+cvt.u32.u64 %r239, %rd352;
+add.s32 %r238, %r238, -4;
+setp.ne.s32 %p44, %r238, 0;
+@%p44 bra $L__BB0_12;
+
+$L__BB0_13:
+setp.eq.s32 %p45, %r61, 0;
+@%p45 bra $L__BB0_17;
+
+mul.wide.s32 %rd256, %r239, 8;
+add.s64 %rd257, %rd33, %rd256;
+ld.u64 %rd352, [%rd257];
+setp.eq.s32 %p46, %r61, 1;
+@%p46 bra $L__BB0_17;
+
+shl.b64 %rd258, %rd352, 32;
+shr.s64 %rd259, %rd258, 29;
+add.s64 %rd260, %rd33, %rd259;
+ld.u64 %rd352, [%rd260];
+setp.eq.s32 %p47, %r61, 2;
+@%p47 bra $L__BB0_17;
+
+shl.b64 %rd261, %rd352, 32;
+shr.s64 %rd262, %rd261, 29;
+add.s64 %rd263, %rd33, %rd262;
+ld.u64 %rd352, [%rd263];
+
+$L__BB0_17:
+cvt.u32.u64 %r240, %rd352;
+
+$L__BB0_18:
+bar.sync 0;
+//
+mov.u64 %rd264, %clock64;
+//
+atom.global.add.u32 %r192, [%rd31], %r240;
+sub.s64 %rd41, %rd264, %rd239;
+@%p1 bra $L__BB0_20;
+
+cvt.s64.s32 %rd265, %r236;
+mul.lo.s64 %rd266, %rd265, %rd2;
+add.s64 %rd267, %rd32, %rd266;
+shl.b64 %rd268, %rd267, 3;
+add.s64 %rd269, %rd1, %rd268;
+cvt.rn.f64.s64 %fd16, %rd41;
+div.rn.f64 %fd17, %fd3, %fd16;
+st.global.f64 [%rd269], %fd17;
+
+$L__BB0_20:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+mov.b32 %r193, %cluster_nctarank;
+add.s32 %r236, %r236, 1;
+setp.lt.u32 %p49, %r236, %r193;
+@%p49 bra $L__BB0_9;
+bra.uni $L__BB0_107;
+
+$L__BB0_30:
+setp.eq.s32 %p5, %r97, 5;
+@%p5 bra $L__BB0_47;
+
+setp.ne.s32 %p6, %r97, 6;
+@%p6 bra $L__BB0_107;
+
+mov.b32 %r149, %cluster_nctarank;
+setp.eq.s32 %p12, %r149, 0;
+@%p12 bra $L__BB0_107;
+
+mov.u32 %r5, %ntid.x;
+cvt.rn.f64.s32 %fd1, %r98;
+mov.u32 %r151, %ctaid.x;
+mul.wide.u32 %rd99, %r151, 4;
+mov.u64 %rd100, g_value;
+add.s64 %rd4, %rd100, %rd99;
+cvt.u64.u32 %rd101, %r1;
+mul.lo.s64 %rd102, %rd2, %rd101;
+add.s64 %rd5, %rd3, %rd102;
+add.s32 %r6, %r98, -1;
+and.b32 %r7, %r98, 3;
+sub.s32 %r8, %r98, %r7;
+mov.u32 %r215, 0;
+
+$L__BB0_34:
+mov.b32 %r152, %cluster_nctarank;
+div.u32 %r10, %r5, %r152;
+div.u32 %r153, %r229, %r10;
+mov.b32 %r154, %cluster_nctarank;
+rem.u32 %r11, %r153, %r154;
+mov.u32 %r155, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r155;
+cvta.shared.u64 %rd103, %tmp; }
+mapa.u64 %rd6, %rd103, %r11;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.ne.s32 %p13, %r215, %r1;
+@%p13 bra $L__BB0_46;
+
+setp.lt.s32 %p14, %r98, 1;
+mov.u32 %r217, 0;
+bar.sync 0;
+//
+mov.u64 %rd104, %clock64;
+//
+@%p14 bra $L__BB0_44;
+
+setp.lt.u32 %p15, %r6, 3;
+mov.u64 %rd347, 0;
+@%p15 bra $L__BB0_39;
+
+mov.u64 %rd347, 0;
+mov.u32 %r216, %r8;
+
+$L__BB0_38:
+shl.b64 %rd108, %rd347, 32;
+shr.s64 %rd109, %rd108, 29;
+add.s64 %rd110, %rd6, %rd109;
+ld.u64 %rd111, [%rd110];
+shl.b64 %rd112, %rd111, 32;
+shr.s64 %rd113, %rd112, 29;
+add.s64 %rd114, %rd6, %rd113;
+ld.u64 %rd115, [%rd114];
+shl.b64 %rd116, %rd115, 32;
+shr.s64 %rd117, %rd116, 29;
+add.s64 %rd118, %rd6, %rd117;
+ld.u64 %rd119, [%rd118];
+shl.b64 %rd120, %rd119, 32;
+shr.s64 %rd121, %rd120, 29;
+add.s64 %rd122, %rd6, %rd121;
+ld.u64 %rd347, [%rd122];
+add.s32 %r216, %r216, -4;
+setp.ne.s32 %p16, %r216, 0;
+@%p16 bra $L__BB0_38;
+
+$L__BB0_39:
+setp.eq.s32 %p17, %r7, 0;
+@%p17 bra $L__BB0_43;
+
+shl.b64 %rd123, %rd347, 32;
+shr.s64 %rd124, %rd123, 29;
+add.s64 %rd125, %rd6, %rd124;
+ld.u64 %rd347, [%rd125];
+setp.eq.s32 %p18, %r7, 1;
+@%p18 bra $L__BB0_43;
+
+shl.b64 %rd126, %rd347, 32;
+shr.s64 %rd127, %rd126, 29;
+add.s64 %rd128, %rd6, %rd127;
+ld.u64 %rd347, [%rd128];
+setp.eq.s32 %p19, %r7, 2;
+@%p19 bra $L__BB0_43;
+
+shl.b64 %rd129, %rd347, 32;
+shr.s64 %rd130, %rd129, 29;
+add.s64 %rd131, %rd6, %rd130;
+ld.u64 %rd347, [%rd131];
+
+$L__BB0_43:
+cvt.u32.u64 %r217, %rd347;
+
+$L__BB0_44:
+//
+mov.u64 %rd132, %clock64;
+//
+bar.sync 0;
+sub.s64 %rd16, %rd132, %rd104;
+atom.global.add.u32 %r157, [%rd4], %r217;
+rem.u32 %r158, %r229, %r10;
+setp.ne.s32 %p20, %r158, 0;
+@%p20 bra $L__BB0_46;
+
+cvt.s64.s32 %rd133, %r11;
+add.s64 %rd134, %rd5, %rd133;
+shl.b64 %rd135, %rd134, 3;
+add.s64 %rd136, %rd1, %rd135;
+cvt.rn.f64.s64 %fd6, %rd16;
+div.rn.f64 %fd7, %fd6, %fd1;
+st.global.f64 [%rd136], %fd7;
+
+$L__BB0_46:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+mov.b32 %r159, %cluster_nctarank;
+add.s32 %r215, %r215, 1;
+setp.lt.u32 %p21, %r215, %r159;
+@%p21 bra $L__BB0_34;
+bra.uni $L__BB0_107;
+
+$L__BB0_61:
+shl.b32 %r176, %r99, 1;
+rem.u32 %r177, %r1, %r176;
+setp.lt.u32 %p34, %r177, %r99;
+neg.s32 %r178, %r99;
+selp.b32 %r179, %r99, %r178, %p34;
+add.s32 %r180, %r179, %r1;
+mov.b32 %r181, %cluster_nctarank;
+rem.u32 %r46, %r180, %r181;
+mov.u32 %r182, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r182;
+cvta.shared.u64 %rd203, %tmp; }
+mapa.u64 %rd26, %rd203, %r46;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bar.sync 0;
+//
+mov.u64 %rd202, %clock64;
+//
+setp.lt.s32 %p35, %r98, 1;
+@%p35 bra $L__BB0_68;
+
+add.s32 %r183, %r98, -1;
+and.b32 %r234, %r98, 3;
+setp.lt.u32 %p36, %r183, 3;
+@%p36 bra $L__BB0_65;
+
+sub.s32 %r231, %r98, %r234;
+
+$L__BB0_64:
+mul.wide.s32 %rd205, %r229, 8;
+add.s64 %rd206, %rd26, %rd205;
+ld.u64 %rd207, [%rd206];
+shl.b64 %rd208, %rd207, 32;
+shr.s64 %rd209, %rd208, 29;
+add.s64 %rd210, %rd26, %rd209;
+ld.u64 %rd211, [%rd210];
+shl.b64 %rd212, %rd211, 32;
+shr.s64 %rd213, %rd212, 29;
+add.s64 %rd214, %rd26, %rd213;
+ld.u64 %rd215, [%rd214];
+shl.b64 %rd216, %rd215, 32;
+shr.s64 %rd217, %rd216, 29;
+add.s64 %rd218, %rd26, %rd217;
+ld.u64 %rd350, [%rd218];
+cvt.u32.u64 %r229, %rd350;
+add.s32 %r231, %r231, -4;
+setp.ne.s32 %p37, %r231, 0;
+@%p37 bra $L__BB0_64;
+
+$L__BB0_65:
+setp.eq.s32 %p38, %r234, 0;
+@%p38 bra $L__BB0_67;
+
+$L__BB0_66:
+.pragma "nounroll";
+mul.wide.s32 %rd219, %r229, 8;
+add.s64 %rd220, %rd26, %rd219;
+ld.u32 %r229, [%rd220];
+add.s32 %r234, %r234, -1;
+setp.eq.s32 %p39, %r234, 0;
+@%p39 bra $L__BB0_68;
+bra.uni $L__BB0_66;
+
+$L__BB0_89:
+mov.b32 %r204, %cluster_nctarank;
+setp.eq.s32 %p63, %r204, 0;
+@%p63 bra $L__BB0_107;
+
+cvt.rn.f64.s32 %fd5, %r98;
+mov.u32 %r206, %ctaid.x;
+mul.wide.u32 %rd306, %r206, 4;
+mov.u64 %rd307, g_value;
+add.s64 %rd54, %rd307, %rd306;
+cvt.s64.s32 %rd308, %r1;
+mul.lo.s64 %rd309, %rd2, %rd308;
+add.s64 %rd55, %rd3, %rd309;
+add.s32 %r86, %r98, -1;
+and.b32 %r87, %r98, 3;
+sub.s32 %r88, %r98, %r87;
+mov.u32 %r247, 0;
+
+$L__BB0_91:
+setp.ne.s32 %p64, %r247, %r1;
+@%p64 bra $L__BB0_106;
+
+mov.b32 %r207, %cluster_nctarank;
+setp.eq.s32 %p65, %r207, 0;
+@%p65 bra $L__BB0_106;
+
+mov.u32 %r208, 0;
+mov.u32 %r248, %r208;
+
+$L__BB0_94:
+mov.u32 %r210, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r210;
+cvta.shared.u64 %rd311, %tmp; }
+mapa.u64 %rd56, %rd311, %r248;
+bar.sync 0;
+//
+mov.u64 %rd310, %clock64;
+//
+setp.lt.s32 %p66, %r98, 1;
+mov.u32 %r250, %r208;
+@%p66 bra $L__BB0_103;
+
+setp.lt.u32 %p67, %r86, 3;
+mov.u64 %rd358, 0;
+@%p67 bra $L__BB0_98;
+
+mov.u64 %rd358, 0;
+mov.u32 %r249, %r88;
+
+$L__BB0_97:
+shl.b64 %rd315, %rd358, 32;
+shr.s64 %rd316, %rd315, 29;
+add.s64 %rd317, %rd56, %rd316;
+ld.u64 %rd318, [%rd317];
+shl.b64 %rd319, %rd318, 32;
+shr.s64 %rd320, %rd319, 29;
+add.s64 %rd321, %rd56, %rd320;
+ld.u64 %rd322, [%rd321];
+shl.b64 %rd323, %rd322, 32;
+shr.s64 %rd324, %rd323, 29;
+add.s64 %rd325, %rd56, %rd324;
+ld.u64 %rd326, [%rd325];
+shl.b64 %rd327, %rd326, 32;
+shr.s64 %rd328, %rd327, 29;
+add.s64 %rd329, %rd56, %rd328;
+ld.u64 %rd358, [%rd329];
+add.s32 %r249, %r249, -4;
+setp.ne.s32 %p68, %r249, 0;
+@%p68 bra $L__BB0_97;
+
+$L__BB0_98:
+setp.eq.s32 %p69, %r87, 0;
+@%p69 bra $L__BB0_102;
+
+shl.b64 %rd330, %rd358, 32;
+shr.s64 %rd331, %rd330, 29;
+add.s64 %rd332, %rd56, %rd331;
+ld.u64 %rd358, [%rd332];
+setp.eq.s32 %p70, %r87, 1;
+@%p70 bra $L__BB0_102;
+
+shl.b64 %rd333, %rd358, 32;
+shr.s64 %rd334, %rd333, 29;
+add.s64 %rd335, %rd56, %rd334;
+ld.u64 %rd358, [%rd335];
+setp.eq.s32 %p71, %r87, 2;
+@%p71 bra $L__BB0_102;
+
+shl.b64 %rd336, %rd358, 32;
+shr.s64 %rd337, %rd336, 29;
+add.s64 %rd338, %rd56, %rd337;
+ld.u64 %rd358, [%rd338];
+
+$L__BB0_102:
+cvt.u32.u64 %r250, %rd358;
+
+$L__BB0_103:
+//
+mov.u64 %rd339, %clock64;
+//
+bar.sync 0;
+sub.s64 %rd66, %rd339, %rd310;
+atom.global.add.u32 %r211, [%rd54], %r250;
+@%p1 bra $L__BB0_105;
+
+cvt.s64.s32 %rd340, %r248;
+add.s64 %rd341, %rd55, %rd340;
+shl.b64 %rd342, %rd341, 3;
+add.s64 %rd343, %rd1, %rd342;
+cvt.rn.f64.s64 %fd20, %rd66;
+div.rn.f64 %fd21, %fd20, %fd5;
+st.global.f64 [%rd343], %fd21;
+
+$L__BB0_105:
+add.s32 %r248, %r248, 1;
+mov.b32 %r212, %cluster_nctarank;
+setp.lt.u32 %p73, %r248, %r212;
+@%p73 bra $L__BB0_94;
+
+$L__BB0_106:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+mov.b32 %r213, %cluster_nctarank;
+add.s32 %r247, %r247, 1;
+setp.lt.u32 %p74, %r247, %r213;
+@%p74 bra $L__BB0_91;
+bra.uni $L__BB0_107;
+
+$L__BB0_71:
+mov.b32 %r194, %cluster_nctarank;
+setp.eq.s32 %p50, %r194, 0;
+@%p50 bra $L__BB0_107;
+
+mov.u32 %r196, %ntid.x;
+mov.u32 %r197, %ctaid.x;
+mul.wide.u32 %rd270, %r197, 4;
+mov.u64 %rd271, g_value;
+add.s64 %rd42, %rd271, %rd270;
+mul.wide.s32 %rd272, %r196, %r98;
+shl.b64 %rd273, %rd272, 3;
+cvt.rn.f64.s64 %fd4, %rd273;
+cvt.s64.s32 %rd274, %r1;
+add.s64 %rd43, %rd3, %rd274;
+add.s32 %r72, %r98, -1;
+and.b32 %r73, %r98, 3;
+sub.s32 %r74, %r98, %r73;
+mov.u32 %r241, 0;
+
+$L__BB0_73:
+mov.b32 %r198, %cluster_nctarank;
+setp.eq.s32 %p51, %r198, 0;
+@%p51 bra $L__BB0_88;
+
+setp.eq.s32 %p52, %r241, %r1;
+mov.u32 %r200, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r200;
+cvta.shared.u64 %rd275, %tmp; }
+mapa.u64 %rd276, %rd275, %r241;
+cvt.s64.s32 %rd277, %r241;
+mul.lo.s64 %rd278, %rd277, %rd2;
+add.s64 %rd279, %rd43, %rd278;
+shl.b64 %rd280, %rd279, 3;
+add.s64 %rd44, %rd1, %rd280;
+selp.b64 %rd45, %rd275, %rd276, %p52;
+mov.u32 %r242, 0;
+
+$L__BB0_75:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.ne.s32 %p53, %r242, %r1;
+@%p53 bra $L__BB0_87;
+
+setp.lt.s32 %p54, %r98, 1;
+bar.sync 0;
+//
+mov.u64 %rd281, %clock64;
+//
+mov.u32 %r246, %r229;
+@%p54 bra $L__BB0_85;
+
+setp.lt.u32 %p55, %r72, 3;
+mov.u32 %r245, %r229;
+@%p55 bra $L__BB0_80;
+
+mov.u32 %r245, %r229;
+mov.u32 %r244, %r74;
+
+$L__BB0_79:
+mul.wide.s32 %rd283, %r245, 8;
+add.s64 %rd284, %rd45, %rd283;
+ld.u64 %rd285, [%rd284];
+shl.b64 %rd286, %rd285, 32;
+shr.s64 %rd287, %rd286, 29;
+add.s64 %rd288, %rd45, %rd287;
+ld.u64 %rd289, [%rd288];
+shl.b64 %rd290, %rd289, 32;
+shr.s64 %rd291, %rd290, 29;
+add.s64 %rd292, %rd45, %rd291;
+ld.u64 %rd293, [%rd292];
+shl.b64 %rd294, %rd293, 32;
+shr.s64 %rd295, %rd294, 29;
+add.s64 %rd296, %rd45, %rd295;
+ld.u64 %rd354, [%rd296];
+cvt.u32.u64 %r245, %rd354;
+add.s32 %r244, %r244, -4;
+setp.ne.s32 %p56, %r244, 0;
+@%p56 bra $L__BB0_79;
+
+$L__BB0_80:
+setp.eq.s32 %p57, %r73, 0;
+@%p57 bra $L__BB0_84;
+
+setp.eq.s32 %p58, %r73, 1;
+mul.wide.s32 %rd297, %r245, 8;
+add.s64 %rd298, %rd45, %rd297;
+ld.u64 %rd354, [%rd298];
+@%p58 bra $L__BB0_84;
+
+setp.eq.s32 %p59, %r73, 2;
+shl.b64 %rd299, %rd354, 32;
+shr.s64 %rd300, %rd299, 29;
+add.s64 %rd301, %rd45, %rd300;
+ld.u64 %rd354, [%rd301];
+@%p59 bra $L__BB0_84;
+
+shl.b64 %rd302, %rd354, 32;
+shr.s64 %rd303, %rd302, 29;
+add.s64 %rd304, %rd45, %rd303;
+ld.u64 %rd354, [%rd304];
+
+$L__BB0_84:
+cvt.u32.u64 %r246, %rd354;
+
+$L__BB0_85:
+bar.sync 0;
+//
+mov.u64 %rd305, %clock64;
+//
+atom.global.add.u32 %r201, [%rd42], %r246;
+sub.s64 %rd53, %rd305, %rd281;
+@%p1 bra $L__BB0_87;
+
+cvt.rn.f64.s64 %fd18, %rd53;
+div.rn.f64 %fd19, %fd4, %fd18;
+st.global.f64 [%rd44], %fd19;
+
+$L__BB0_87:
+add.s32 %r242, %r242, 1;
+mov.b32 %r202, %cluster_nctarank;
+setp.lt.u32 %p61, %r242, %r202;
+@%p61 bra $L__BB0_75;
+
+$L__BB0_88:
+add.s32 %r241, %r241, 1;
+mov.b32 %r203, %cluster_nctarank;
+setp.lt.u32 %p62, %r241, %r203;
+@%p62 bra $L__BB0_73;
+bra.uni $L__BB0_107;
+
+$L__BB0_47:
+mov.u32 %r160, %ntid.x;
+mov.b32 %r161, %cluster_nctarank;
+div.u32 %r17, %r160, %r161;
+div.u32 %r162, %r229, %r17;
+mov.b32 %r163, %cluster_nctarank;
+rem.u32 %r18, %r162, %r163;
+mov.u32 %r164, _ZZ7networkPdPi12BECNH_CONFIGiiE6s_data;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r164;
+cvta.shared.u64 %rd138, %tmp; }
+mapa.u64 %rd17, %rd138, %r18;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bar.sync 0;
+//
+mov.u64 %rd137, %clock64;
+//
+setp.lt.s32 %p22, %r98, 1;
+mov.u32 %r223, %r229;
+@%p22 bra $L__BB0_54;
+
+add.s32 %r165, %r98, -1;
+and.b32 %r222, %r98, 3;
+setp.lt.u32 %p23, %r165, 3;
+mov.u32 %r223, %r229;
+@%p23 bra $L__BB0_51;
+
+sub.s32 %r219, %r98, %r222;
+mov.u32 %r223, %r229;
+
+$L__BB0_50:
+mul.wide.s32 %rd140, %r223, 8;
+add.s64 %rd141, %rd17, %rd140;
+ld.u64 %rd142, [%rd141];
+shl.b64 %rd143, %rd142, 32;
+shr.s64 %rd144, %rd143, 29;
+add.s64 %rd145, %rd17, %rd144;
+ld.u64 %rd146, [%rd145];
+shl.b64 %rd147, %rd146, 32;
+shr.s64 %rd148, %rd147, 29;
+add.s64 %rd149, %rd17, %rd148;
+ld.u64 %rd150, [%rd149];
+shl.b64 %rd151, %rd150, 32;
+shr.s64 %rd152, %rd151, 29;
+add.s64 %rd153, %rd17, %rd152;
+ld.u64 %rd348, [%rd153];
+cvt.u32.u64 %r223, %rd348;
+add.s32 %r219, %r219, -4;
+setp.ne.s32 %p24, %r219, 0;
+@%p24 bra $L__BB0_50;
+
+$L__BB0_51:
+setp.eq.s32 %p25, %r222, 0;
+@%p25 bra $L__BB0_53;
+
+$L__BB0_52:
+.pragma "nounroll";
+mul.wide.s32 %rd154, %r223, 8;
+add.s64 %rd155, %rd17, %rd154;
+ld.u32 %r223, [%rd155];
+add.s32 %r222, %r222, -1;
+setp.eq.s32 %p26, %r222, 0;
+@%p26 bra $L__BB0_54;
+bra.uni $L__BB0_52;
+
+$L__BB0_57:
+cvt.u32.u64 %r229, %rd349;
+
+$L__BB0_58:
+bar.sync 0;
+//
+mov.u64 %rd189, %clock64;
+//
+mov.u32 %r173, %ctaid.x;
+mul.wide.u32 %rd190, %r173, 4;
+mov.u64 %rd191, g_value;
+add.s64 %rd192, %rd191, %rd190;
+atom.global.add.u32 %r174, [%rd192], %r229;
+sub.s64 %rd25, %rd189, %rd170;
+@%p1 bra $L__BB0_60;
+
+cvt.u64.u32 %rd193, %r1;
+mul.lo.s64 %rd194, %rd2, %rd193;
+add.s64 %rd195, %rd3, %rd194;
+cvt.s64.s32 %rd196, %r32;
+add.s64 %rd197, %rd195, %rd196;
+shl.b64 %rd198, %rd197, 3;
+add.s64 %rd199, %rd1, %rd198;
+cvt.rn.f64.s64 %fd10, %rd25;
+mov.u32 %r175, %ntid.x;
+mul.wide.s32 %rd200, %r175, %r98;
+shl.b64 %rd201, %rd200, 3;
+cvt.rn.f64.s64 %fd11, %rd201;
+div.rn.f64 %fd12, %fd11, %fd10;
+st.global.f64 [%rd199], %fd12;
+
+$L__BB0_60:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bra.uni $L__BB0_107;
+
+$L__BB0_67:
+cvt.u32.u64 %r229, %rd350;
+
+$L__BB0_68:
+bar.sync 0;
+//
+mov.u64 %rd221, %clock64;
+//
+mov.u32 %r184, %ctaid.x;
+mul.wide.u32 %rd222, %r184, 4;
+mov.u64 %rd223, g_value;
+add.s64 %rd224, %rd223, %rd222;
+atom.global.add.u32 %r185, [%rd224], %r229;
+sub.s64 %rd30, %rd221, %rd202;
+@%p1 bra $L__BB0_70;
+
+cvt.u64.u32 %rd225, %r1;
+mul.lo.s64 %rd226, %rd2, %rd225;
+add.s64 %rd227, %rd3, %rd226;
+cvt.s64.s32 %rd228, %r46;
+add.s64 %rd229, %rd227, %rd228;
+shl.b64 %rd230, %rd229, 3;
+add.s64 %rd231, %rd1, %rd230;
+cvt.rn.f64.s64 %fd13, %rd30;
+mov.u32 %r186, %ntid.x;
+mul.wide.s32 %rd232, %r186, %r98;
+shl.b64 %rd233, %rd232, 3;
+cvt.rn.f64.s64 %fd14, %rd233;
+div.rn.f64 %fd15, %fd14, %fd13;
+st.global.f64 [%rd231], %fd15;
+
+$L__BB0_70:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+bra.uni $L__BB0_107;
+
+$L__BB0_53:
+cvt.u32.u64 %r223, %rd348;
+
+$L__BB0_54:
+//
+mov.u64 %rd156, %clock64;
+//
+mov.u32 %r166, %ctaid.x;
+mul.wide.u32 %rd157, %r166, 4;
+mov.u64 %rd158, g_value;
+add.s64 %rd159, %rd158, %rd157;
+atom.global.add.u32 %r167, [%rd159], %r223;
+sub.s64 %rd160, %rd156, %rd137;
+mul.wide.s32 %rd161, %r98, %r17;
+shl.b64 %rd162, %rd161, 3;
+cvt.rn.f64.s64 %fd8, %rd162;
+cvt.rn.f64.s64 %fd9, %rd160;
+div.rn.f64 %fd2, %fd8, %fd9;
+rem.u32 %r168, %r229, %r17;
+setp.ne.s32 %p27, %r168, 0;
+@%p27 bra $L__BB0_56;
+
+cvt.u64.u32 %rd163, %r1;
+mul.lo.s64 %rd164, %rd2, %rd163;
+add.s64 %rd165, %rd3, %rd164;
+cvt.s64.s32 %rd166, %r18;
+add.s64 %rd167, %rd165, %rd166;
+shl.b64 %rd168, %rd167, 3;
+add.s64 %rd169, %rd1, %rd168;
+st.global.f64 [%rd169], %fd2;
+
+$L__BB0_56:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+
+$L__BB0_107:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+ret;
+
+}
+

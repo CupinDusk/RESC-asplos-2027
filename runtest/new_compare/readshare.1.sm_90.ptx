@@ -1,0 +1,197 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.8
+.target sm_90
+.address_size 64
+
+//
+.global .align 4 .u32 g_cluster_ready_flag;
+
+.visible .entry _Z27cluster_l1_broadcast_kernelPKfPfii(
+.param .u64 _Z27cluster_l1_broadcast_kernelPKfPfii_param_0,
+.param .u64 _Z27cluster_l1_broadcast_kernelPKfPfii_param_1,
+.param .u32 _Z27cluster_l1_broadcast_kernelPKfPfii_param_2,
+.param .u32 _Z27cluster_l1_broadcast_kernelPKfPfii_param_3
+)
+{
+.reg .pred %p<15>;
+.reg .f32 %f<49>;
+.reg .b32 %r<66>;
+.reg .b64 %rd<29>;
+
+
+ld.param.u64 %rd3, [_Z27cluster_l1_broadcast_kernelPKfPfii_param_0];
+ld.param.u64 %rd4, [_Z27cluster_l1_broadcast_kernelPKfPfii_param_1];
+ld.param.u32 %r27, [_Z27cluster_l1_broadcast_kernelPKfPfii_param_2];
+ld.param.u32 %r28, [_Z27cluster_l1_broadcast_kernelPKfPfii_param_3];
+cvta.to.global.u64 %rd1, %rd3;
+cvta.to.global.u64 %rd2, %rd4;
+mov.u32 %r1, %ctaid.x;
+setp.eq.s32 %p1, %r1, 0;
+@%p1 bra $L__BB0_12;
+
+mov.u32 %r2, %tid.x;
+setp.ne.s32 %p2, %r2, 0;
+@%p2 bra $L__BB0_5;
+
+mov.u64 %rd5, g_cluster_ready_flag;
+
+$L__BB0_3:
+atom.global.add.u32 %r29, [%rd5], 0;
+setp.eq.s32 %p3, %r29, 0;
+@%p3 bra $L__BB0_3;
+
+membar.gl;
+
+$L__BB0_5:
+bar.sync 0;
+setp.lt.s32 %p4, %r27, 1;
+mov.f32 %f43, 0f00000000;
+@%p4 bra $L__BB0_11;
+
+add.s32 %r31, %r27, -1;
+and.b32 %r60, %r27, 3;
+setp.lt.u32 %p5, %r31, 3;
+mov.f32 %f43, 0f00000000;
+mov.u32 %r58, 0;
+@%p5 bra $L__BB0_9;
+
+sub.s32 %r57, %r27, %r60;
+mov.f32 %f43, 0f00000000;
+mov.u32 %r58, 0;
+
+$L__BB0_8:
+rem.s32 %r33, %r58, %r28;
+mul.wide.s32 %rd6, %r33, 4;
+add.s64 %rd7, %rd1, %rd6;
+ld.global.f32 %f19, [%rd7];
+add.f32 %f20, %f43, %f19;
+add.s32 %r34, %r58, 1;
+rem.s32 %r35, %r34, %r28;
+mul.wide.s32 %rd8, %r35, 4;
+add.s64 %rd9, %rd1, %rd8;
+ld.global.f32 %f21, [%rd9];
+add.f32 %f22, %f20, %f21;
+add.s32 %r36, %r58, 2;
+rem.s32 %r37, %r36, %r28;
+mul.wide.s32 %rd10, %r37, 4;
+add.s64 %rd11, %rd1, %rd10;
+ld.global.f32 %f23, [%rd11];
+add.f32 %f24, %f22, %f23;
+add.s32 %r38, %r58, 3;
+rem.s32 %r39, %r38, %r28;
+mul.wide.s32 %rd12, %r39, 4;
+add.s64 %rd13, %rd1, %rd12;
+ld.global.f32 %f25, [%rd13];
+add.f32 %f43, %f24, %f25;
+add.s32 %r58, %r58, 4;
+add.s32 %r57, %r57, -4;
+setp.ne.s32 %p6, %r57, 0;
+@%p6 bra $L__BB0_8;
+
+$L__BB0_9:
+setp.eq.s32 %p7, %r60, 0;
+@%p7 bra $L__BB0_11;
+
+$L__BB0_10:
+.pragma "nounroll";
+rem.s32 %r40, %r58, %r28;
+mul.wide.s32 %rd14, %r40, 4;
+add.s64 %rd15, %rd1, %rd14;
+ld.global.f32 %f26, [%rd15];
+add.f32 %f43, %f43, %f26;
+add.s32 %r58, %r58, 1;
+add.s32 %r60, %r60, -1;
+setp.ne.s32 %p8, %r60, 0;
+@%p8 bra $L__BB0_10;
+
+$L__BB0_11:
+mov.u32 %r41, %ntid.x;
+mad.lo.s32 %r42, %r1, %r41, %r2;
+mul.wide.s32 %rd16, %r42, 4;
+add.s64 %rd17, %rd2, %rd16;
+st.global.f32 [%rd17], %f43;
+bra.uni $L__BB0_20;
+
+$L__BB0_12:
+setp.lt.s32 %p9, %r27, 1;
+mov.f32 %f48, 0f00000000;
+@%p9 bra $L__BB0_18;
+
+add.s32 %r44, %r27, -1;
+and.b32 %r65, %r27, 3;
+setp.lt.u32 %p10, %r44, 3;
+mov.f32 %f48, 0f00000000;
+mov.u32 %r63, 0;
+@%p10 bra $L__BB0_16;
+
+sub.s32 %r62, %r27, %r65;
+mov.f32 %f48, 0f00000000;
+mov.u32 %r63, 0;
+
+$L__BB0_15:
+rem.s32 %r46, %r63, %r28;
+mul.wide.s32 %rd18, %r46, 4;
+add.s64 %rd19, %rd1, %rd18;
+ld.global.f32 %f31, [%rd19];
+add.f32 %f32, %f48, %f31;
+add.s32 %r47, %r63, 1;
+rem.s32 %r48, %r47, %r28;
+mul.wide.s32 %rd20, %r48, 4;
+add.s64 %rd21, %rd1, %rd20;
+ld.global.f32 %f33, [%rd21];
+add.f32 %f34, %f32, %f33;
+add.s32 %r49, %r63, 2;
+rem.s32 %r50, %r49, %r28;
+mul.wide.s32 %rd22, %r50, 4;
+add.s64 %rd23, %rd1, %rd22;
+ld.global.f32 %f35, [%rd23];
+add.f32 %f36, %f34, %f35;
+add.s32 %r51, %r63, 3;
+rem.s32 %r52, %r51, %r28;
+mul.wide.s32 %rd24, %r52, 4;
+add.s64 %rd25, %rd1, %rd24;
+ld.global.f32 %f37, [%rd25];
+add.f32 %f48, %f36, %f37;
+add.s32 %r63, %r63, 4;
+add.s32 %r62, %r62, -4;
+setp.ne.s32 %p11, %r62, 0;
+@%p11 bra $L__BB0_15;
+
+$L__BB0_16:
+setp.eq.s32 %p12, %r65, 0;
+@%p12 bra $L__BB0_18;
+
+$L__BB0_17:
+.pragma "nounroll";
+rem.s32 %r53, %r63, %r28;
+mul.wide.s32 %rd26, %r53, 4;
+add.s64 %rd27, %rd1, %rd26;
+ld.global.f32 %f38, [%rd27];
+add.f32 %f48, %f48, %f38;
+add.s32 %r63, %r63, 1;
+add.s32 %r65, %r65, -1;
+setp.ne.s32 %p13, %r65, 0;
+@%p13 bra $L__BB0_17;
+
+$L__BB0_18:
+mov.u32 %r54, %tid.x;
+setp.ne.s32 %p14, %r54, 0;
+@%p14 bra $L__BB0_20;
+
+st.global.f32 [%rd2], %f48;
+membar.gl;
+mov.u64 %rd28, g_cluster_ready_flag;
+atom.global.exch.b32 %r55, [%rd28], 1;
+
+$L__BB0_20:
+ret;
+
+}
+
