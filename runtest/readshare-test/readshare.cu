@@ -1,9 +1,12 @@
+#include <cooperative_groups.h>
 #include <cuda_runtime.h>
 
+#include <cinttypes>
 #include <cstdio>
 #include <cstdlib>
-#include <cinttypes>
 #include <vector>
+
+namespace cg = cooperative_groups;
 
 #define CUDA_CHECK(stmt)                                                      \
   do {                                                                        \
@@ -18,40 +21,48 @@
 constexpr int kClusterSms = 8;
 constexpr int kDataPerSm = 32;
 
-__device__ int g_next_sm_to_read = 0;
+template <int ClusterSize>
+__global__ __cluster_dims__(ClusterSize, 1, 1)
+void sequential_cluster_read_kernel(const float *input, float *output,
+                                    unsigned long long *latencies,
+                                    int data_count) {
+  const int lane = threadIdx.x;
 
-__global__ void sequential_cluster_read_kernel(const volatile float *input,
-                                                float *output,
-                                                unsigned long long *latencies,
-                                                int data_count) {
-  int block = blockIdx.x;
-  int lane = threadIdx.x;
+#if __CUDA_ARCH__ >= 900
+  const int global_block = blockIdx.x;
+  cg::cluster_group cluster = cg::this_cluster();
+  const int rank = cluster.block_rank();
 
-  if (lane == 0) {
-    // Ensure only one block at a time proceeds to read the shared data.
-    while (atomicAdd(&g_next_sm_to_read, 0) != block) {
+  // Align all CTAs in the cluster before starting the serialized reads.
+  cluster.sync();
+
+  for (int turn = 0; turn < ClusterSize; ++turn) {
+    const bool my_turn = (rank == turn);
+
+    __syncthreads();
+    if (my_turn && lane < data_count) {
+      const unsigned long long start = clock64();
+      const float value = input[lane];
+      const unsigned long long stop = clock64();
+      output[global_block * data_count + lane] = value;
+      latencies[global_block * data_count + lane] = stop - start;
     }
-    __threadfence_block();
+    __syncthreads();
+
+    // Ensure the next CTA does not proceed until every block in the cluster
+    // has observed the current turn's memory operations.
+    cluster.sync();
   }
-  __syncthreads();
-
-  unsigned long long start = 0;
-  unsigned long long stop = 0;
-  float value = 0.0f;
-
+#else
+  const int global_block = blockIdx.x;
   if (lane < data_count) {
-    start = clock64();
-    value = input[lane];
-    stop = clock64();
-    output[block * data_count + lane] = value;
-    latencies[block * data_count + lane] = stop - start;
+    const unsigned long long start = clock64();
+    const float value = input[lane];
+    const unsigned long long stop = clock64();
+    output[global_block * data_count + lane] = value;
+    latencies[global_block * data_count + lane] = stop - start;
   }
-  __syncthreads();
-
-  if (lane == 0) {
-    __threadfence();
-    atomicAdd(&g_next_sm_to_read, 1);
-  }
+#endif
 }
 
 int main() {
@@ -65,6 +76,23 @@ int main() {
     std::fprintf(stderr,
                  "Device has %d SMs, but this test requires at least %d SMs.\n",
                  props.multiProcessorCount, kClusterSms);
+    return EXIT_FAILURE;
+  }
+
+  if (props.major < 9) {
+    std::fprintf(stderr,
+                 "Device compute capability %d.%d does not support Hopper "
+                 "clusters.\n",
+                 props.major, props.minor);
+    return EXIT_FAILURE;
+  }
+
+  int cluster_launch_supported = 0;
+  CUDA_CHECK(cudaDeviceGetAttribute(&cluster_launch_supported,
+                                    cudaDevAttrClusterLaunch, device));
+  if (!cluster_launch_supported) {
+    std::fprintf(stderr,
+                 "Device reports cluster launches are unsupported.\n");
     return EXIT_FAILURE;
   }
 
@@ -88,14 +116,15 @@ int main() {
   CUDA_CHECK(cudaMemset(device_latencies, 0,
                         host_output.size() * sizeof(unsigned long long)));
 
-  int zero = 0;
-  CUDA_CHECK(cudaMemcpyToSymbol(g_next_sm_to_read, &zero, sizeof(int)));
-
   dim3 grid(kClusterSms);
   dim3 block(kDataPerSm);
 
-  sequential_cluster_read_kernel<<<grid, block>>>(device_input, device_output,
-                                                  device_latencies, kDataPerSm);
+  CUDA_CHECK(cudaFuncSetAttribute(
+      sequential_cluster_read_kernel<kClusterSms>,
+      cudaFuncAttributeNonPortableClusterSizeAllowed, 1));
+
+  sequential_cluster_read_kernel<kClusterSms><<<grid, block>>>(
+      device_input, device_output, device_latencies, kDataPerSm);
   CUDA_CHECK(cudaGetLastError());
   CUDA_CHECK(cudaDeviceSynchronize());
 
