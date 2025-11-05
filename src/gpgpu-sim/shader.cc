@@ -1805,10 +1805,6 @@ void ldst_unit::get_L1T_sub_stats(struct cache_sub_stats &css) const {
   if (m_L1T) m_L1T->get_sub_stats(css);
 }
 
-unsigned long long ldst_unit::get_cluster_peer_fills() const {
-  return m_L1D ? m_L1D->cluster_peer_fills() : 0;
-}
-
 void shader_core_ctx::warp_inst_complete(const warp_inst_t &inst) {
 #if 0
       printf("[warp_inst_complete] uid=%u core=%u warp=%u pc=%#x @ time=%llu \n",
@@ -2995,29 +2991,17 @@ void gpgpu_sim::shader_print_cache_stats(FILE *fout) const {
     total_css.clear();
     css.clear();
     fprintf(fout, "L1D_cache:\n");
-    unsigned long long total_cluster_peer_fills = 0;
     for (unsigned i = 0; i < m_shader_config->n_simt_clusters; i++) {
       m_cluster[i]->get_L1D_sub_stats(css);
 
-      double miss_rate = css.accesses
-                             ? (double)css.misses / (double)css.accesses
-                             : 0.0;
       fprintf(stdout,
               "\tL1D_cache_core[%d]: Access = %llu, Miss = %llu, Miss_rate = "
               "%.3lf, Pending_hits = %llu, Reservation_fails = %llu\n",
-             // i, css.accesses, css.misses,
-             // (double)css.misses / (double)css.accesses, css.pending_hits,
-              i, css.accesses, css.misses, miss_rate, css.pending_hits,
+              i, css.accesses, css.misses,
+              (double)css.misses / (double)css.accesses, css.pending_hits,
               css.res_fails);
 
-      unsigned long long cluster_peer_fills =
-          m_cluster[i]->get_cluster_peer_fills();
-      fprintf(stdout,
-              "\tL1D_cache_cluster[%d]: Cluster_peer_fills = %llu\n", i,
-              cluster_peer_fills);              
-
       total_css += css;
-      total_cluster_peer_fills += cluster_peer_fills;
     }
     fprintf(fout, "\tL1D_total_cache_accesses = %llu\n", total_css.accesses);
     fprintf(fout, "\tL1D_total_cache_misses = %llu\n", total_css.misses);
@@ -3029,8 +3013,6 @@ void gpgpu_sim::shader_print_cache_stats(FILE *fout) const {
             total_css.pending_hits);
     fprintf(fout, "\tL1D_total_cache_reservation_fails = %llu\n",
             total_css.res_fails);
-    fprintf(fout, "\t(my-read-sharing)L1D_cluster_peer_fills = %llu\n",
-            total_cluster_peer_fills);
     total_css.print_port_stats(fout, "\tL1D_cache");
   }
 
@@ -4041,10 +4023,6 @@ void shader_core_ctx::get_L1T_sub_stats(struct cache_sub_stats &css) const {
   m_ldst_unit->get_L1T_sub_stats(css);
 }
 
-unsigned long long shader_core_ctx::get_cluster_peer_fills() const {
-  return m_ldst_unit->get_cluster_peer_fills();
-}
-
 void shader_core_ctx::get_icnt_power_stats(long &n_simt_to_mem,
                                            long &n_mem_to_simt) const {
   n_simt_to_mem += m_stats->n_simt_to_mem[m_sid];
@@ -4902,14 +4880,6 @@ void simt_core_cluster::get_L1T_sub_stats(struct cache_sub_stats &css) const {
     total_css += temp_css;
   }
   css = total_css;
-}
-
-unsigned long long simt_core_cluster::get_cluster_peer_fills() const {
-  unsigned long long total = 0;
-  for (unsigned i = 0; i < m_config->n_simt_cores_per_cluster; ++i) {
-    total += m_core[i]->get_cluster_peer_fills();
-  }
-  return total;
 }
 
 void exec_shader_core_ctx::checkExecutionStatusAndUpdate(warp_inst_t &inst,

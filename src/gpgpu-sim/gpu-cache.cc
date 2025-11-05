@@ -30,7 +30,6 @@
 
 #include "gpu-cache.h"
 #include <assert.h>
-#include <unordered_map>
 #include "gpu-sim.h"
 #include "hashing.h"
 #include "stat-tool.h"
@@ -1771,96 +1770,9 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
 /// It is write-evict (global) or write-back (local) at the
 /// granularity of individual blocks (Set by GPGPU-Sim configuration file)
 /// (the policy used in fermi according to the CUDA manual)
-namespace {
-std::unordered_map<unsigned, l1_cache *> g_cluster_l1_caches;
-
-bool cluster_read_share_debug_enabled() {
-  static bool initialized = false;
-  static bool enabled = false;
-  if (!initialized) {
-    const char *env = getenv("GPGPUSIM_DEBUG_CLUSTER_READ_SHARE");
-    enabled = env && env[0] != '\0' && env[0] != '0';
-    initialized = true;
-  }
-  return enabled;
-}
-}  // namespace
-
-l1_cache::l1_cache(const char *name, cache_config &config, int core_id,
-                   int type_id, mem_fetch_interface *memport,
-                   mem_fetch_allocator *mfcreator, enum mem_fetch_status status,
-                   class gpgpu_sim *gpu)
-    : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                 L1_WR_ALLOC_R, L1_WRBK_ACC, gpu),
-      m_sid(core_id),
-      m_cluster_peer_fills(0) {
-  g_cluster_l1_caches[m_sid] = this;
-}
-
-l1_cache::l1_cache(const char *name, cache_config &config, int core_id,
-                   int type_id, mem_fetch_interface *memport,
-                   mem_fetch_allocator *mfcreator, enum mem_fetch_status status,
-                   tag_array *new_tag_array, class gpgpu_sim *gpu)
-    : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                 new_tag_array, L1_WR_ALLOC_R, L1_WRBK_ACC, gpu),
-      m_sid(core_id),
-      m_cluster_peer_fills(0) {
-  g_cluster_l1_caches[m_sid] = this;
-}
-
-bool l1_cache::request_from_cluster_peers(new_addr_type addr,
-                                          new_addr_type block_addr,
-                                          mem_fetch *mf,
-                                          unsigned time) {
-  const shader_core_config *config = m_gpu->getShaderCoreConfig();
-  if (config == nullptr) return false;
-
-  unsigned requester_cluster = config->sid_to_cluster(get_sid());
-  for (const auto &entry : g_cluster_l1_caches) {
-    unsigned peer_sid = entry.first;
-    const l1_cache *peer_cache = entry.second;
-    if (peer_cache == this) continue;
-    if (config->sid_to_cluster(peer_sid) != requester_cluster) continue;
-    if (peer_cache->has_line(addr, mf)) {
-      m_tag_array->fill(block_addr, time, mf, false);
-      ++m_cluster_peer_fills;
-      if (cluster_read_share_debug_enabled()) {
-        printf(
-            "[ClusterReadShare] cycle=%u requester_sid=%u peer_sid=%u addr=0x%llx "
-            "block=0x%llx\n",
-            time, get_sid(), peer_sid, (unsigned long long)addr,
-            (unsigned long long)block_addr);
-      }
-      return true;
-    }
-  }
-  return false;
-}
-
-bool l1_cache::has_line(new_addr_type addr, mem_fetch *mf) const {
-  unsigned peer_index = 0;
-  enum cache_request_status peer_status =
-      m_tag_array->probe(m_config.block_addr(addr), peer_index, mf, false);
-  return peer_status == HIT || peer_status == HIT_RESERVED;
-}
-
 enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                                            unsigned time,
                                            std::list<cache_event> &events) {
-  new_addr_type block_addr = m_config.block_addr(addr);
-  bool eligible_for_cluster_lookup =
-      (!mf->get_is_write()) && (!mf->isatomic()) &&
-      (mf->get_access_type() == GLOBAL_ACC_R);
-
-  if (eligible_for_cluster_lookup) {
-    unsigned local_index = 0;
-    enum cache_request_status local_status =
-        m_tag_array->probe(block_addr, local_index, mf, false);
-    if (local_status != HIT && local_status != HIT_RESERVED) {
-      request_from_cluster_peers(addr, block_addr, mf, time);
-    }
-  }
-
   return data_cache::access(addr, mf, time, events);
 }
 
