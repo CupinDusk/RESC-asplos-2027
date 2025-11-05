@@ -1773,7 +1773,18 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
 /// (the policy used in fermi according to the CUDA manual)
 namespace {
 std::unordered_map<unsigned, l1_cache *> g_cluster_l1_caches;
+
+bool cluster_read_share_debug_enabled() {
+  static bool initialized = false;
+  static bool enabled = false;
+  if (!initialized) {
+    const char *env = getenv("GPGPUSIM_DEBUG_CLUSTER_READ_SHARE");
+    enabled = env && env[0] != '\0' && env[0] != '0';
+    initialized = true;
+  }
+  return enabled;
 }
+}  // namespace
 
 l1_cache::l1_cache(const char *name, cache_config &config, int core_id,
                    int type_id, mem_fetch_interface *memport,
@@ -1813,6 +1824,13 @@ bool l1_cache::request_from_cluster_peers(new_addr_type addr,
     if (peer_cache->has_line(addr, mf)) {
       m_tag_array->fill(block_addr, time, mf, false);
       ++m_cluster_peer_fills;
+      if (cluster_read_share_debug_enabled()) {
+        printf(
+            "[ClusterReadShare] cycle=%u requester_sid=%u peer_sid=%u addr=0x%llx "
+            "block=0x%llx\n",
+            time, get_sid(), peer_sid, (unsigned long long)addr,
+            (unsigned long long)block_addr);
+      }
       return true;
     }
   }
@@ -1822,7 +1840,7 @@ bool l1_cache::request_from_cluster_peers(new_addr_type addr,
 bool l1_cache::has_line(new_addr_type addr, mem_fetch *mf) const {
   unsigned peer_index = 0;
   enum cache_request_status peer_status =
-      m_tag_array->probe(addr, peer_index, mf, false);
+      m_tag_array->probe(m_config.block_addr(addr), peer_index, mf, false);
   return peer_status == HIT || peer_status == HIT_RESERVED;
 }
 
