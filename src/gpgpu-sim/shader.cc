@@ -2503,8 +2503,8 @@ ldst_unit::ldst_unit(SM_2_SM_network *network, mem_fetch_interface *icnt,
     char L1D_name[STRSIZE];
     snprintf(L1D_name, STRSIZE, "L1D_%03d", m_sid);
     m_L1D = new l1_cache(L1D_name, m_config->m_L1D_config, m_sid,
-                         get_shader_normal_cache_id(), m_icnt, m_mf_allocator,
-                         IN_L1D_MISS_QUEUE, core->get_gpu());
+                         get_shader_normal_cache_id(), core, m_icnt,
+                         m_mf_allocator, IN_L1D_MISS_QUEUE, core->get_gpu());
 
     l1_latency_queue.resize(m_config->m_L1D_config.l1_banks);
     assert(m_config->m_L1D_config.l1_latency > 0);

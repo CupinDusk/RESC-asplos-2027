@@ -38,12 +38,17 @@
 #include "gpu-misc.h"
 #include "mem_fetch.h"
 
+class shader_core_ctx;
+class simt_core_cluster;
+
 #include <iostream>
 #include "addrdec.h"
 
 #define MAX_DEFAULT_CACHE_SIZE_MULTIBLIER 4
 
 enum cache_block_state { INVALID = 0, RESERVED, VALID, MODIFIED };
+
+enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_FORWARD, CLUSTER_SHARED };
 
 enum cache_request_status {
   HIT = 0,
@@ -155,6 +160,10 @@ struct cache_block_t {
                               mem_access_sector_mask_t sector_mask) = 0;
   virtual bool is_readable(mem_access_sector_mask_t sector_mask) = 0;
   virtual void print_status() = 0;
+  virtual void set_cluster_state(cluster_line_state state) {}
+  virtual cluster_line_state get_cluster_state() const {
+    return CLUSTER_INVALID;
+  }
   virtual ~cache_block_t() {}
 
   new_addr_type m_tag;
@@ -171,6 +180,7 @@ struct line_cache_block : public cache_block_t {
     m_set_modified_on_fill = false;
     m_set_readable_on_fill = false;
     m_readable = true;
+    m_cluster_state = CLUSTER_INVALID;
   }
   void allocate(new_addr_type tag, new_addr_type block_addr, unsigned time,
                 mem_access_sector_mask_t sector_mask) {
@@ -184,6 +194,7 @@ struct line_cache_block : public cache_block_t {
     m_set_modified_on_fill = false;
     m_set_readable_on_fill = false;
     m_set_byte_mask_on_fill = false;
+    m_cluster_state = CLUSTER_INVALID;
   }
   virtual void fill(unsigned time, mem_access_sector_mask_t sector_mask,
                     mem_access_byte_mask_t byte_mask) {
@@ -209,6 +220,7 @@ struct line_cache_block : public cache_block_t {
   virtual void set_status(enum cache_block_state status,
                           mem_access_sector_mask_t sector_mask) {
     m_status = status;
+    if (status == INVALID) m_cluster_state = CLUSTER_INVALID;
   }
   virtual void set_byte_mask(mem_fetch *mf) {
     m_dirty_byte_mask = m_dirty_byte_mask | mf->get_access_byte_mask();
@@ -261,6 +273,14 @@ struct line_cache_block : public cache_block_t {
     printf("m_block_addr is %llu, status = %u\n", m_block_addr, m_status);
   }
 
+  virtual void set_cluster_state(cluster_line_state state) {
+    m_cluster_state = state;
+  }
+
+  virtual cluster_line_state get_cluster_state() const {
+    return m_cluster_state;
+  }
+
  private:
   unsigned long long m_alloc_time;
   unsigned long long m_last_access_time;
@@ -272,6 +292,7 @@ struct line_cache_block : public cache_block_t {
   bool m_set_byte_mask_on_fill;
   bool m_readable;
   mem_access_byte_mask_t m_dirty_byte_mask;
+  cluster_line_state m_cluster_state;
 };
 
 struct sector_cache_block : public cache_block_t {
@@ -1339,6 +1360,8 @@ class baseline_cache : public cache_t {
     m_tag_array->fill(addr, time, mask, byte_mask, true);
   }
 
+  virtual void post_fill(mem_fetch *mf, unsigned cache_index) {}
+
  protected:
   // Constructor that can be used by derived classes with custom tag arrays
   baseline_cache(const char *name, cache_config &config, int core_id,
@@ -1659,10 +1682,12 @@ class data_cache : public baseline_cache {
 class l1_cache : public data_cache {
  public:
   l1_cache(const char *name, cache_config &config, int core_id, int type_id,
-           mem_fetch_interface *memport, mem_fetch_allocator *mfcreator,
+           shader_core_ctx *owner, mem_fetch_interface *memport,
+           mem_fetch_allocator *mfcreator,
            enum mem_fetch_status status, class gpgpu_sim *gpu)
       : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                   L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+                   L1_WR_ALLOC_R, L1_WRBK_ACC, gpu),
+        m_owner(owner) {}
 
   virtual ~l1_cache() {}
 
@@ -1672,11 +1697,25 @@ class l1_cache : public data_cache {
 
  protected:
   l1_cache(const char *name, cache_config &config, int core_id, int type_id,
-           mem_fetch_interface *memport, mem_fetch_allocator *mfcreator,
+           shader_core_ctx *owner, mem_fetch_interface *memport,
+           mem_fetch_allocator *mfcreator,
            enum mem_fetch_status status, tag_array *new_tag_array,
            class gpgpu_sim *gpu)
       : data_cache(name, config, core_id, type_id, memport, mfcreator, status,
-                   new_tag_array, L1_WR_ALLOC_R, L1_WRBK_ACC, gpu) {}
+                   new_tag_array, L1_WR_ALLOC_R, L1_WRBK_ACC, gpu),
+        m_owner(owner) {}
+
+  virtual void post_fill(mem_fetch *mf, unsigned cache_index);
+
+ private:
+  bool try_cluster_read_share(new_addr_type addr, mem_fetch *mf, unsigned time,
+                              std::list<cache_event> &events);
+  cluster_line_state get_line_cluster_state(new_addr_type block_addr,
+                                            unsigned &index);
+  void set_line_cluster_state(unsigned index, cluster_line_state state);
+  void update_line_access(unsigned index, unsigned time);
+
+  shader_core_ctx *m_owner;
 };
 
 /// Models second level shared cache with global write-back

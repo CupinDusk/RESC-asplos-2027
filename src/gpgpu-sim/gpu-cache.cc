@@ -30,6 +30,7 @@
 
 #include "gpu-cache.h"
 #include <assert.h>
+#include <vector>
 #include "gpu-sim.h"
 #include "hashing.h"
 #include "stat-tool.h"
@@ -1097,6 +1098,7 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
     m_tag_array->fill(e->second.m_block_addr, time, mf, mf->is_write());
   } else
     abort();
+  post_fill(mf, e->second.m_cache_index);
   bool has_atomic = false;
   m_mshrs.mark_ready(e->second.m_block_addr, has_atomic);
   if (has_atomic) {
@@ -1773,7 +1775,116 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
 enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                                            unsigned time,
                                            std::list<cache_event> &events) {
-  return data_cache::access(addr, mf, time, events);
+  assert(mf->get_data_size() <= m_config.get_atom_sz());
+  bool wr = mf->get_is_write();
+  new_addr_type block_addr = m_config.block_addr(addr);
+  unsigned cache_index = (unsigned)-1;
+  enum cache_request_status probe_status =
+      m_tag_array->probe(block_addr, cache_index, mf, mf->is_write(), true);
+
+  if (!wr && probe_status == MISS &&
+      try_cluster_read_share(addr, mf, time, events)) {
+    enum cache_request_status access_status = HIT;
+    m_stats.inc_stats(mf->get_access_type(),
+                      m_stats.select_stats_status(probe_status, access_status));
+    m_stats.inc_stats_pw(
+        mf->get_access_type(),
+        m_stats.select_stats_status(probe_status, access_status));
+    m_bandwidth_management.use_data_port(mf, access_status, events);
+    return access_status;
+  }
+
+  enum cache_request_status access_status =
+      process_tag_probe(wr, probe_status, addr, cache_index, mf, time, events);
+  m_stats.inc_stats(mf->get_access_type(),
+                    m_stats.select_stats_status(probe_status, access_status));
+  m_stats.inc_stats_pw(
+      mf->get_access_type(),
+      m_stats.select_stats_status(probe_status, access_status));
+  return access_status;
+}
+
+void l1_cache::post_fill(mem_fetch *mf, unsigned cache_index) {
+  if (!m_owner || mf->get_is_write()) return;
+  if (mf->get_access_type() != GLOBAL_ACC_R) return;
+  cache_block_t *block = m_tag_array->get_block(cache_index);
+  if (block) block->set_cluster_state(CLUSTER_FORWARD);
+}
+
+cluster_line_state l1_cache::get_line_cluster_state(new_addr_type block_addr,
+                                                    unsigned &index) {
+  mem_access_sector_mask_t mask;
+  mask.set();
+  enum cache_request_status status =
+      m_tag_array->probe(block_addr, index, mask, false, true);
+  if (status == HIT || status == HIT_RESERVED) {
+    cache_block_t *block = m_tag_array->get_block(index);
+    if (block) return block->get_cluster_state();
+  }
+  index = (unsigned)-1;
+  return CLUSTER_INVALID;
+}
+
+void l1_cache::set_line_cluster_state(unsigned index,
+                                      cluster_line_state state) {
+  if (index == (unsigned)-1) return;
+  cache_block_t *block = m_tag_array->get_block(index);
+  if (block) block->set_cluster_state(state);
+}
+
+void l1_cache::update_line_access(unsigned index, unsigned time) {
+  if (index == (unsigned)-1) return;
+  cache_block_t *block = m_tag_array->get_block(index);
+  if (!block) return;
+  mem_access_sector_mask_t mask;
+  mask.set();
+  block->set_last_access_time(time, mask);
+}
+
+bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
+                                      unsigned time,
+                                      std::list<cache_event> &events) {
+  (void)events;
+  if (!m_owner) return false;
+  if (mf->get_access_type() != GLOBAL_ACC_R) return false;
+
+  simt_core_cluster *cluster = m_owner->get_simt_core_cluster();
+  if (!cluster) return false;
+
+  new_addr_type block_addr = m_config.block_addr(addr);
+  l1_cache *source_cache = nullptr;
+  unsigned source_index = (unsigned)-1;
+
+  const std::vector<shader_core_ctx *> &cores = cluster->get_shader_cores();
+  for (auto *core : cores) {
+    if (!core) continue;
+    l1_cache *candidate = core->get_L1D_cache();
+    if (!candidate || candidate == this) continue;
+    unsigned candidate_index = (unsigned)-1;
+    cluster_line_state state =
+        candidate->get_line_cluster_state(block_addr, candidate_index);
+    if (state == CLUSTER_FORWARD) {
+      source_cache = candidate;
+      source_index = candidate_index;
+      break;
+    }
+  }
+
+  if (!source_cache) return false;
+
+  m_tag_array->fill(block_addr, time, mf, false);
+
+  unsigned local_index = (unsigned)-1;
+  enum cache_request_status local_status =
+      m_tag_array->probe(block_addr, local_index, mf, false, true);
+  if (!(local_status == HIT || local_status == HIT_RESERVED)) return false;
+
+  set_line_cluster_state(local_index, CLUSTER_SHARED);
+  update_line_access(local_index, time);
+  source_cache->set_line_cluster_state(source_index, CLUSTER_FORWARD);
+  source_cache->update_line_access(source_index, time);
+
+  return true;
 }
 
 // The l2 cache access function calls the base data_cache access
