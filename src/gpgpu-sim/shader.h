@@ -1403,6 +1403,8 @@ class ldst_unit : public pipelined_simd_unit {
   void get_L1C_sub_stats(struct cache_sub_stats &css) const;
   void get_L1T_sub_stats(struct cache_sub_stats &css) const;
 
+  l1_cache *get_L1D() const { return m_L1D; }
+
  protected:
   ldst_unit(mem_fetch_interface *icnt,
             shader_core_mem_fetch_allocator *mf_allocator,
@@ -2117,6 +2119,9 @@ class shader_core_ctx : public core_t {
   }
   kernel_info_t *get_kernel() { return m_kernel; }
   unsigned get_sid() const { return m_sid; }
+  l1_cache *get_L1D_cache() const {
+    return m_ldst_unit ? m_ldst_unit->get_L1D() : nullptr;
+  }
 
   // used by functional simulation:
   // modifiers
@@ -2716,6 +2721,9 @@ class simt_core_cluster {
     return m_maximum_thread_block_cluster;
   }
   SM_2_SM_network *get_sm_2_sm_network() const { return m_sm_2_sm_network; }
+  const std::vector<shader_core_ctx *> &get_shader_cores() const {
+    return m_core;
+  }
 
   gpu_processing_cluster *m_gpc;
   // Stores the number of ctas running in a cluster slot
