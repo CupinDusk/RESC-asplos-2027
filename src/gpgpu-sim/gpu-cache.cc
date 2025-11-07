@@ -1807,8 +1807,28 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 void l1_cache::post_fill(mem_fetch *mf, unsigned cache_index) {
   if (!m_owner || mf->get_is_write()) return;
   if (mf->get_access_type() != GLOBAL_ACC_R) return;
-  cache_block_t *block = m_tag_array->get_block(cache_index);
-  if (block) block->set_cluster_state(CLUSTER_FORWARD);
+ // cache_block_t *block = m_tag_array->get_block(cache_index);
+ // if (block) block->set_cluster_state(CLUSTER_FORWARD);
+  unsigned idx = cache_index;
+  // In ON_FILL policy, the actual line is allocated at fill(),
+  // so the 'cache_index' captured at miss time is NOT the final slot.
+  if (m_config.m_alloc_policy == ON_FILL) {
+    new_addr_type block_addr = m_config.block_addr(mf->get_addr());
+    enum cache_request_status st =
+        m_tag_array->probe(block_addr, idx, mf, /*is_write=*/false, /*probe_mode=*/true);
+    // After fill, this must be a hit.
+    //if (st != HIT) return;
+    if (!(st == HIT || st == HIT_RESERVED)) return;
+  }
+  cache_block_t *block = m_tag_array->get_block(idx);
+  if (block) {
+    block->set_cluster_state(CLUSTER_FORWARD);
+       printf("\n[post_fill] sid=%u gpc=%u set FORWARD idx=%u addr=0x%llx\n",
+          m_owner->get_sid(),
+          m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
+          idx, (unsigned long long)m_config.block_addr(mf->get_addr()));
+  }
+  printf("\nfinally post_fill \n");
 }
 
 cluster_line_state l1_cache::get_line_cluster_state(new_addr_type block_addr,
@@ -1817,7 +1837,8 @@ cluster_line_state l1_cache::get_line_cluster_state(new_addr_type block_addr,
   mask.set();
   enum cache_request_status status =
       m_tag_array->probe(block_addr, index, mask, false, true);
-  if (status == HIT || status == HIT_RESERVED) {
+  //if (status == HIT || status == HIT_RESERVED) {
+  if (status == HIT || status == HIT_RESERVED || status == SECTOR_MISS || status == MSHR_HIT) {
     cache_block_t *block = m_tag_array->get_block(index);
     if (block) return block->get_cluster_state();
   }
@@ -1887,7 +1908,7 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
 
   int i = 0;
   for (auto *core : cores) {
-    // 你原来的 debug 打印
+    // 原来的 debug 打印
     printf("\nIN TB-CLUSTER(GPC), %d times\n", i);
     i++;
 
@@ -1895,12 +1916,29 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
 
     l1_cache *candidate = core->get_L1D_cache();
     if (!candidate || candidate == this) continue;
+    //少一次print finals
+
+      // 用“对方 L1 的配置”计算行地址
+    new_addr_type peer_block_addr = candidate->m_config.block_addr(addr);
 
     unsigned candidate_index = (unsigned)-1;
     cluster_line_state state =
-        candidate->get_line_cluster_state(block_addr, candidate_index);
+        candidate->get_line_cluster_state(peer_block_addr, candidate_index);
 
-    if (state == CLUSTER_FORWARD) {
+    //printf("\nmy debug block addr = %lld\n", block_addr);
+    printf("\nGPC_ID = %u, [probe] core=%d idx=%u state=%d addr=0x%llx\n", gpc->get_gpc_id(),
+       core->get_sid(), candidate_index, (int)state, (unsigned long long)block_addr);
+    printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u state=%d addr=0x%llx\n",
+          m_owner->get_sid(),
+          m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
+          core->get_sid(),
+          core->get_simt_core_cluster()->m_gpc->get_gpc_id(),
+          candidate_index, (int)state,
+          (unsigned long long)peer_block_addr);
+
+
+    //if (state == CLUSTER_FORWARD) {
+    if (state == CLUSTER_FORWARD || state == CLUSTER_SHARED) {
       source_cache = candidate;
       source_index = candidate_index;
       break;
