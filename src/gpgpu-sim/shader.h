@@ -1403,7 +1403,7 @@ class ldst_unit : public pipelined_simd_unit {
   void get_L1C_sub_stats(struct cache_sub_stats &css) const;
   void get_L1T_sub_stats(struct cache_sub_stats &css) const;
 
-  l1_cache *get_L1D() const { return m_L1D; }
+  l1_cache *get_L1D() const { printf("\nshader.h::ldst_unit::get_L1D\n");return m_L1D; }
 
  protected:
   ldst_unit(mem_fetch_interface *icnt,

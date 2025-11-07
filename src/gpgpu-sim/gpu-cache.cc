@@ -564,7 +564,7 @@ void mshr_table::add(new_addr_type block_addr, mem_fetch *mf) {
   m_data[block_addr].m_list.push_back(mf);
   assert(m_data.size() <= m_num_entries);
   assert(m_data[block_addr].m_list.size() <= m_max_merged);
-  // indicate that this MSHR entry contains an atomic operation
+  // indicate that this MSHR en contains an atomic operation
   if (mf->isatomic()) {
     m_data[block_addr].m_has_atomic = true;
   }
@@ -1098,7 +1098,7 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
     m_tag_array->fill(e->second.m_block_addr, time, mf, mf->is_write());
   } else
     abort();
-  post_fill(mf, e->second.m_cache_index);
+ // post_fill(mf, e->second.m_cache_index);
   bool has_atomic = false;
   m_mshrs.mark_ready(e->second.m_block_addr, has_atomic);
   if (has_atomic) {
@@ -1775,6 +1775,7 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
 enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                                            unsigned time,
                                            std::list<cache_event> &events) {
+                                         
   assert(mf->get_data_size() <= m_config.get_atom_sz());
   bool wr = mf->get_is_write();
   new_addr_type block_addr = m_config.block_addr(addr);
@@ -1782,16 +1783,23 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   enum cache_request_status probe_status =
       m_tag_array->probe(block_addr, cache_index, mf, mf->is_write(), true);
 
-  if (!wr && probe_status == MISS &&
-      try_cluster_read_share(addr, mf, time, events)) {
-    enum cache_request_status access_status = HIT;
-    m_stats.inc_stats(mf->get_access_type(),
-                      m_stats.select_stats_status(probe_status, access_status));
-    m_stats.inc_stats_pw(
-        mf->get_access_type(),
-        m_stats.select_stats_status(probe_status, access_status));
-    m_bandwidth_management.use_data_port(mf, access_status, events);
-    return access_status;
+  if (!wr && probe_status == MISS) {
+    printf("\nBEFORE TRY CLUSTER READ SHARE \n");
+    if(try_cluster_read_share(addr, mf, time, events)){
+       printf("\nENTER the TRY CLUSTER READ SHARE \n");
+
+      enum cache_request_status access_status = HIT;
+      m_stats.inc_stats(mf->get_access_type(),
+                        m_stats.select_stats_status(probe_status, access_status));
+      m_stats.inc_stats_pw(
+          mf->get_access_type(),
+          m_stats.select_stats_status(probe_status, access_status));
+      m_bandwidth_management.use_data_port(mf, access_status, events);
+      return access_status;
+    }
+    else{
+      printf("\nNOT PASS the TRY CLUSTER READ SHARE \n");
+    }
   }
 
   enum cache_request_status access_status =
@@ -1804,68 +1812,12 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   return access_status;
 }
 
-void l1_cache::post_fill(mem_fetch *mf, unsigned cache_index) {
-  if (!m_owner || mf->get_is_write()) return;
-  if (mf->get_access_type() != GLOBAL_ACC_R) return;
- // cache_block_t *block = m_tag_array->get_block(cache_index);
- // if (block) block->set_cluster_state(CLUSTER_FORWARD);
-  unsigned idx = cache_index;
-  // In ON_FILL policy, the actual line is allocated at fill(),
-  // so the 'cache_index' captured at miss time is NOT the final slot.
-  if (m_config.m_alloc_policy == ON_FILL) {
-    new_addr_type block_addr = m_config.block_addr(mf->get_addr());
-    enum cache_request_status st =
-        m_tag_array->probe(block_addr, idx, mf, /*is_write=*/false, /*probe_mode=*/true);
-    // After fill, this must be a hit.
-    //if (st != HIT) return;
-    if (!(st == HIT || st == HIT_RESERVED)) return;
-  }
-  cache_block_t *block = m_tag_array->get_block(idx);
-  if (block) {
-    block->set_cluster_state(CLUSTER_FORWARD);
-       printf("\n[post_fill] sid=%u gpc=%u set FORWARD idx=%u addr=0x%llx\n",
-          m_owner->get_sid(),
-          m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
-          idx, (unsigned long long)m_config.block_addr(mf->get_addr()));
-  }
-  printf("\nfinally post_fill \n");
-}
-
-cluster_line_state l1_cache::get_line_cluster_state(new_addr_type block_addr,
-                                                    unsigned &index) {
-  mem_access_sector_mask_t mask;
-  mask.set();
-  enum cache_request_status status =
-      m_tag_array->probe(block_addr, index, mask, false, true);
-  //if (status == HIT || status == HIT_RESERVED) {
-  if (status == HIT || status == HIT_RESERVED || status == SECTOR_MISS || status == MSHR_HIT) {
-    cache_block_t *block = m_tag_array->get_block(index);
-    if (block) return block->get_cluster_state();
-  }
-  index = (unsigned)-1;
-  return CLUSTER_INVALID;
-}
-
-void l1_cache::set_line_cluster_state(unsigned index,
-                                      cluster_line_state state) {
-  if (index == (unsigned)-1) return;
-  cache_block_t *block = m_tag_array->get_block(index);
-  if (block) block->set_cluster_state(state);
-}
-
-void l1_cache::update_line_access(unsigned index, unsigned time) {
-  if (index == (unsigned)-1) return;
-  cache_block_t *block = m_tag_array->get_block(index);
-  if (!block) return;
-  mem_access_sector_mask_t mask;
-  mask.set();
-  block->set_last_access_time(time, mask);
-}
 
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
-  (void)events;
+
+  (void)events;                                       
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) return false;
 
@@ -1875,26 +1827,6 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
   new_addr_type block_addr = m_config.block_addr(addr);
   l1_cache *source_cache = nullptr;
   unsigned source_index = (unsigned)-1;
-
-  // const std::vector<shader_core_ctx *> &cores = cluster->get_shader_cores();
-  // int i=0;
-  // for (auto *core : cores) {
-  //   //
-  //   printf("IN SIMT-CLUSTER, %d times\n", i);
-  //   i ++;
-  //   if (!core) continue;
-  //   l1_cache *candidate = core->get_L1D_cache();
-  //   if (!candidate || candidate == this) continue;
-  //   unsigned candidate_index = (unsigned)-1;
-  //   cluster_line_state state =
-  //       candidate->get_line_cluster_state(block_addr, candidate_index);
-  //   if (state == CLUSTER_FORWARD) {
-  //     source_cache = candidate;
-  //     source_index = candidate_index;
-  //     break;
-  //   }
-  //   printf("for finals !! \n");
-  // }
 
   simt_core_cluster *scc = m_owner->get_simt_core_cluster();
   if (!scc) return false;
@@ -1922,46 +1854,42 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     new_addr_type peer_block_addr = candidate->m_config.block_addr(addr);
 
     unsigned candidate_index = (unsigned)-1;
-    cluster_line_state state =
-        candidate->get_line_cluster_state(peer_block_addr, candidate_index);
+    // cluster_line_state state =
+    //     candidate->get_line_cluster_state(peer_block_addr, candidate_index);
+
+    cache_request_status probe_status = candidate->m_tag_array->probe(peer_block_addr, candidate_index, mf, false, true);
+    printf("\nADDR = %lld, peer_block_ADDR = %lld, PROBE_STATUS = %d\n", addr, peer_block_addr, probe_status);
 
     //printf("\nmy debug block addr = %lld\n", block_addr);
-    printf("\nGPC_ID = %u, [probe] core=%d idx=%u state=%d addr=0x%llx\n", gpc->get_gpc_id(),
-       core->get_sid(), candidate_index, (int)state, (unsigned long long)block_addr);
-    printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u state=%d addr=0x%llx\n",
+    printf("\nGPC_ID = %u, [probe] core=%d idx=%u  addr=0x%llx\n", gpc->get_gpc_id(),
+       core->get_sid(), candidate_index, (unsigned long long)block_addr);
+    printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u addr=0x%llx\n",
           m_owner->get_sid(),
           m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
           core->get_sid(),
           core->get_simt_core_cluster()->m_gpc->get_gpc_id(),
-          candidate_index, (int)state,
+          candidate_index, 
           (unsigned long long)peer_block_addr);
 
-
-    //if (state == CLUSTER_FORWARD) {
-    if (state == CLUSTER_FORWARD || state == CLUSTER_SHARED) {
+    if(probe_status == HIT){
       source_cache = candidate;
       source_index = candidate_index;
+      printf("\nHITTTTTT!!  PROBE_STATUS = %d\n", probe_status);
       break;
     }
     printf("for finals !! \n");
   }
 
-
-
-
-  if (!source_cache) return false;
-
+  if (!source_cache) {
+    printf("\nNOT FOUND SHARES.\n");
+    return false;
+  }
   m_tag_array->fill(block_addr, time, mf, false);
 
   unsigned local_index = (unsigned)-1;
   enum cache_request_status local_status =
       m_tag_array->probe(block_addr, local_index, mf, false, true);
   if (!(local_status == HIT || local_status == HIT_RESERVED)) return false;
-
-  set_line_cluster_state(local_index, CLUSTER_SHARED);
-  update_line_access(local_index, time);
-  source_cache->set_line_cluster_state(source_index, CLUSTER_FORWARD);
-  source_cache->update_line_access(source_index, time);
 
   return true;
 }
