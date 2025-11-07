@@ -69,23 +69,6 @@ export GPUSIM_CONFIG=<PATH_TO_CONFIG>/gpgpusim.config
 ./build/bin/network
 ```
 
----
-
-### 🔍 Enable cluster read-sharing debug logs
-
-The L1 read-sharing path in `gpu-cache.cc` has optional logging that reports
-when a memory fetch is satisfied by a peer SM inside the same cluster. Enable
-the trace by setting `GPGPUSIM_DEBUG_CLUSTER_READ_SHARE` to any non-empty value
-(other than `0`) before launching your CUDA application:
-
-```bash
-export GPGPUSIM_DEBUG_CLUSTER_READ_SHARE=1
-./build/bin/network
-```
-
-Unset the variable or assign it to `0` to disable the debug output again.
-
----
 
 
 ### Notes

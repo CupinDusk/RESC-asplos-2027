@@ -3,19 +3,19 @@ ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi16EE
 ptxas info    : Function properties for _Z27sequential_readshare_kernelILi16EEvPKfPfii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 15 registers, used 1 barriers
-ptxas info    : Compile time = 9.066 ms
+ptxas info    : Compile time = 20.114 ms
 ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi8EEvPKfPfii' for 'sm_90'
 ptxas info    : Function properties for _Z27sequential_readshare_kernelILi8EEvPKfPfii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 15 registers, used 1 barriers
-ptxas info    : Compile time = 5.384 ms
+ptxas info    : Compile time = 11.284 ms
 ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi4EEvPKfPfii' for 'sm_90'
 ptxas info    : Function properties for _Z27sequential_readshare_kernelILi4EEvPKfPfii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 15 registers, used 1 barriers
-ptxas info    : Compile time = 4.904 ms
+ptxas info    : Compile time = 7.692 ms
 ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi2EEvPKfPfii' for 'sm_90'
 ptxas info    : Function properties for _Z27sequential_readshare_kernelILi2EEvPKfPfii
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 15 registers, used 1 barriers
-ptxas info    : Compile time = 4.701 ms
+ptxas info    : Compile time = 6.333 ms

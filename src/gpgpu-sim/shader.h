@@ -2666,6 +2666,13 @@ class gpu_processing_cluster {
   unsigned issue_cta_cluster_to_gpc();
   std::vector<unsigned> m_gpc_status;
   void cycle();
+
+  void collect_shader_cores(std::vector<class shader_core_ctx*>& out) const;
+
+ //   const std::vector<simt_core_cluster *> &get_shader_cores() const {
+ //   return m_clusters;
+ //  }
+
 };
 
 class simt_core_cluster {

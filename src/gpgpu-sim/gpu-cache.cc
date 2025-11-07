@@ -1848,27 +1848,68 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) return false;
 
-  simt_core_cluster *cluster = m_owner->get_simt_core_cluster();
-  if (!cluster) return false;
+  //simt_core_cluster *cluster = m_owner->get_simt_core_cluster();
+  //if (!cluster) return false;
 
   new_addr_type block_addr = m_config.block_addr(addr);
   l1_cache *source_cache = nullptr;
   unsigned source_index = (unsigned)-1;
 
-  const std::vector<shader_core_ctx *> &cores = cluster->get_shader_cores();
+  // const std::vector<shader_core_ctx *> &cores = cluster->get_shader_cores();
+  // int i=0;
+  // for (auto *core : cores) {
+  //   //
+  //   printf("IN SIMT-CLUSTER, %d times\n", i);
+  //   i ++;
+  //   if (!core) continue;
+  //   l1_cache *candidate = core->get_L1D_cache();
+  //   if (!candidate || candidate == this) continue;
+  //   unsigned candidate_index = (unsigned)-1;
+  //   cluster_line_state state =
+  //       candidate->get_line_cluster_state(block_addr, candidate_index);
+  //   if (state == CLUSTER_FORWARD) {
+  //     source_cache = candidate;
+  //     source_index = candidate_index;
+  //     break;
+  //   }
+  //   printf("for finals !! \n");
+  // }
+
+  simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+  if (!scc) return false;
+
+  // TB-cluster 的调度主体在 GPC 层
+  gpu_processing_cluster *gpc = scc->m_gpc;   // m_gpc 在 simt_core_cluster 里是公开成员
+  if (!gpc) return false;
+
+  std::vector<shader_core_ctx*> cores;
+  gpc->collect_shader_cores(cores);           // 拿到“同一 GPC（= TB-cluster 容器）内的所有 SM”
+
+  int i = 0;
   for (auto *core : cores) {
-    if (!core) continue;
+    // 你原来的 debug 打印
+    printf("\nIN TB-CLUSTER(GPC), %d times\n", i);
+    i++;
+
+    if (!core || core == m_owner) continue;
+
     l1_cache *candidate = core->get_L1D_cache();
     if (!candidate || candidate == this) continue;
+
     unsigned candidate_index = (unsigned)-1;
     cluster_line_state state =
         candidate->get_line_cluster_state(block_addr, candidate_index);
+
     if (state == CLUSTER_FORWARD) {
       source_cache = candidate;
       source_index = candidate_index;
       break;
     }
+    printf("for finals !! \n");
   }
+
+
+
 
   if (!source_cache) return false;
 

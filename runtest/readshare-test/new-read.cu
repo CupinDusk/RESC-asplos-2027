@@ -1,6 +1,5 @@
 // readshare.cu
-// nvcc -std=c++17 -arch=sm_90 -Xptxas -O0 -lineinfo readshare.cu -o readshare -lcudart
-// 运行示例： ./readshare 16 50000   # 16 个 CTA（簇大小 16），每 CTA 读同一组 64 地址，重复 5 万次
+// 运行： ./readshare 16 5   # cluster_size=16, 每线程重复读 5 次（可调）
 
 #include <cstdio>
 #include <cstdlib>
@@ -9,61 +8,82 @@
 #include <cuda_runtime_api.h>
 namespace cg = cooperative_groups;
 
-#define CUDA_CHECK(stmt)                                                      \
-  do {                                                                        \
-    cudaError_t err = (stmt);                                                 \
-    if (err != cudaSuccess) {                                                 \
-      std::fprintf(stderr, "Failed to run %s (%s) at %s:%d\n", #stmt,         \
-                   cudaGetErrorString(err), __FILE__, __LINE__);              \
-      std::exit(EXIT_FAILURE);                                                \
-    }                                                                         \
-  } while (0)
+#define TUNM 64
 
-__device__ int g_turn; // 全局“轮到谁”指示（0..cluster_size-1）
+#define CUDA_CHECK(x) do { auto e=(x); if(e!=cudaSuccess){                     \
+  std::fprintf(stderr,"CUDA error %s:%d: %s\n",__FILE__,__LINE__,              \
+               cudaGetErrorString(e)); std::exit(1);} } while(0)
 
-// 让 16 个 CTA（尽量 16 个 SM）依次读同一组 64 地址；
-// 代码里都是普通的 global load（通过 volatile 避免被编译器优化），
-// 你的模拟器可在后续 CTA 的读上触发“从前一个 SM 的 L1 读共享”而非再次走 L2/DRAM。
+__device__ int g_turn;  // 簇内当前允许执行的 rank：0..CLUSTER_SIZE-1
+
+// 强制经 L1 的全局读（.ca），用于数据地址 g_data[0]
+__device__ __forceinline__ float ld_ca_f32(const float* p) {
+  float v;
+#if __CUDA_ARCH__ >= 900  
+    //L1有固定8次miss，即使所有数据都是ld.cg。每次读取
+  asm volatile("ld.global.ca.f32 %0, [%1];" : "=f"(v) : "l"(p));
+#else
+  v = *p;
+#endif
+  return v;
+}
+
+// 绕过 L1 的全局读（.cg），用于轮询控制变量 g_turn，避免污染 L1D 统计
+__device__ __forceinline__ int ld_cg_s32(const int* p) {
+  int v;
+#if __CUDA_ARCH__ >= 900
+  asm volatile("ld.global.cg.s32 %0, [%1];" : "=r"(v) : "l"(p));
+#else
+  v = *p;
+#endif
+  return v;
+}
+
+__device__ __forceinline__ unsigned get_smid() {
+  unsigned smid;
+  asm volatile("mov.u32 %0, %smid;" : "=r"(smid));
+  return smid;
+}
+
+
 template<int CLUSTER_SIZE>
 __global__ __cluster_dims__(CLUSTER_SIZE,1,1)
 void sequential_readshare_kernel(const float* __restrict__ g_data,
                                  float* __restrict__ out,
-                                 int span, int repeat)
+                                 int /*span_unused*/, int repeat)
 {
 #if __CUDA_ARCH__ >= 900
   cg::cluster_group cluster = cg::this_cluster();
   const int rank = cluster.block_rank();      // 0..CLUSTER_SIZE-1
-  const int tid  = threadIdx.x;               // 我们用 64 线程/块，每线程读 1 个地址
-  const int lane = tid & 63;
+  const int tid  = threadIdx.x;
 
-  // 只读 64 个元素（每线程一个），剩余线程闲置
-  if (tid >= 64) return;
+  // 只用前 8 线程；每线程都读同一地址 g_data[0]
+  if (tid >= 8) return;
 
-  // 顺序执行：rank==g_turn 的 CTA 才能开始读取；其余 CTA 自旋等待
+  // 串行化：只允许 rank==g_turn 的 CTA 开始；轮询用 .cg 读，避免走 L1
   if (tid == 0) {
-    // busy-wait 等到轮到我
-    while (atomicAdd(&g_turn, 0) != rank) { /* spin */ }
-    __threadfence(); // 保证后续读不会被重排到等待之前
+    while (ld_cg_s32(&g_turn) != rank) { /* spin */ }
+    __threadfence();   // 线程序（块内）
   }
   __syncthreads();
 
-  // 重复读取：同一地址重复 read 'repeat' 次（普通 global load）
-  volatile const float* vptr = (volatile const float*)g_data; // 防止被合并/提升
+  // ——关键：所有线程都读同一个地址（同一 cache line）——
+  const float* addr = &g_data[0];
   float acc = 0.f;
-  const int idx = lane % span; // 0..63
   #pragma unroll 1
   for (int r = 0; r < repeat; ++r) {
-    float x = vptr[idx];       // global load（由模拟器决定是否命中“读共享”）
-    acc += x;
+    acc += ld_ca_f32(addr);   // 通过 L1D；若读共享生效，后续 SM 可从 peer L1 提供
+    if(tid == 0)
+        printf("rank=%d, smid=%u, tid=%d, addr =%f", rank, get_smid(), tid, *addr);
   }
 
-  // 写回输出：每 CTA 64 个结果
-  out[rank * 64 + lane] = acc;
-  __threadfence();
+  // 写回（保留原布局）：每 CTA 8 个标量
+  out[rank * 8 + tid] = acc;
 
-  // 轮到下一个 CTA
+  // 交棒给下一个 rank；用 system fence 确保后继 .cg 读可见
   if (tid == 0) {
     atomicExch(&g_turn, (rank + 1) % CLUSTER_SIZE);
+    __threadfence_system();
   }
 #endif
 }
@@ -71,55 +91,51 @@ void sequential_readshare_kernel(const float* __restrict__ g_data,
 // ---------------- Host ----------------
 int main(int argc, char** argv) {
   int cluster_size = 16;
-  int repeat       = 5;   // 默认 5 万次（≈1 分钟内结束；可按机器调整）
-
+  int repeat       = 5;     // 每线程重复读次数
   if (argc >= 2) cluster_size = std::atoi(argv[1]);
   if (argc >= 3) repeat       = std::atoi(argv[2]);
+
   if (!(cluster_size==2 || cluster_size==4 || cluster_size==8 || cluster_size==16)) {
     std::printf("cluster_size must be 2/4/8/16\n"); return 1;
   }
 
-  // 64 个只读元素（所有 CTA 都读同一组地址）
-  const int span = 64;
-  std::vector<float> h_data(span, 1.0f);
-  float *d_data = nullptr, *d_out = nullptr;
-  CUDA_CHECK(cudaMalloc(&d_data, span * sizeof(float)));
-  CUDA_CHECK(cudaMemcpy(d_data, h_data.data(), span * sizeof(float), cudaMemcpyHostToDevice));
+  // 仅 1 个元素：所有 CTA/线程都读同一地址
+  std::vector<float> h_data(1, 1.0f);
+  float *d_data=nullptr, *d_out=nullptr;
+  CUDA_CHECK(cudaMalloc(&d_data, sizeof(float)));
+  CUDA_CHECK(cudaMemcpy(d_data, h_data.data(), sizeof(float), cudaMemcpyHostToDevice));
 
-  CUDA_CHECK(cudaMalloc(&d_out, cluster_size * 64 * sizeof(float)));
-  CUDA_CHECK(cudaMemset(d_out, 0, cluster_size * 64 * sizeof(float)));
+  CUDA_CHECK(cudaMalloc(&d_out, cluster_size * 8 * sizeof(float)));
+  CUDA_CHECK(cudaMemset(d_out, 0, cluster_size * 8 * sizeof(float)));
 
   int zero = 0;
   CUDA_CHECK(cudaMemcpyToSymbol(g_turn, &zero, sizeof(int)));
 
-  dim3 grid(cluster_size, 1, 1);
-  dim3 block(64, 1, 1); // 恰好 64 线程/块，每线程一个地址
+  dim3 grid(cluster_size, 1, 1);   // 一个簇：grid.x == CLUSTER_SIZE
+  dim3 block(8, 1, 1);            // 8 线程/CTA（都读同一地址）
 
-  // 为不同 cluster_size 实例化（避免运行时分支）
   switch (cluster_size) {
-    case 2:  sequential_readshare_kernel<2 ><<<grid, block>>>(d_data, d_out, span, repeat); break;
-    case 4:  sequential_readshare_kernel<4 ><<<grid, block>>>(d_data, d_out, span, repeat); break;
-    case 8:  sequential_readshare_kernel<8 ><<<grid, block>>>(d_data, d_out, span, repeat); break;
-    case 16: sequential_readshare_kernel<16><<<grid, block>>>(d_data, d_out, span, repeat); break;
+    case 2:  sequential_readshare_kernel<2 ><<<grid, block>>>(d_data, d_out, 0, repeat); break;
+    case 4:  sequential_readshare_kernel<4 ><<<grid, block>>>(d_data, d_out, 0, repeat); break;
+    case 8:  sequential_readshare_kernel<8 ><<<grid, block>>>(d_data, d_out, 0, repeat); break;
+    case 16: sequential_readshare_kernel<16><<<grid, block>>>(d_data, d_out, 0, repeat); break;
   }
   CUDA_CHECK(cudaGetLastError());
   CUDA_CHECK(cudaDeviceSynchronize());
 
-  std::vector<float> h_out(cluster_size * 64);
+  std::vector<float> h_out(cluster_size * 8);
   CUDA_CHECK(cudaMemcpy(h_out.data(), d_out, h_out.size()*sizeof(float), cudaMemcpyDeviceToHost));
 
-  // 简单校验：每个输出都应是 repeat * 1.0f
+  // 期望每个元素都是 repeat * 1.0f
   bool ok = true;
   for (int r = 0; r < cluster_size && ok; ++r) {
-    for (int i = 0; i < 64; ++i) {
-      float expect = repeat * 1.0f;
-      float got = h_out[r*64 + i];
-      if (fabsf(got - expect) > 1e-3f * expect) { ok = false; break; }
+    for (int i = 0; i < 8; ++i) {
+      float expect = float(repeat);
+      if (fabsf(h_out[r*8 + i] - expect) > 1e-3f * expect) { ok = false; break; }
     }
   }
-
-  printf("ClusterSize=%d, Repeat=%d, Span=64, BlockSize=64\n", cluster_size, repeat);
-  printf("Check: %s  (example out[0]=%.1f)\n", ok ? "OK" : "MISMATCH", h_out[0]);
+  std::printf("ClusterSize=%d, Repeat=%d, SingleAddr, BlockSize=8\n", cluster_size, repeat);
+  std::printf("Check: %s  (example out[0]=%.1f)\n", ok ? "OK" : "MISMATCH", h_out[0]);
 
   CUDA_CHECK(cudaFree(d_out));
   CUDA_CHECK(cudaFree(d_data));

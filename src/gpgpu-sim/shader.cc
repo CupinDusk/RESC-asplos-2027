@@ -4937,3 +4937,12 @@ gpu_processing_cluster::gpu_processing_cluster(class gpgpu_sim *gpu,
 }
 
 void gpu_processing_cluster::cycle() { m_sm_2_sm_network->Advance(); }
+
+void gpu_processing_cluster::collect_shader_cores(
+    std::vector<shader_core_ctx*>& out) const {
+  out.clear();
+  for (const auto* cl : m_clusters) {                 // m_clusters: 本 GPC 下的所有 simt_core_cluster（TPC）
+    const auto& v = cl->get_shader_cores();           // 每个 TPC 里的 SM 列表
+    out.insert(out.end(), v.begin(), v.end());        // 汇总为“GPC 里的全部 SM”
+  }
+}
