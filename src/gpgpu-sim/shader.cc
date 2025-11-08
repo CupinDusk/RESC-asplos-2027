@@ -2155,6 +2155,9 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
     if (m_core->get_config()->gmem_skip_L1D && (CACHE_L1 != inst.cache_op))
       bypassL1D = true;
   }
+
+  
+
   if (bypassL1D) {
     // bypass L1 cache
     unsigned control_size =
@@ -2192,6 +2195,11 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
     else
       access_type = (iswrite) ? G_MEM_ST : G_MEM_LD;
   }
+
+  if (inst.is_load()) {
+    printf("\n TESTING [sc] load cache_op=%d bypassL1D=%d\n", (int)inst.cache_op, (int)bypassL1D);
+  }
+
   return inst.accessq_empty();
 }
 
@@ -3128,11 +3136,11 @@ void warp_inst_t::print(FILE *fout) const {
     fprintf(fout, "bubble\n");
     return;
   } else
-    fprintf(fout, "0x%04llx ", pc);
-  fprintf(fout, "w%02d[", m_warp_id);
-  for (unsigned j = 0; j < m_config->warp_size; j++)
-    fprintf(fout, "%c", (active(j) ? '1' : '0'));
-  fprintf(fout, "]: ");
+ //   fprintf(fout, "0x%04llx ", pc);
+  //fprintf(fout, "w%02d[", m_warp_id);
+ // for (unsigned j = 0; j < m_config->warp_size; j++)
+ //   fprintf(fout, "%c", (active(j) ? '1' : '0'));
+ // fprintf(fout, "]: ");
   m_config->gpgpu_ctx->func_sim->ptx_print_insn(pc, fout);
   fprintf(fout, "\n");
 }

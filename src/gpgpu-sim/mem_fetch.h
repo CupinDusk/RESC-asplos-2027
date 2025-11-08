@@ -127,6 +127,7 @@ class mem_fetch {
 
   mem_fetch *get_original_mf() { return original_mf; }
   mem_fetch *get_original_wr_mf() { return original_wr_mf; }
+  warp_inst_t m_inst;
 
  private:
   // request source information
@@ -161,7 +162,7 @@ class mem_fetch {
                                  // when fixed icnt latency mode is enabled
 
   // requesting instruction (put last so mem_fetch prints nicer in gdb)
-  warp_inst_t m_inst;
+  
 
   static unsigned sm_next_mf_request_uid;
 

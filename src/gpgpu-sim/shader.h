@@ -2120,7 +2120,13 @@ class shader_core_ctx : public core_t {
   kernel_info_t *get_kernel() { return m_kernel; }
   unsigned get_sid() const { return m_sid; }
   l1_cache *get_L1D_cache() const {
-    return m_ldst_unit ? m_ldst_unit->get_L1D() : nullptr;
+    if(m_ldst_unit){
+      return m_ldst_unit->get_L1D();
+    }
+    else{
+      return nullptr;
+    }
+    // return m_ldst_unit ? m_ldst_unit->get_L1D() : nullptr;
   }
 
   // used by functional simulation:
