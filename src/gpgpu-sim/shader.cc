@@ -2196,9 +2196,9 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
       access_type = (iswrite) ? G_MEM_ST : G_MEM_LD;
   }
 
-  if (inst.is_load()) {
-    printf("\n TESTING [sc] load cache_op=%d bypassL1D=%d\n", (int)inst.cache_op, (int)bypassL1D);
-  }
+  // if (inst.is_load()) {
+  //   printf("\n TESTING [sc] load cache_op=%d bypassL1D=%d\n", (int)inst.cache_op, (int)bypassL1D);
+  // }
 
   return inst.accessq_empty();
 }

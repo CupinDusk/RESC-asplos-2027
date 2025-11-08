@@ -1792,10 +1792,8 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       mf->m_inst.print(stdout);
 
     if(try_cluster_read_share(addr, mf, time, events)){
-       printf("\nENTER the TRY CLUSTER READ SHARE \n");
-
       enum cache_request_status access_status = HIT;
-      // probe_status = HIT;
+      probe_status = HIT;
       m_stats.inc_stats(mf->get_access_type(),
                         m_stats.select_stats_status(probe_status, access_status));
       m_stats.inc_stats_pw(
@@ -1805,12 +1803,16 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
       printf("\nYES PASS the TRY CLUSTER READ SHARE \n");
       printf("\nthe end of L1 access. probe_status=%d, access_status=%d addr=%lld owner_sid=%u\n",probe_status,access_status,addr,m_owner->get_sid());
+      if (!mf->m_inst.empty())
+        mf->m_inst.print(stdout);
 
       return access_status;
     }
     else{
       printf("\nNOT PASS the TRY CLUSTER READ SHARE \n");
       printf("\nthe end of L1 access. probe_status=%d, addr=%lld owner_sid=%u\n",probe_status,addr,m_owner->get_sid());
+      if (!mf->m_inst.empty())
+        mf->m_inst.print(stdout);
     }
 
   }
@@ -1839,11 +1841,14 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
-                                
+  printf("\nENTER the TRY CLUSTER READ SHARE \n");                             
   // return false;                                      
   (void)events;                                       
   if (!m_owner) return false;
-  if (mf->get_access_type() != GLOBAL_ACC_R) return false;
+  if (mf->get_access_type() != GLOBAL_ACC_R) {
+    printf("\nnot global reading\n");
+    return false;
+  }
 
   //simt_core_cluster *cluster = m_owner->get_simt_core_cluster();
   //if (!cluster) return false;
@@ -1892,13 +1897,13 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
           candidate_index, 
           (unsigned long long)addr);
 
-    if(probe_status == HIT|| probe_status == HIT_RESERVED){
+    if(probe_status == HIT){
       source_cache = candidate;
       source_index = candidate_index;
       printf("\nHITTTTTT!!  PROBE_STATUS = %d\n", probe_status);
       break;
     }
-    printf("\nthe %d th core finals !! \n",i);
+    printf("\nthe %d th core finals !! \n\n",i);
   }
 
   if (!source_cache) {

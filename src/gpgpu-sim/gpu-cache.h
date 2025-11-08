@@ -58,6 +58,7 @@ enum cache_request_status {
   SECTOR_MISS,
   MSHR_HIT,
   NUM_CACHE_REQUEST_STATUS
+  // CLUSTER_READ_SHARING
 };
 
 enum cache_reservation_fail_reason {
