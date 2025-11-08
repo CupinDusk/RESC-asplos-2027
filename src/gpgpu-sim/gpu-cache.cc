@@ -1784,8 +1784,13 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       m_tag_array->probe(addr, cache_index, mf, mf->is_write(), true);
 
   if (!wr && (probe_status == MISS || probe_status == SECTOR_MISS)) {
-    printf("\nADDR = %lld, block_ADDR = %lld, PROBE_STATUS = %d\n", addr, probe_status);
+    printf("\nADDR = %lld, PROBE_STATUS = %d\n", addr, probe_status);
     printf("\nBEFORE TRY CLUSTER READ SHARE \n");
+
+    //mf->print(stdout);
+    if (!mf->m_inst.empty())
+      mf->m_inst.print(stdout);
+
     if(try_cluster_read_share(addr, mf, time, events)){
        printf("\nENTER the TRY CLUSTER READ SHARE \n");
 
@@ -1797,11 +1802,17 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
           mf->get_access_type(),
           m_stats.select_stats_status(probe_status, access_status));
       m_bandwidth_management.use_data_port(mf, access_status, events);
+
+      printf("\nYES PASS the TRY CLUSTER READ SHARE \n");
+      printf("\nthe end of L1 access. probe_status=%d, access_status=%d addr=%lld owner_sid=%u\n",probe_status,access_status,addr,m_owner->get_sid());
+
       return access_status;
     }
     else{
       printf("\nNOT PASS the TRY CLUSTER READ SHARE \n");
+      printf("\nthe end of L1 access. probe_status=%d, addr=%lld owner_sid=%u\n",probe_status,addr,m_owner->get_sid());
     }
+
   }
 
   enum cache_request_status access_status =
@@ -1812,11 +1823,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       mf->get_access_type(),
       m_stats.select_stats_status(probe_status, access_status));
 
-  mf->print(stdout);
-  if (!mf->m_inst.empty())
-    mf->m_inst.print(stdout);
   
-  printf("\nthe end of L1 access. probe_status=%d, access_status=%d addr=%lld owner_sid=%u\n",probe_status,access_status,addr,m_owner->get_sid());
   // printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u addr=0x%llx\n",
   //         m_owner->get_sid(),
   //         m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
@@ -1832,7 +1839,8 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
-
+                                
+  // return false;                                      
   (void)events;                                       
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) return false;
@@ -1890,7 +1898,7 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
       printf("\nHITTTTTT!!  PROBE_STATUS = %d\n", probe_status);
       break;
     }
-    printf("for finals !! \n");
+    printf("\nthe %d th core finals !! \n",i);
   }
 
   if (!source_cache) {
