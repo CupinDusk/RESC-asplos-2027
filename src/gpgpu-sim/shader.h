@@ -2601,6 +2601,11 @@ class shader_core_ctx : public core_t {
   bool occupy_shader_resource_1block(kernel_info_t &kernel, bool occupy);
   void release_shader_resource_1block(unsigned hw_ctaid, kernel_info_t &kernel);
   int find_available_hwtid(unsigned int cta_size, bool occupy);
+  // 传入 warp_id，返回该 warp 所属的 TB-cluster 槽位（cluster_slot）
+  unsigned get_warp_cluster_slot(unsigned wid) const;
+
+// 判断本 SM 上是否存在属于给定 cluster_slot 的活动 warp（即可视为这个 SM 当前承载了该簇的 CTA）
+  bool has_active_warp_in_cluster_slot(unsigned slot) const;
 
  private:
   unsigned int m_occupied_n_threads;
@@ -2674,6 +2679,9 @@ class gpu_processing_cluster {
   void cycle();
 
   void collect_shader_cores(std::vector<class shader_core_ctx*>& out) const;
+  
+  void collect_shader_cores_for_cluster_slot(
+    unsigned slot, std::vector<class shader_core_ctx*>& out) const;
 
  //   const std::vector<simt_core_cluster *> &get_shader_cores() const {
  //   return m_clusters;

@@ -4037,6 +4037,22 @@ void shader_core_ctx::get_icnt_power_stats(long &n_simt_to_mem,
   n_mem_to_simt += m_stats->n_mem_to_simt[m_sid];
 }
 
+unsigned shader_core_ctx::get_warp_cluster_slot(unsigned wid) const {
+  assert(wid < m_config->max_warps_per_shader);
+  // m_warp[wid] 是 shd_warp_t*，它已有 get_cluster_slot()
+  return m_warp[wid]->get_cluster_slot();
+}
+
+bool shader_core_ctx::has_active_warp_in_cluster_slot(unsigned slot) const {
+  // 扫描本 SM 上所有 warp；只要存在未退出、且 cluster_slot 匹配的 warp，就认为这个 SM 属于该 TB-cluster 实例
+  for (unsigned wid = 0; wid < m_config->max_warps_per_shader; ++wid) {
+    const shd_warp_t *w = m_warp[wid];
+    if (w && !w->done_exit() && w->get_cluster_slot() == slot)
+      return true;
+  }
+  return false;
+}
+
 bool shd_warp_t::functional_done() const {
   return get_n_completed() == m_warp_size;
 }
@@ -4954,3 +4970,15 @@ void gpu_processing_cluster::collect_shader_cores(
     out.insert(out.end(), v.begin(), v.end());        // 汇总为“GPC 里的全部 SM”
   }
 }
+
+void gpu_processing_cluster::collect_shader_cores_for_cluster_slot(
+    unsigned slot, std::vector<shader_core_ctx*>& out) const {
+  out.clear();
+  std::vector<shader_core_ctx*> tmp;
+  collect_shader_cores(tmp);
+  for (auto* core : tmp) {
+    if (core && core->has_active_warp_in_cluster_slot(slot))
+      out.push_back(core);
+  }
+}
+

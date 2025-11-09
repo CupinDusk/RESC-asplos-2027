@@ -1864,11 +1864,16 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
   gpu_processing_cluster *gpc = scc->m_gpc;   // m_gpc 在 simt_core_cluster 里是公开成员
   if (!gpc) return false;
 
-  std::vector<shader_core_ctx*> cores;
-  gpc->collect_shader_cores(cores);           // 拿到“同一 GPC（= TB-cluster 容器）内的所有 SM”
+  //std::vector<shader_core_ctx*> cores;
+  //gpc->collect_shader_cores(cores);           // 拿到“同一 GPC（= TB-cluster 容器）内的所有 SM”
+
+  unsigned req_wid = mf->get_inst().warp_id();
+  unsigned cluster_slot = m_owner->get_warp_cluster_slot(req_wid);
+  std::vector<shader_core_ctx*> cores_same_cluster;
+  gpc->collect_shader_cores_for_cluster_slot(cluster_slot, cores_same_cluster);
 
   int i = 0;
-  for (auto *core : cores) {
+  for (auto *core : cores_same_cluster) {
     // 原来的 debug 打印
     printf("\nIN TB-CLUSTER(GPC), %d times\n", i);
     i++;
