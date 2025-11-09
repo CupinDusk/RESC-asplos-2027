@@ -1238,6 +1238,8 @@ cache_request_status data_cache::wr_hit_wb(new_addr_type addr,
   block->set_byte_mask(mf);
   update_m_readable(mf, cache_index);
 
+  block->set_m_readable(true, mf->get_access_sector_mask());
+
   return HIT;
 }
 
@@ -1778,6 +1780,87 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                                          
   assert(mf->get_data_size() <= m_config.get_atom_sz());
   bool wr = mf->get_is_write();
+
+  //WB
+  // === CLUSTER-L1-ONLY GLOBAL STORE PATH =====================================
+  // cluster内的全局写只在 L1 生效，供 cluster 内读共享；被替换时再写回到全局
+  if (wr && mf->get_access_type() == GLOBAL_ACC_W) {
+    // 计算块地址 & 先探测
+    new_addr_type block_addr = m_config.block_addr(addr);
+    unsigned cache_index = (unsigned)-1;
+    enum cache_request_status probe_status =
+        m_tag_array->probe(block_addr, cache_index, mf,
+                          /*is_write=*/true, /*probe_mode=*/true);
+
+    enum cache_request_status access_status;
+    if (probe_status == HIT) {
+      // 命中：按写回语义把该扇区标记为 MODIFIED，并记录脏字节
+      access_status =
+          wr_hit_wb(addr, cache_index, mf, time, events, probe_status);
+    } else if (probe_status != RESERVATION_FAIL) {
+      // 未命中：强制写分配到 L1（不下发写穿/逐出写；真正写回在替换时做）
+      access_status =
+          wr_miss_wa_naive(addr, cache_index, mf, time, events, probe_status);
+    } else {
+      // 行被保留导致无空位
+      m_stats.inc_fail_stats(mf->get_access_type(), LINE_ALLOC_FAIL);
+      return RESERVATION_FAIL;
+    }
+
+    // 关键点：L1 只存“状态”，但为了让 probe 把它当做能服务读共享的命中，
+    // 需要把被写到的扇区标记为“可读”（is_readable = true）。
+    // 这一步不改变数据面（模拟里本就不存数据）。
+    unsigned idx_tmp = (unsigned)-1;
+    m_tag_array->probe(block_addr, idx_tmp, mf, /*is_write=*/false, /*probe_mode=*/true);
+    if (idx_tmp != (unsigned)-1) {
+      cache_block_t *blk = m_tag_array->get_block(idx_tmp);
+      blk->set_m_readable(true, mf->get_access_sector_mask());  // 让读探测视为可读命中
+    }
+
+    // 把“可读命中”的状态传播给同一 TB-cluster 槽位内、已经持有该块的 L1
+    // 不强制给没持有的人分配，只更新已有者
+    if (m_owner) {
+      simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+      if (scc && scc->m_gpc) {
+        unsigned req_wid = mf->get_inst().warp_id();
+        unsigned cluster_slot = m_owner->get_warp_cluster_slot(req_wid);
+        std::vector<shader_core_ctx*> peers;
+        scc->m_gpc->collect_shader_cores_for_cluster_slot(cluster_slot, peers);
+
+        for (auto *core : peers) {
+          if (!core || core == m_owner) continue;
+          l1_cache *peer = core->get_L1D_cache();
+          if (!peer) continue;
+
+          unsigned pidx = (unsigned)-1;
+          // 只更新“已经持有该块”的 L1（HIT/HIT_RESERVED），不做新分配
+          cache_request_status ps =
+              peer->m_tag_array->probe(block_addr, pidx, mf,
+                                      /*is_write=*/false, /*probe_mode=*/true);
+          if (ps == HIT || ps == HIT_RESERVED) {
+            // 通过 fill() 刷新对方 L1 的 tag/状态（保持 VALID），再标记可读
+            peer->m_tag_array->fill(block_addr, time, mf, /*write_allocate=*/false);
+            if (pidx != (unsigned)-1) {
+              cache_block_t *pblk = peer->m_tag_array->get_block(pidx);
+              pblk->set_m_readable(true, mf->get_access_sector_mask());
+            }
+          }
+        }
+      }
+    }
+
+    // 不对下层发送写请求：真正写回在将来替换该行时由现有的写回路径完成
+    m_bandwidth_management.use_data_port(mf, access_status, events);
+    m_stats.inc_stats(mf->get_access_type(),
+                      m_stats.select_stats_status(probe_status, access_status));
+    m_stats.inc_stats_pw(mf->get_access_type(),
+                        m_stats.select_stats_status(probe_status, access_status));
+    return access_status;
+  }
+  // === END CLUSTER-L1-ONLY GLOBAL STORE PATH =================================
+
+
+
   //new_addr_type block_addr = m_config.block_addr(addr);
   unsigned cache_index = (unsigned)-1;
   enum cache_request_status probe_status =
