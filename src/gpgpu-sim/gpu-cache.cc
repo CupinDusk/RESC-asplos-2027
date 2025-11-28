@@ -1099,6 +1099,34 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
   } else
     abort();
  // post_fill(mf, e->second.m_cache_index);
+
+  // 对于只读数据，第一次从内存fill时设置为E状态
+  if (!mf->is_write() && mf->get_access_type() == GLOBAL_ACC_R) {
+    unsigned cache_index = (unsigned)-1;
+    if (m_config.m_alloc_policy == ON_MISS) {
+      cache_index = e->second.m_cache_index;
+    } else {
+      enum cache_request_status status = m_tag_array->probe(e->second.m_block_addr, cache_index, mf, false);
+      assert(status == HIT || status == HIT_RESERVED);
+    }
+    cache_block_t *block = m_tag_array->get_block(cache_index);
+    mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+
+    // 检查是否是line_cache_block类型
+    line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
+    if (line_block && line_block->get_cluster_state() == CLUSTER_INVALID) {
+      // 第一次fill，设置为E状态
+      line_block->set_cluster_state(CLUSTER_EXCLUSIVE);
+    }
+
+    // 检查是否是sector_cache_block类型
+    sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
+    if (sector_block && sector_block->get_cluster_state(sector_mask) == CLUSTER_INVALID) {
+      // 第一次fill，设置为E状态
+      sector_block->set_cluster_state(CLUSTER_EXCLUSIVE, sector_mask);
+    }
+  }
+
   bool has_atomic = false;
   m_mshrs.mark_ready(e->second.m_block_addr, has_atomic);
   if (has_atomic) {
@@ -1777,7 +1805,7 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
 enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                                            unsigned time,
                                            std::list<cache_event> &events) {
-                                         
+
   assert(mf->get_data_size() <= m_config.get_atom_sz());
   bool wr = mf->get_is_write();
 
@@ -1908,15 +1936,15 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       mf->get_access_type(),
       m_stats.select_stats_status(probe_status, access_status));
 
-  
+
   // printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u addr=0x%llx\n",
   //         m_owner->get_sid(),
   //         m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
   //         core->get_sid(),
   //         core->get_simt_core_cluster()->m_gpc->get_gpc_id(),
-  //         candidate_index, 
+  //         candidate_index,
   //         (unsigned long long)addr);
-  
+
   return access_status;
 }
 
@@ -1924,9 +1952,9 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
-  printf("\nENTER the TRY CLUSTER READ SHARE \n");                             
-  // return false;                                      
-  (void)events;                                       
+  printf("\nENTER the TRY CLUSTER READ SHARE \n");
+  // return false;
+  (void)events;
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) {
     printf("\nnot global reading\n");
@@ -1982,14 +2010,45 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
           m_owner->get_simt_core_cluster()->m_gpc->get_gpc_id(),
           core->get_sid(),
           core->get_simt_core_cluster()->m_gpc->get_gpc_id(),
-          candidate_index, 
+          candidate_index,
           (unsigned long long)addr);
 
     if(probe_status == HIT){
-      source_cache = candidate;
-      source_index = candidate_index;
-      printf("\nHITTTTTT!!  PROBE_STATUS = %d\n", probe_status);
-      break;
+      // 检查cache block的状态
+      cache_block_t *block = candidate->m_tag_array->get_block(candidate_index);
+      mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+      cluster_line_state state = CLUSTER_INVALID;
+      bool found_valid_state = false;
+
+      line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
+      if (line_block) {
+        state = line_block->get_cluster_state();
+        found_valid_state = true;
+      } else {
+        sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
+        if (sector_block) {
+          state = sector_block->get_cluster_state(sector_mask);
+          found_valid_state = true;
+        }
+      }
+
+      if (found_valid_state) {
+        // 只有E或F状态才提供数据，S状态不提供
+        if (state == CLUSTER_EXCLUSIVE || state == CLUSTER_FORWARD) {
+          source_cache = candidate;
+          source_index = candidate_index;
+          printf("\nHITTTTTT!!  PROBE_STATUS = %d, STATE = %d\n", probe_status, state);
+          break;
+        } else if (state == CLUSTER_SHARED) {
+          // S状态不提供数据，继续查找
+          printf("\nHIT but STATE = SHARED, skip\n");
+          continue;
+        }
+      } else {
+        // 未知的block类型，暂时不支持
+        printf("\nHIT but unknown block type, skip\n");
+        continue;
+      }
     }
     printf("\nthe %d th core finals !! \n\n",i);
   }
@@ -1998,12 +2057,66 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     printf("\nNOT FOUND SHARES.\n");
     return false;
   }
+
+  // 获取源cache block的状态
+  cache_block_t *source_block = source_cache->m_tag_array->get_block(source_index);
+  mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+  cluster_line_state source_state = CLUSTER_INVALID;
+  bool is_line_block = false;
+  bool is_sector_block = false;
+
+  line_cache_block *source_line_block = dynamic_cast<line_cache_block*>(source_block);
+  sector_cache_block *source_sector_block = nullptr;
+  if (source_line_block) {
+    source_state = source_line_block->get_cluster_state();
+    is_line_block = true;
+  } else {
+    source_sector_block = dynamic_cast<sector_cache_block*>(source_block);
+    if (source_sector_block) {
+      source_state = source_sector_block->get_cluster_state(sector_mask);
+      is_sector_block = true;
+    }
+  }
+
+  // fill到本地cache
   m_tag_array->fill(block_addr, time, mf, false);
 
   unsigned local_index = (unsigned)-1;
   enum cache_request_status local_status =
       m_tag_array->probe(block_addr, local_index, mf, false, true);
   if (!(local_status == HIT || local_status == HIT_RESERVED)) return false;
+
+  // 状态转换
+  cache_block_t *local_block = m_tag_array->get_block(local_index);
+  line_cache_block *local_line_block = dynamic_cast<line_cache_block*>(local_block);
+  sector_cache_block *local_sector_block = dynamic_cast<sector_cache_block*>(local_block);
+
+  if (is_line_block && local_line_block) {
+    // 新读者从I转为F
+    local_line_block->set_cluster_state(CLUSTER_FORWARD);
+
+    // 源cache状态转换：E->S 或 F->S
+    if (source_state == CLUSTER_EXCLUSIVE) {
+      source_line_block->set_cluster_state(CLUSTER_SHARED);
+      printf("\nSTATE TRANSITION: E->S (source), I->F (local) [LINE]\n");
+    } else if (source_state == CLUSTER_FORWARD) {
+      source_line_block->set_cluster_state(CLUSTER_SHARED);
+      printf("\nSTATE TRANSITION: F->S (source), I->F (local) [LINE]\n");
+    }
+  } else if (is_sector_block && local_sector_block) {
+    // 新读者从I转为F
+    local_sector_block->set_cluster_state(CLUSTER_FORWARD, sector_mask);
+
+    // 源cache状态转换：E->S 或 F->S
+    if (source_state == CLUSTER_EXCLUSIVE) {
+      source_sector_block->set_cluster_state(CLUSTER_SHARED, sector_mask);
+      printf("\nSTATE TRANSITION: E->S (source), I->F (local) [SECTOR]\n");
+    } else if (source_state == CLUSTER_FORWARD) {
+      source_sector_block->set_cluster_state(CLUSTER_SHARED, sector_mask);
+      printf("\nSTATE TRANSITION: F->S (source), I->F (local) [SECTOR]\n");
+    }
+  }
+
   printf("\nFOUND SHARES.\n");
   return true;
 }

@@ -48,7 +48,7 @@ class simt_core_cluster;
 
 enum cache_block_state { INVALID = 0, RESERVED, VALID, MODIFIED };
 
-enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_FORWARD, CLUSTER_SHARED };
+enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_EXCLUSIVE, CLUSTER_FORWARD, CLUSTER_SHARED };
 
 enum cache_request_status {
   HIT = 0,
@@ -195,7 +195,7 @@ struct line_cache_block : public cache_block_t {
     m_set_modified_on_fill = false;
     m_set_readable_on_fill = false;
     m_set_byte_mask_on_fill = false;
-    m_cluster_state = CLUSTER_SHARED;
+    m_cluster_state = CLUSTER_INVALID;  // 初始状态为I，fill时会根据是否为只读数据设置
   }
   virtual void fill(unsigned time, mem_access_sector_mask_t sector_mask,
                     mem_access_byte_mask_t byte_mask) {
@@ -221,7 +221,7 @@ struct line_cache_block : public cache_block_t {
   virtual void set_status(enum cache_block_state status,
                           mem_access_sector_mask_t sector_mask) {
     m_status = status;
-    if (status == INVALID) m_cluster_state = CLUSTER_INVALID;    
+    if (status == INVALID) m_cluster_state = CLUSTER_INVALID;
   }
   virtual void set_byte_mask(mem_fetch *mf) {
     m_dirty_byte_mask = m_dirty_byte_mask | mf->get_access_byte_mask();
@@ -274,13 +274,13 @@ struct line_cache_block : public cache_block_t {
     printf("m_block_addr is %llu, status = %u\n", m_block_addr, m_status);
   }
 
-  // virtual void set_cluster_state(cluster_line_state state) {
-  //   m_cluster_state = state;
-  // }
+  void set_cluster_state(cluster_line_state state) {
+    m_cluster_state = state;
+  }
 
-  // virtual cluster_line_state get_cluster_state() const {
-  //   return m_cluster_state;
-  // }
+  cluster_line_state get_cluster_state() const {
+    return m_cluster_state;
+  }
 
  private:
   unsigned long long m_alloc_time;
@@ -309,12 +309,12 @@ struct sector_cache_block : public cache_block_t {
       m_set_modified_on_fill[i] = false;
       m_set_readable_on_fill[i] = false;
       m_readable[i] = true;
+      m_sector_cluster_state[i] = CLUSTER_INVALID;
     }
     m_line_alloc_time = 0;
     m_line_last_access_time = 0;
     m_line_fill_time = 0;
     m_dirty_byte_mask.reset();
-    // m_line_cluster_state = CLUSTER_INVALID;
   }
 
   virtual void allocate(new_addr_type tag, new_addr_type block_addr,
@@ -341,6 +341,7 @@ struct sector_cache_block : public cache_block_t {
     m_set_modified_on_fill[sidx] = false;
     m_set_readable_on_fill[sidx] = false;
     m_set_byte_mask_on_fill = false;
+    m_sector_cluster_state[sidx] = CLUSTER_INVALID;  // 初始状态为I
 
     // set line stats
     m_line_alloc_time = time;  // only set this for the first allocated sector
@@ -369,6 +370,7 @@ struct sector_cache_block : public cache_block_t {
     m_ignore_on_fill_status[sidx] = false;
     // m_set_modified_on_fill[sidx] = false;
     m_readable[sidx] = true;
+    m_sector_cluster_state[sidx] = CLUSTER_INVALID;  // 初始状态为I
 
     // set line stats
     m_line_last_access_time = time;
@@ -426,23 +428,19 @@ struct sector_cache_block : public cache_block_t {
                           mem_access_sector_mask_t sector_mask) {
     unsigned sidx = get_sector_index(sector_mask);
     m_status[sidx] = status;
-    // 若该 sector 失效，检查整行是否全失效；若是，则清空行级 cluster 状态
-  //   if (status == INVALID) {
-  //     bool any_valid = false;
-  //     for (unsigned i = 0; i < SECTOR_CHUNCK_SIZE; ++i) {
-  //       if (m_status[i] != INVALID) { any_valid = true; break; }
-  //     }
-  //     if (!any_valid) m_line_cluster_state = CLUSTER_INVALID;
-  //   }
+    if (status == INVALID) {
+      m_sector_cluster_state[sidx] = CLUSTER_INVALID;
+    }
+  }
 
-  // }
+  void set_cluster_state(cluster_line_state state, mem_access_sector_mask_t sector_mask) {
+    unsigned sidx = get_sector_index(sector_mask);
+    m_sector_cluster_state[sidx] = state;
+  }
 
-  // virtual void set_cluster_state(cluster_line_state state) override {
-  //   m_line_cluster_state = state;
-  // }
-
-  // virtual cluster_line_state get_cluster_state() const override {
-  //   return m_line_cluster_state;
+  cluster_line_state get_cluster_state(mem_access_sector_mask_t sector_mask) const {
+    unsigned sidx = get_sector_index(sector_mask);
+    return m_sector_cluster_state[sidx];
   }
 
   virtual void set_byte_mask(mem_fetch *mf) {
@@ -533,9 +531,9 @@ struct sector_cache_block : public cache_block_t {
   bool m_set_byte_mask_on_fill;
   bool m_readable[SECTOR_CHUNCK_SIZE];
   mem_access_byte_mask_t m_dirty_byte_mask;
-  // cluster_line_state m_line_cluster_state;
+  cluster_line_state m_sector_cluster_state[SECTOR_CHUNCK_SIZE];
 
-  unsigned get_sector_index(mem_access_sector_mask_t sector_mask) {
+  unsigned get_sector_index(mem_access_sector_mask_t sector_mask) const {
     assert(sector_mask.count() == 1);
     for (unsigned i = 0; i < SECTOR_CHUNCK_SIZE; ++i) {
       if (sector_mask.to_ulong() & (1 << i)) return i;
