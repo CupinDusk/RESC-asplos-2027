@@ -1252,10 +1252,10 @@ void data_cache::update_m_readable(mem_fetch *mf, unsigned cache_index) {
 
 /// Write-back hit: Mark block as modified
 cache_request_status data_cache::wr_hit_wb(new_addr_type addr,
-                                           unsigned cache_index, mem_fetch *mf,
-                                           unsigned time,
-                                           std::list<cache_event> &events,
-                                           enum cache_request_status status) {
+                                         unsigned cache_index, mem_fetch *mf,
+                                         unsigned time,
+                                         std::list<cache_event> &events,
+                                         enum cache_request_status status) {
   new_addr_type block_addr = m_config.block_addr(addr);
   m_tag_array->access(block_addr, time, cache_index, mf);  // update LRU state
   cache_block_t *block = m_tag_array->get_block(cache_index);
@@ -1267,6 +1267,18 @@ cache_request_status data_cache::wr_hit_wb(new_addr_type addr,
   update_m_readable(mf, cache_index);
 
   block->set_m_readable(true, mf->get_access_sector_mask());
+
+  // 写操作时，清除当前 cache 的 cluster state（因为数据被修改了）
+  mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+  line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
+  sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
+
+  if (line_block) {
+    line_block->set_cluster_state(CLUSTER_INVALID);
+  }
+  if (sector_block) {
+    sector_block->set_cluster_state(CLUSTER_INVALID, sector_mask);
+  }
 
   return HIT;
 }
@@ -1812,13 +1824,15 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   //WB
   // === CLUSTER-L1-ONLY GLOBAL STORE PATH =====================================
   // cluster内的全局写只在 L1 生效，供 cluster 内读共享；被替换时再写回到全局
+
+/*
   if (wr && mf->get_access_type() == GLOBAL_ACC_W) {
     // 计算块地址 & 先探测
     new_addr_type block_addr = m_config.block_addr(addr);
     unsigned cache_index = (unsigned)-1;
     enum cache_request_status probe_status =
         m_tag_array->probe(block_addr, cache_index, mf,
-                          /*is_write=*/true, /*probe_mode=*/true);
+                           true,  true);
 
     enum cache_request_status access_status;
     if (probe_status == HIT) {
@@ -1839,7 +1853,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
     // 需要把被写到的扇区标记为“可读”（is_readable = true）。
     // 这一步不改变数据面（模拟里本就不存数据）。
     unsigned idx_tmp = (unsigned)-1;
-    m_tag_array->probe(block_addr, idx_tmp, mf, /*is_write=*/false, /*probe_mode=*/true);
+    m_tag_array->probe(block_addr, idx_tmp, mf,  false,  true);
     if (idx_tmp != (unsigned)-1) {
       cache_block_t *blk = m_tag_array->get_block(idx_tmp);
       blk->set_m_readable(true, mf->get_access_sector_mask());  // 让读探测视为可读命中
@@ -1864,10 +1878,10 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
           // 只更新“已经持有该块”的 L1（HIT/HIT_RESERVED），不做新分配
           cache_request_status ps =
               peer->m_tag_array->probe(block_addr, pidx, mf,
-                                      /*is_write=*/false, /*probe_mode=*/true);
+                                       false,  true);
           if (ps == HIT || ps == HIT_RESERVED) {
             // 通过 fill() 刷新对方 L1 的 tag/状态（保持 VALID），再标记可读
-            peer->m_tag_array->fill(block_addr, time, mf, /*write_allocate=*/false);
+            peer->m_tag_array->fill(block_addr, time, mf,  false);
             if (pidx != (unsigned)-1) {
               cache_block_t *pblk = peer->m_tag_array->get_block(pidx);
               pblk->set_m_readable(true, mf->get_access_sector_mask());
@@ -1885,6 +1899,8 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
                         m_stats.select_stats_status(probe_status, access_status));
     return access_status;
   }
+
+  */
   // === END CLUSTER-L1-ONLY GLOBAL STORE PATH =================================
 
 
@@ -1930,6 +1946,38 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
   enum cache_request_status access_status =
       process_tag_probe(wr, probe_status, addr, cache_index, mf, time, events);
+
+  // 写操作时，使同一 cluster 内其他 SM 的 cache line 失效
+  if (wr && mf->get_access_type() == GLOBAL_ACC_W &&
+      (access_status == HIT || access_status == HIT_RESERVED)) {
+    new_addr_type block_addr = m_config.block_addr(addr);
+    mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+
+    if (m_owner) {
+      simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+      if (scc && scc->m_gpc) {
+        unsigned req_wid = mf->get_inst().warp_id();
+        unsigned cluster_slot = m_owner->get_warp_cluster_slot(req_wid);
+        std::vector<shader_core_ctx*> peers;
+        scc->m_gpc->collect_shader_cores_for_cluster_slot(cluster_slot, peers);
+
+        for (auto *core : peers) {
+          if (!core || core == m_owner) continue;
+          l1_cache *peer = core->get_L1D_cache();
+          if (!peer) continue;
+
+          unsigned pidx = (unsigned)-1;
+          cache_request_status ps = peer->m_tag_array->probe(block_addr, pidx, mf, false, true);
+          if (ps == HIT || ps == HIT_RESERVED) {
+            // 使其他 SM 的 cache line 失效
+            cache_block_t *pblk = peer->m_tag_array->get_block(pidx);
+            pblk->set_status(INVALID, sector_mask);
+          }
+        }
+      }
+    }
+  }
+
   m_stats.inc_stats(mf->get_access_type(),
                     m_stats.select_stats_status(probe_status, access_status));
   m_stats.inc_stats_pw(
