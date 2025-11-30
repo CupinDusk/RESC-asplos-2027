@@ -1,0 +1,21 @@
+ptxas info    : 80 bytes gmem
+ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi16EEvPKfPfii' for 'sm_90'
+ptxas info    : Function properties for _Z27sequential_readshare_kernelILi16EEvPKfPfii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 10.441 ms
+ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi8EEvPKfPfii' for 'sm_90'
+ptxas info    : Function properties for _Z27sequential_readshare_kernelILi8EEvPKfPfii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 6.746 ms
+ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi4EEvPKfPfii' for 'sm_90'
+ptxas info    : Function properties for _Z27sequential_readshare_kernelILi4EEvPKfPfii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 5.098 ms
+ptxas info    : Compiling entry function '_Z27sequential_readshare_kernelILi2EEvPKfPfii' for 'sm_90'
+ptxas info    : Function properties for _Z27sequential_readshare_kernelILi2EEvPKfPfii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 5.115 ms

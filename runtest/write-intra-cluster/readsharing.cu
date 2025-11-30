@@ -19,7 +19,7 @@ __device__ int g_turn;  // 簇内当前允许执行的 rank：0..CLUSTER_SIZE-1
 // 强制经 L1 的全局读（.ca），用于数据地址 g_data[0]
 __device__ __forceinline__ float ld_ca_f32(const float* p) {
   float v;
-#if __CUDA_ARCH__ >= 900  
+#if __CUDA_ARCH__ >= 900
     //L1有固定8次miss，即使所有数据都是ld.cg。每次读取
   asm volatile("ld.global.ca.f32 %0, [%1];" : "=f"(v) : "l"(p));
 #else
@@ -75,11 +75,13 @@ for(int r = 0; r < repeat; r++){
   const float* addr = &g_data[0];
   float acc = 0.f;
     acc = ld_ca_f32(addr);   // 通过 L1D；若读共享生效，后续 SM 可从 peer L1 提供
+    unsigned smid = get_smid();
+    printf("\n[READ] rank=%d, read value=%f, smid=%u\n", rank, acc, smid);
     // __threadfence();
     //__syncthreads();
     //if(tid == 0)
         // printf("\nACC=%f, rank=%d, smid=%u, tid=%d, addr =%f\n", (double)acc, rank, get_smid(), tid, (double)(*addr));
-    
+
 
 
   // 写回（保留原布局）：每 CTA 1 个标量
@@ -128,17 +130,17 @@ int main(int argc, char** argv) {
 
   //d_data[0]=520;
   switch (cluster_size) {
-    case 2:  
-        sequential_readshare_kernel<2 ><<<grid, block>>>(d_data, d_out, 0, repeat); 
+    case 2:
+        sequential_readshare_kernel<2 ><<<grid, block>>>(d_data, d_out, 0, repeat);
         break;
-    case 4:  
-        sequential_readshare_kernel<4 ><<<grid, block>>>(d_data, d_out, 0, repeat); 
+    case 4:
+        sequential_readshare_kernel<4 ><<<grid, block>>>(d_data, d_out, 0, repeat);
         break;
-    case 8:  
-        sequential_readshare_kernel<8 ><<<grid, block>>>(d_data, d_out, 0, repeat); 
+    case 8:
+        sequential_readshare_kernel<8 ><<<grid, block>>>(d_data, d_out, 0, repeat);
         break;
-    case 16: 
-        sequential_readshare_kernel<16><<<grid, block>>>(d_data, d_out, 0, repeat); 
+    case 16:
+        sequential_readshare_kernel<16><<<grid, block>>>(d_data, d_out, 0, repeat);
         break;
   }
   CUDA_CHECK(cudaGetLastError());

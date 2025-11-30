@@ -1,0 +1,21 @@
+ptxas info    : 123 bytes gmem
+ptxas info    : Compiling entry function '_Z28sequential_write_read_kernelILi16EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z28sequential_write_read_kernelILi16EEvPfS0_ii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 12.122 ms
+ptxas info    : Compiling entry function '_Z28sequential_write_read_kernelILi8EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z28sequential_write_read_kernelILi8EEvPfS0_ii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 7.184 ms
+ptxas info    : Compiling entry function '_Z28sequential_write_read_kernelILi4EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z28sequential_write_read_kernelILi4EEvPfS0_ii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 6.316 ms
+ptxas info    : Compiling entry function '_Z28sequential_write_read_kernelILi2EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z28sequential_write_read_kernelILi2EEvPfS0_ii
+    24 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas info    : Compile time = 6.337 ms

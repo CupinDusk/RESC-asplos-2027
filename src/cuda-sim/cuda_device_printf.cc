@@ -57,18 +57,19 @@ void my_cuda_printf(const char *fmtstr, const char *arg_list) {
       }
       buf[j] = c;
       buf[j + 1] = 0;
-      void *ptr = (void *)&arg_list[arg_offset];
-      // ToDo fix floating point
-      // unsigned long long value = ((unsigned long long*)arg_list)[arg_offset];
+      // CUDA printf arguments are 8-byte aligned
+      // arg_offset is in units of 8-byte slots
+      unsigned long long *arg_ptr = (unsigned long long *)arg_list;
       if (c == 'u' || c == 'd') {
-        // fprintf(fp, buf, *((unsigned long long *)ptr));
-        unsigned int value = ((unsigned int *)arg_list)[arg_offset];
-        fprintf(fp, buf, value);
+        // For integer types, read as 64-bit and cast to appropriate type
+        unsigned long long value = arg_ptr[arg_offset];
+        fprintf(fp, buf, (unsigned int)value);
       } else if (c == 'f') {
-        double tmp = *((double *)ptr);
+        // For float types, read as double (8 bytes)
+        double tmp = *((double *)&arg_ptr[arg_offset]);
         fprintf(fp, buf, tmp);
       }
-      arg_offset++;
+      arg_offset++;  // Each argument occupies one 8-byte slot
       in_fmt = false;
     }
   }
