@@ -48,7 +48,7 @@ class simt_core_cluster;
 
 enum cache_block_state { INVALID = 0, RESERVED, VALID, MODIFIED };
 
-enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_EXCLUSIVE, CLUSTER_FORWARD, CLUSTER_SHARED };
+enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_EXCLUSIVE, CLUSTER_FORWARD, CLUSTER_SHARED, CLUSTER_EM, CLUSTER_SM };
 
 enum cache_request_status {
   HIT = 0,
@@ -1699,6 +1699,9 @@ class data_cache : public baseline_cache {
 /// (the policy used in fermi according to the CUDA manual)
 class l1_cache : public data_cache {
  public:
+
+ shader_core_ctx *m_owner;
+
   l1_cache(const char *name, cache_config &config, int core_id, int type_id,
            shader_core_ctx *owner, mem_fetch_interface *memport,
            mem_fetch_allocator *mfcreator,
@@ -1725,6 +1728,9 @@ class l1_cache : public data_cache {
 
   //virtual void post_fill(mem_fetch *mf, unsigned cache_index);
 
+ //protected:
+
+
  private:
   bool try_cluster_read_share(new_addr_type addr, mem_fetch *mf, unsigned time,
                                       std::list<cache_event> &events);
@@ -1732,8 +1738,6 @@ class l1_cache : public data_cache {
   //                                           unsigned &index);
   // void set_line_cluster_state(unsigned index, cluster_line_state state);
   // void update_line_access(unsigned index, unsigned time);
-
-  shader_core_ctx *m_owner;
 };
 
 /// Models second level shared cache with global write-back

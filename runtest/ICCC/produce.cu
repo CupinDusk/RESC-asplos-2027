@@ -70,6 +70,10 @@ void sequential_write_read_kernel(  float* __restrict__ g_data,
     int rank = cluster.block_rank();      // 0..CLUSTER_SIZE-1
     int tid  = threadIdx.x;
 
+    //先都读，保证后续写是命中
+    float* addr = &g_data[0];
+    cluster.sync();
+
 for(int r = 0; r < repeat; r++){
   // 只用前 1 线程
   if (tid >= 1) return;
@@ -78,10 +82,10 @@ for(int r = 0; r < repeat; r++){
   if (tid == 0) {
     while (ld_cg_s32(&g_turn) != rank) { /* spin */ }
   }
-  __syncthreads();
+  //__syncthreads();
 
   // 关键：rank==0 的 SM 进行全局写，其他 SM 进行读
-    float* addr = &g_data[0];
+
   //float* addrst = &g_data[0];
   //float acc = 0.f;
   //acc = ld_ca_f32(addr);
@@ -108,7 +112,7 @@ for(int r = 0; r < repeat; r++){
   // 交棒给下一个 rank；用 system fence 确保后继 .cg 读可见
   if (tid == 0) {
     atomicExch(&g_turn, (rank + 1) % CLUSTER_SIZE);
-    printf("\nfinals of turn:%d\n", rank);
+    printf("\nfinals of turn rank = %d\n", rank);
     if(rank == CLUSTER_SIZE-1)
         printf("\n本轮结束\n");
   }

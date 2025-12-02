@@ -50,6 +50,7 @@ class ptx_recognizer;
 #include "../abstract_hardware_model.h"
 #include "../gpgpu-sim/gpu-sim.h"
 #include "../gpgpu-sim/shader.h"
+#include "../gpgpu-sim/gpu-cache.h"
 #include "cuda-math.h"
 #include "cuda_device_printf.h"
 #include "ptx.tab.h"
@@ -57,6 +58,9 @@ class ptx_recognizer;
 
 // Jin: include device runtime for CDP
 #include "cuda_device_runtime.h"
+
+// 声明注册函数（在gpu-cache.cc中定义）
+extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr);
 
 #include <stdarg.h>
 #include "../../libcuda/gpgpu_context.h"
@@ -2691,8 +2695,118 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
 
   // handle intrinsic functions
   std::string fname = target_func->get_name();
+
+  // 无条件调试输出：打印所有函数调用名（用于调试）
+  // 同时打印函数名的长度和原始字符串，帮助调试名称匹配问题
+  printf("\n[CLUSTER_STATE] Function call intercepted: '%s' (len=%zu)\n", fname.c_str(), fname.length());
+  fflush(stdout);
+
+
   if (fname == "vprintf") {
     gpgpusim_cuda_vprintf(pI, thread, target_func);
+    return;
+  }
+  // 处理cluster一致性地址注册函数
+  // 注意：函数名可能包含名称修饰，尝试多种匹配方式
+  else if (fname == "gpgpusim_register_cluster_coherent_addr") {
+    printf("\n[CLUSTER_STATE] MATCHED! Intercepted gpgpusim_register_cluster_coherent_addr call\n");
+    fflush(stdout);
+    // 获取函数参数（地址）
+    unsigned n_return = target_func->has_return();
+    unsigned n_args = target_func->num_args();
+    printf("\n[CLUSTER_STATE] Function has %u args, %u returns\n", n_args, n_return);
+    fflush(stdout);
+
+    if (n_args != 1) {
+      printf("\n[CLUSTER_STATE] ERROR: gpgpusim_register_cluster_coherent_addr expects 1 argument, got %u\n", n_args);
+      fflush(stdout);
+      return;
+    }
+
+    // 使用与 copy_arg_to_buffer 相同的方式获取参数
+    const operand_info &addr_op = pI->operand_lookup(n_return + 1);
+    const symbol *formal_param = target_func->get_arg(0);
+
+    // 打印调试信息
+    printf("\n[CLUSTER_STATE] addr_op.is_reg()=%d, addr_op.is_param_local()=%d\n",
+           addr_op.is_reg(), addr_op.is_param_local());
+    if (addr_op.get_symbol()) {
+      printf("\n[CLUSTER_STATE] addr_op symbol name: %s\n", addr_op.get_symbol()->name().c_str());
+      if (addr_op.get_symbol()->type()) {
+        const type_info_key &info = addr_op.get_symbol()->type()->get_key();
+        printf("\n[CLUSTER_STATE] symbol type: is_reg=%d, is_param_kernel=%d, is_param_local=%d\n",
+               info.is_reg(), info.is_param_kernel(), info.is_param_local());
+      }
+    }
+    fflush(stdout);
+
+    ptx_reg_t addr_reg;
+
+    // 根据操作数类型获取值（使用与 copy_arg_to_buffer 相同的方式）
+    if (addr_op.is_reg()) {
+      // 参数是寄存器，直接读取寄存器值
+      addr_reg = thread->get_reg(addr_op.get_symbol());
+      printf("\n[CLUSTER_STATE] Parameter is register, reading from reg: 0x%llx\n", (unsigned long long)addr_reg.u64);
+    } else if (addr_op.is_param_local()) {
+      // 参数是 local param，从 local memory 读取
+      unsigned size = formal_param->get_size_in_bytes();
+      addr_t frame_offset = addr_op.get_symbol()->get_address();
+      addr_t from_addr = thread->get_local_mem_stack_pointer() + frame_offset;
+      unsigned long long buffer[2];
+      assert(size <= sizeof(buffer));
+      thread->m_local_mem->read(from_addr, size, buffer);
+      addr_reg.u64 = (unsigned long long)buffer[0];
+      printf("\n[CLUSTER_STATE] Parameter is param_local, reading from local mem at offset 0x%llx, value=0x%llx\n",
+             (unsigned long long)from_addr, (unsigned long long)addr_reg.u64);
+    } else {
+      // 尝试使用 copy_arg_to_buffer 的方式
+      printf("\n[CLUSTER_STATE] Trying copy_arg_to_buffer approach...\n");
+      // 检查 formal_param 的类型
+      if (formal_param && formal_param->type()) {
+        const type_info_key &info = formal_param->type()->get_key();
+        if (info.is_param_local() && addr_op.get_symbol()) {
+          unsigned size = formal_param->get_size_in_bytes();
+          addr_t frame_offset = addr_op.get_symbol()->get_address();
+          addr_t from_addr = thread->get_local_mem_stack_pointer() + frame_offset;
+          unsigned long long buffer[2];
+          assert(size <= sizeof(buffer));
+          thread->m_local_mem->read(from_addr, size, buffer);
+          addr_reg.u64 = (unsigned long long)buffer[0];
+          printf("\n[CLUSTER_STATE] Read from param_local via frame offset, value=0x%llx\n", (unsigned long long)addr_reg.u64);
+        } else {
+          // 最后尝试 get_operand_value
+          printf("\n[CLUSTER_STATE] Falling back to get_operand_value\n");
+          addr_reg = thread->get_operand_value(addr_op, addr_op, U64_TYPE, thread, 0);
+        }
+      } else {
+        addr_reg = thread->get_operand_value(addr_op, addr_op, U64_TYPE, thread, 0);
+      }
+    }
+
+    new_addr_type generic_addr = (new_addr_type)addr_reg.u64;
+    printf("\n[CLUSTER_STATE] Registering generic address: 0x%llx (from reg.u64=0x%llx)\n",
+           (unsigned long long)generic_addr, (unsigned long long)addr_reg.u64);
+    fflush(stdout);
+
+    // 将 generic 地址转换为 global 地址（与 cache 操作中使用的地址格式一致）
+    // CUDA 代码中的地址是 generic 地址，但 cache 操作使用的是 global 地址
+    new_addr_type global_addr = generic_addr;
+    memory_space_t space = whichspace(generic_addr);
+    if (space == global_space) {
+      // 获取 GPU 对象进行地址转换
+      gpgpu_sim *gpu = thread->get_gpu();
+      global_addr = generic_to_global(generic_addr, gpu);
+      printf("\n[CLUSTER_STATE] Converted to global address: 0x%llx\n", (unsigned long long)global_addr);
+      fflush(stdout);
+    } else {
+      printf("\n[CLUSTER_STATE] WARNING: Address is not global space, space type: %d\n", space.get_type());
+      fflush(stdout);
+    }
+
+    // 注册 global 地址（cache 操作中使用的地址格式）
+    gpgpusim_register_cluster_coherent_addr(global_addr);
+
+
     return;
   }
 #if (CUDART_VERSION >= 5000)
