@@ -1263,7 +1263,7 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
     }
 
     // 根据是否有其他SM的拷贝设置状态
-    if (l1_this) {
+    //if (l1_this) {
       if (has_peer_copy) {
         // 有其他SM的拷贝：设置本写者SM状态为CLUSTER_SM
         if (line_block) {
@@ -1283,7 +1283,7 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
         }
         printf("\nFILL: SET THE CLUSTER STATE TO CLUSTER_EM\n");
       }
-    }
+    //}
   }
 
   bool has_atomic = false;
@@ -1637,6 +1637,22 @@ enum cache_request_status data_cache::wr_miss_wa_naive(
   // 写miss时，根据cluster内其他SM的cache状态设置cluster state
   // 注意：cluster-state只对L1 cache生效，L2 cache不使用cluster-state
   mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
+  line_cache_block *line_block = nullptr;
+  sector_cache_block *sector_block = nullptr;
+
+  // 检查是否应该设置cluster-state：只对注册的地址设置
+  if (!should_set_cluster_state_for_write(addr, mf)) {
+    // 如果不需要设置cluster-state，直接返回
+    if (do_miss) {
+      return MISS;
+    }
+    return RESERVATION_FAIL;
+  }
+
+  // 检查cluster内其他SM的L1 cache是否有拷贝
+  // 注意：m_owner是l1_cache的protected成员，需要通过类型转换访问
+  printf("\n[CLUSTER_STATE] wr_miss_wa_naive: SHOULD SET CLUSTER STATE FOR WRITE: addr: %llx\n", addr);
+  printf("\n[CLUSTER_STATE] Checking for peer copy\n");
   bool has_peer_copy = false;
   l1_cache *l1_this = dynamic_cast<l1_cache*>(this);
 
@@ -1701,10 +1717,10 @@ enum cache_request_status data_cache::wr_miss_wa_naive(
   }
 
   // 如果do_miss为false，说明cache line已经分配（HIT_RESERVED），可以设置cluster-state
-  if (l1_this) {
+  if (!do_miss) {
     cache_block_t *block = m_tag_array->get_block(cache_index);
-    line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
-    sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
+    line_block = dynamic_cast<line_cache_block*>(block);
+    sector_block = dynamic_cast<sector_cache_block*>(block);
 
     if (has_peer_copy) {
       // 有其他SM的拷贝：设置本写者SM状态为CLUSTER_SM
@@ -1714,7 +1730,7 @@ enum cache_request_status data_cache::wr_miss_wa_naive(
       if (sector_block) {
         sector_block->set_cluster_state(CLUSTER_SM, sector_mask);
       }
-      printf("\nwr_miss_wa_naive: SET THE CLUSTER STATE TO CLUSTER_SM\n");
+      printf("\n[CLUSTER_STATE] wr_miss_wa_naive: SET THE CLUSTER STATE TO CLUSTER_SM\n");
     } else {
       // 没有其他SM的拷贝：设置状态为CLUSTER_EM
       if (line_block) {
@@ -1723,7 +1739,7 @@ enum cache_request_status data_cache::wr_miss_wa_naive(
       if (sector_block) {
         sector_block->set_cluster_state(CLUSTER_EM, sector_mask);
       }
-      printf("\nwr_miss_wa_naive: SET THE CLUSTER STATE TO CLUSTER_EM\n");
+      printf("\n[CLUSTER_STATE] wr_miss_wa_naive: SET THE CLUSTER STATE TO CLUSTER_EM\n");
     }
   }
 
@@ -2131,7 +2147,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       m_tag_array->probe(addr, cache_index, mf, mf->is_write(), true);
 
   if (!wr && (probe_status == MISS || probe_status == SECTOR_MISS)) {
-    printf("\nADDR = %lld, PROBE_STATUS = %d\n", addr, probe_status);
+    printf("\nADDR = %llx, PROBE_STATUS = %d\n", addr, probe_status);
     printf("\nBEFORE TRY CLUSTER READ SHARE \n");
 
     //mf->print(stdout);
@@ -2243,7 +2259,7 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     //     candidate->get_line_cluster_state(peer_block_addr, candidate_index);
 
     cache_request_status probe_status = candidate->m_tag_array->probe(addr, candidate_index, mf, false, true);
-    printf("\nADDR = %lld, block_ADDR = %lld, PROBE_STATUS = %d\n", addr, block_addr, probe_status);
+    printf("\nADDR = %llx, block_ADDR = %lld, PROBE_STATUS = %d\n", addr, block_addr, probe_status);
 
     printf("\n[probe] owner_sid=%u owner_gpc=%u  cand_sid=%u cand_gpc=%u  idx=%u addr=0x%llx\n",
           m_owner->get_sid(),
