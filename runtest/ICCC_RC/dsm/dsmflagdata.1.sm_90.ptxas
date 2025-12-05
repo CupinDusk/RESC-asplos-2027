@@ -1,0 +1,29 @@
+ptxas info    : 114 bytes gmem
+ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi16EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z24producer_consumer_kernelILi16EEvPfS0_ii
+    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
+ptxas info    : Compile time = 14.385 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi8EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z24producer_consumer_kernelILi8EEvPfS0_ii
+    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
+ptxas info    : Compile time = 8.783 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi4EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z24producer_consumer_kernelILi4EEvPfS0_ii
+    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
+ptxas info    : Compile time = 6.973 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi2EEvPfS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z24producer_consumer_kernelILi2EEvPfS0_ii
+    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
+ptxas info    : Compile time = 6.174 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads

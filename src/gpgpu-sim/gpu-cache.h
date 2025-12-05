@@ -1734,6 +1734,8 @@ class l1_cache : public data_cache {
  private:
   bool try_cluster_read_share(new_addr_type addr, mem_fetch *mf, unsigned time,
                                       std::list<cache_event> &events);
+  bool try_cluster_write_share(new_addr_type addr, mem_fetch *mf, unsigned time,
+                                      std::list<cache_event> &events);
   // cluster_line_state get_line_cluster_state(new_addr_type block_addr,
   //                                           unsigned &index);
   // void set_line_cluster_state(unsigned index, cluster_line_state state);
