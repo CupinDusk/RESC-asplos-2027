@@ -119,6 +119,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
 
   float* addr = &g_data[0];
   int* flag_addr = &g_turn;
+  //int flag = g_turn;
 
   // (可选) 保留你的注册逻辑
   if (tid == 0 && rank == 0) {
@@ -147,6 +148,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       // 发布：让 consumer 在看到 flag==1 时必然看到 write_value
       //flag.store(1, cuda::std::memory_order_release);
       st_wb_s32(flag_addr, 1);
+      //flag = 1;
 
       if (tid == 0) {
         printf("\nCLUSTER-[WRITE] rank=%d, wrote value=%f\n", rank, write_value);
@@ -156,8 +158,12 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       // -------- Consumer --------
       // 等待 producer 发布：flag==1
       //while (flag.load(cuda::std::memory_order_acquire) != 1) { /* spin */ }
-      while (ld_ca_s32(flag_addr) != 1) { /* spin */ }
+
+      while (ld_ca_s32(flag_addr) != 1) { printf("\n轮询中\n"); }
+      //while (flag != 1) { /* spin */ }
+
       // 正确性：绕过 L1 读取（否则可能命中自己的旧 L1 行）
+      printf("\n通过轮询\n");
       float read_value = ld_ca_f32(addr);
 
       if (tid == 0) {
@@ -171,7 +177,8 @@ void producer_consumer_kernel(float* __restrict__ g_data,
     out[rank] = 1.0f; // 保留原布局/框架
 
     if(rank == CLUSTER_SIZE-1){
-      st_wb_s32(flag_addr, 0);
+      //st_wb_s32(flag_addr, 0);
+      //flag = 0;
       printf("\n本轮结束\n");
     }
 
