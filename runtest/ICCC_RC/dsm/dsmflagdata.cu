@@ -159,7 +159,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
 
     if(rank == CLUSTER_SIZE-1){
       // 本轮结束：由最后一个 rank 把 mailbox 清 0，作为下一轮的 ack
-      atomicExch(dsm_flag, 0);
+      //atomicExch(dsm_flag, 0);
       printf("\n本轮结束\n");
     }
 
