@@ -1,29 +1,29 @@
-ptxas info    : 141 bytes gmem
+ptxas info    : 8 bytes gmem
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi16EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi16EEvPfS0_ii
-    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
-ptxas info    : Used 30 registers, used 0 barriers, 16 bytes cumulative stack size
-ptxas info    : Compile time = 13.864 ms
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 16 registers, used 0 barriers
+ptxas info    : Compile time = 7.186 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi8EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi8EEvPfS0_ii
-    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
-ptxas info    : Used 30 registers, used 0 barriers, 16 bytes cumulative stack size
-ptxas info    : Compile time = 8.632 ms
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 16 registers, used 0 barriers
+ptxas info    : Compile time = 5.092 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi4EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi4EEvPfS0_ii
-    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
-ptxas info    : Used 30 registers, used 0 barriers, 16 bytes cumulative stack size
-ptxas info    : Compile time = 7.878 ms
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 16 registers, used 0 barriers
+ptxas info    : Compile time = 3.798 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi2EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi2EEvPfS0_ii
-    16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
-ptxas info    : Used 30 registers, used 0 barriers, 16 bytes cumulative stack size
-ptxas info    : Compile time = 8.259 ms
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 16 registers, used 0 barriers
+ptxas info    : Compile time = 3.526 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads

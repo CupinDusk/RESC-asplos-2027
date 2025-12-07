@@ -112,7 +112,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
 #if __CUDA_ARCH__ >= 900
   cg::cluster_group cluster = cg::this_cluster();
   int rank = cluster.block_rank();   // 0..CLUSTER_SIZE-1
-  printf("rank=%d\n", rank);
+  //printf("rank=%d\n", rank);
   int tid  = threadIdx.x;
 
   if (tid >= 1) return;             // 保持你原先“单线程 CTA”框架
@@ -151,7 +151,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       //flag = 1;
 
       if (tid == 0) {
-        printf("\nCLUSTER-[WRITE] rank=%d, wrote value=%f\n", rank, write_value);
+        //printf("\nCLUSTER-[WRITE] rank=%d, wrote value=%f\n", rank, write_value);
       }
 
     } else { // rank == 1
@@ -159,15 +159,15 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       // 等待 producer 发布：flag==1
       //while (flag.load(cuda::std::memory_order_acquire) != 1) { /* spin */ }
 
-      while (ld_ca_s32(flag_addr) != 1) { printf("\n轮询中\n"); }
+      while (ld_ca_s32(flag_addr) != 1) { /*printf("\n轮询中\n"); */ }
       //while (flag != 1) { /* spin */ }
 
       // 正确性：绕过 L1 读取（否则可能命中自己的旧 L1 行）
-      printf("\n通过轮询\n");
+      //printf("\n通过轮询\n");
       float read_value = ld_ca_f32(addr);
 
       if (tid == 0) {
-        printf("\nCLUSTER-[READ] rank=%d, read value=%f\n", rank, read_value);
+        //printf("\nCLUSTER-[READ] rank=%d, read value=%f\n", rank, read_value);
       }
 
       // ack：告诉 producer 本轮已消费完，可以进入下一轮
@@ -179,7 +179,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
     if(rank == CLUSTER_SIZE-1){
       //st_wb_s32(flag_addr, 0);
       //flag = 0;
-      printf("\n本轮结束\n");
+      //printf("\n本轮结束\n");
     }
 
     cluster.sync();

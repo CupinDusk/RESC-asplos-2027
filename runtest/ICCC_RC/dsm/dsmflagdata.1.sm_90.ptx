@@ -10,12 +10,7 @@
 .target sm_90
 .address_size 64
 
-.extern .func (.param .b32 func_retval0) vprintf
-(
-.param .b64 vprintf_param_0,
-.param .b64 vprintf_param_1
-)
-;
+//
 .global .align 4 .u32 g_turn;
 .global .align 4 .u32 g_dummy_registration_flag;
 //
@@ -26,25 +21,7 @@
 //
 //
 //
-.global .align 1 .b8 $str[9] = {114, 97, 110, 107, 61, 37, 100, 10};
-.global .align 1 .b8 $str$1[42] = {10, 67, 76, 85, 83, 84, 69, 82, 45, 91, 87, 82, 73, 84, 69, 93, 32, 114, 97, 110, 107, 61, 37, 100, 44, 32, 119, 114, 111, 116, 101, 32, 118, 97, 108, 117, 101, 61, 37, 102, 10};
-.global .align 1 .b8 $str$2[40] = {10, 67, 76, 85, 83, 84, 69, 82, 45, 91, 82, 69, 65, 68, 93, 32, 114, 97, 110, 107, 61, 37, 100, 44, 32, 114, 101, 97, 100, 32, 118, 97, 108, 117, 101, 61, 37, 102, 10};
-.global .align 1 .b8 $str$3[15] = {10, 230, 156, 172, 232, 189, 174, 231, 187, 147, 230, 157, 159, 10};
 
-.func gpgpusim_register_cluster_coherent_addr(
-.param .b64 gpgpusim_register_cluster_coherent_addr_param_0
-)
-{
-.reg .b32 %r<3>;
-
-
-ld.param.u32 %r1, [gpgpusim_register_cluster_coherent_addr_param_0];
-and.b32 %r2, %r1, 1;
-st.volatile.global.u32 [g_dummy_registration_flag], %r2;
-ret;
-
-}
-//
 .visible .entry _Z24producer_consumer_kernelILi2EEvPfS0_ii(
 .param .u64 _Z24producer_consumer_kernelILi2EEvPfS0_ii_param_0,
 .param .u64 _Z24producer_consumer_kernelILi2EEvPfS0_ii_param_1,
@@ -54,184 +31,69 @@ ret;
 .explicitcluster
 .reqnctapercluster 2, 1, 1
 {
-.local .align 16 .b8 __local_depot1[16];
-.reg .b64 %SP;
-.reg .b64 %SPL;
-.reg .pred %p<10>;
-.reg .f32 %f<4>;
-.reg .b32 %r<22>;
-.reg .f64 %fd<3>;
-.reg .b64 %rd<22>;
+.reg .pred %p<6>;
+.reg .f32 %f<3>;
+.reg .b32 %r<14>;
+.reg .b64 %rd<9>;
 //
 .shared .align 4 .f32 _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_data;
 //
 .shared .align 4 .u32 _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_flag;
 
-mov.u64 %SPL, __local_depot1;
-cvta.local.u64 %SP, %SPL;
-ld.param.u64 %rd6, [_Z24producer_consumer_kernelILi2EEvPfS0_ii_param_1];
-ld.param.u32 %r5, [_Z24producer_consumer_kernelILi2EEvPfS0_ii_param_3];
-add.u64 %rd7, %SP, 0;
-add.u64 %rd1, %SPL, 0;
+ld.param.u64 %rd4, [_Z24producer_consumer_kernelILi2EEvPfS0_ii_param_1];
+ld.param.u32 %r4, [_Z24producer_consumer_kernelILi2EEvPfS0_ii_param_3];
 mov.b32 %r1, %cluster_ctarank;
-st.local.u32 [%rd1], %r1;
-mov.u64 %rd8, $str;
-cvta.global.u64 %rd9, %rd8;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd9;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r6, [retval0+0];
-} //
-mov.u32 %r2, %tid.x;
-setp.gt.s32 %p1, %r2, 0;
-@%p1 bra $L__BB1_14;
+mov.u32 %r5, %tid.x;
+setp.gt.s32 %p1, %r5, 0;
+@%p1 bra $L__BB0_7;
 
-mov.u32 %r7, _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_data;
+mov.u32 %r6, _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_flag;
 { .reg .b64 %tmp;
-cvt.u64.u32 %tmp, %r7;
-cvta.shared.u64 %rd10, %tmp; }
-mov.u32 %r8, 0;
-mapa.u64 %rd2, %rd10, %r8;
-mov.u32 %r9, _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_flag;
+cvt.u64.u32 %tmp, %r6;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r7, 1;
+mapa.u64 %rd1, %rd5, %r7;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p2, %r4, 1;
+@%p2 bra $L__BB0_7;
+
+cvta.to.global.u64 %rd6, %rd4;
+mul.wide.s32 %rd7, %r1, 4;
+add.s64 %rd2, %rd6, %rd7;
+mov.u32 %r9, _ZZ24producer_consumer_kernelILi2EEvPfS0_iiE9smem_data;
 { .reg .b64 %tmp;
 cvt.u64.u32 %tmp, %r9;
-cvta.shared.u64 %rd11, %tmp; }
-mapa.u64 %rd3, %rd11, %r8;
-or.b32 %r10, %r1, %r2;
-setp.ne.s32 %p2, %r10, 0;
-@%p2 bra $L__BB1_3;
+cvta.shared.u64 %rd8, %tmp; }
+mov.u32 %r13, 0;
+mapa.u64 %rd3, %rd8, %r13;
 
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd2;
-call.uni 
-gpgpusim_register_cluster_coherent_addr, 
-(
-param0
-);
-} //
-st.u32 [%rd3], %r8;
+$L__BB0_3:
+setp.eq.s32 %p3, %r1, 0;
+@%p3 bra $L__BB0_5;
 
-$L__BB1_3:
+$L__BB0_4:
+atom.add.u32 %r10, [%rd1], 0;
+setp.eq.s32 %p4, %r10, 1;
+@%p4 bra $L__BB0_6;
+bra.uni $L__BB0_4;
+
+$L__BB0_5:
+cvt.rn.f32.s32 %f1, %r13;
+add.f32 %f2, %f1, 0f41200000;
+st.f32 [%rd3], %f2;
+atom.exch.b32 %r11, [%rd1], 1;
+
+$L__BB0_6:
+mov.u32 %r12, 1065353216;
+st.global.u32 [%rd2], %r12;
 barrier.cluster.arrive;
 barrier.cluster.wait;
-setp.lt.s32 %p3, %r5, 1;
-@%p3 bra $L__BB1_14;
+add.s32 %r13, %r13, 1;
+setp.lt.s32 %p5, %r13, %r4;
+@%p5 bra $L__BB0_3;
 
-cvta.to.global.u64 %rd12, %rd6;
-mul.wide.s32 %rd13, %r1, 4;
-add.s64 %rd4, %rd12, %rd13;
-mov.u32 %r21, 0;
-mov.u64 %rd14, $str$2;
-cvta.global.u64 %rd15, %rd14;
-mov.u64 %rd17, $str$1;
-cvta.global.u64 %rd18, %rd17;
-
-$L__BB1_5:
-setp.eq.s32 %p4, %r1, 0;
-@%p4 bra $L__BB1_9;
-
-$L__BB1_6:
-atom.add.u32 %r13, [%rd3], 0;
-setp.ne.s32 %p5, %r13, 1;
-@%p5 bra $L__BB1_6;
-
-setp.ne.s32 %p6, %r2, 0;
-@%p6 bra $L__BB1_11;
-
-ld.f32 %f2, [%rd2];
-cvt.f64.f32 %fd1, %f2;
-st.local.u32 [%rd1], %r1;
-st.local.f64 [%rd1+8], %fd1;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd15;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r14, [retval0+0];
-} //
-bra.uni $L__BB1_11;
-
-$L__BB1_9:
-setp.ne.s32 %p7, %r2, 0;
-cvt.rn.f32.s32 %f3, %r21;
-add.f32 %f1, %f3, 0f41200000;
-st.f32 [%rd2], %f1;
-atom.exch.b32 %r15, [%rd3], 1;
-@%p7 bra $L__BB1_11;
-
-mov.u32 %r16, 0;
-st.local.u32 [%rd1], %r16;
-cvt.f64.f32 %fd2, %f1;
-st.local.f64 [%rd1+8], %fd2;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd18;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r17, [retval0+0];
-} //
-
-$L__BB1_11:
-setp.ne.s32 %p8, %r1, 1;
-mov.u32 %r18, 1065353216;
-st.global.u32 [%rd4], %r18;
-@%p8 bra $L__BB1_13;
-
-atom.exch.b32 %r19, [%rd3], 0;
-mov.u64 %rd20, $str$3;
-cvta.global.u64 %rd21, %rd20;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd21;
-.param .b64 param1;
-st.param.b64 [param1+0], 0;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r20, [retval0+0];
-} //
-
-$L__BB1_13:
-barrier.cluster.arrive;
-barrier.cluster.wait;
-add.s32 %r21, %r21, 1;
-setp.lt.s32 %p9, %r21, %r5;
-@%p9 bra $L__BB1_5;
-
-$L__BB1_14:
+$L__BB0_7:
 ret;
 
 }
@@ -245,184 +107,69 @@ ret;
 .explicitcluster
 .reqnctapercluster 4, 1, 1
 {
-.local .align 16 .b8 __local_depot2[16];
-.reg .b64 %SP;
-.reg .b64 %SPL;
-.reg .pred %p<10>;
-.reg .f32 %f<4>;
-.reg .b32 %r<22>;
-.reg .f64 %fd<3>;
-.reg .b64 %rd<22>;
+.reg .pred %p<6>;
+.reg .f32 %f<3>;
+.reg .b32 %r<14>;
+.reg .b64 %rd<9>;
 //
 .shared .align 4 .f32 _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_data;
 //
 .shared .align 4 .u32 _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_flag;
 
-mov.u64 %SPL, __local_depot2;
-cvta.local.u64 %SP, %SPL;
-ld.param.u64 %rd6, [_Z24producer_consumer_kernelILi4EEvPfS0_ii_param_1];
-ld.param.u32 %r5, [_Z24producer_consumer_kernelILi4EEvPfS0_ii_param_3];
-add.u64 %rd7, %SP, 0;
-add.u64 %rd1, %SPL, 0;
+ld.param.u64 %rd4, [_Z24producer_consumer_kernelILi4EEvPfS0_ii_param_1];
+ld.param.u32 %r4, [_Z24producer_consumer_kernelILi4EEvPfS0_ii_param_3];
 mov.b32 %r1, %cluster_ctarank;
-st.local.u32 [%rd1], %r1;
-mov.u64 %rd8, $str;
-cvta.global.u64 %rd9, %rd8;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd9;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r6, [retval0+0];
-} //
-mov.u32 %r2, %tid.x;
-setp.gt.s32 %p1, %r2, 0;
-@%p1 bra $L__BB2_14;
+mov.u32 %r5, %tid.x;
+setp.gt.s32 %p1, %r5, 0;
+@%p1 bra $L__BB1_7;
 
-mov.u32 %r7, _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_data;
+mov.u32 %r6, _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_flag;
 { .reg .b64 %tmp;
-cvt.u64.u32 %tmp, %r7;
-cvta.shared.u64 %rd10, %tmp; }
-mov.u32 %r8, 0;
-mapa.u64 %rd2, %rd10, %r8;
-mov.u32 %r9, _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_flag;
+cvt.u64.u32 %tmp, %r6;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r7, 1;
+mapa.u64 %rd1, %rd5, %r7;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p2, %r4, 1;
+@%p2 bra $L__BB1_7;
+
+cvta.to.global.u64 %rd6, %rd4;
+mul.wide.s32 %rd7, %r1, 4;
+add.s64 %rd2, %rd6, %rd7;
+mov.u32 %r9, _ZZ24producer_consumer_kernelILi4EEvPfS0_iiE9smem_data;
 { .reg .b64 %tmp;
 cvt.u64.u32 %tmp, %r9;
-cvta.shared.u64 %rd11, %tmp; }
-mapa.u64 %rd3, %rd11, %r8;
-or.b32 %r10, %r1, %r2;
-setp.ne.s32 %p2, %r10, 0;
-@%p2 bra $L__BB2_3;
+cvta.shared.u64 %rd8, %tmp; }
+mov.u32 %r13, 0;
+mapa.u64 %rd3, %rd8, %r13;
 
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd2;
-call.uni 
-gpgpusim_register_cluster_coherent_addr, 
-(
-param0
-);
-} //
-st.u32 [%rd3], %r8;
+$L__BB1_3:
+setp.eq.s32 %p3, %r1, 0;
+@%p3 bra $L__BB1_5;
 
-$L__BB2_3:
+$L__BB1_4:
+atom.add.u32 %r10, [%rd1], 0;
+setp.eq.s32 %p4, %r10, 1;
+@%p4 bra $L__BB1_6;
+bra.uni $L__BB1_4;
+
+$L__BB1_5:
+cvt.rn.f32.s32 %f1, %r13;
+add.f32 %f2, %f1, 0f41200000;
+st.f32 [%rd3], %f2;
+atom.exch.b32 %r11, [%rd1], 1;
+
+$L__BB1_6:
+mov.u32 %r12, 1065353216;
+st.global.u32 [%rd2], %r12;
 barrier.cluster.arrive;
 barrier.cluster.wait;
-setp.lt.s32 %p3, %r5, 1;
-@%p3 bra $L__BB2_14;
+add.s32 %r13, %r13, 1;
+setp.lt.s32 %p5, %r13, %r4;
+@%p5 bra $L__BB1_3;
 
-cvta.to.global.u64 %rd12, %rd6;
-mul.wide.s32 %rd13, %r1, 4;
-add.s64 %rd4, %rd12, %rd13;
-mov.u32 %r21, 0;
-mov.u64 %rd14, $str$2;
-cvta.global.u64 %rd15, %rd14;
-mov.u64 %rd17, $str$1;
-cvta.global.u64 %rd18, %rd17;
-
-$L__BB2_5:
-setp.eq.s32 %p4, %r1, 0;
-@%p4 bra $L__BB2_9;
-
-$L__BB2_6:
-atom.add.u32 %r13, [%rd3], 0;
-setp.ne.s32 %p5, %r13, 1;
-@%p5 bra $L__BB2_6;
-
-setp.ne.s32 %p6, %r2, 0;
-@%p6 bra $L__BB2_11;
-
-ld.f32 %f2, [%rd2];
-cvt.f64.f32 %fd1, %f2;
-st.local.u32 [%rd1], %r1;
-st.local.f64 [%rd1+8], %fd1;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd15;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r14, [retval0+0];
-} //
-bra.uni $L__BB2_11;
-
-$L__BB2_9:
-setp.ne.s32 %p7, %r2, 0;
-cvt.rn.f32.s32 %f3, %r21;
-add.f32 %f1, %f3, 0f41200000;
-st.f32 [%rd2], %f1;
-atom.exch.b32 %r15, [%rd3], 1;
-@%p7 bra $L__BB2_11;
-
-mov.u32 %r16, 0;
-st.local.u32 [%rd1], %r16;
-cvt.f64.f32 %fd2, %f1;
-st.local.f64 [%rd1+8], %fd2;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd18;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r17, [retval0+0];
-} //
-
-$L__BB2_11:
-setp.ne.s32 %p8, %r1, 3;
-mov.u32 %r18, 1065353216;
-st.global.u32 [%rd4], %r18;
-@%p8 bra $L__BB2_13;
-
-atom.exch.b32 %r19, [%rd3], 0;
-mov.u64 %rd20, $str$3;
-cvta.global.u64 %rd21, %rd20;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd21;
-.param .b64 param1;
-st.param.b64 [param1+0], 0;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r20, [retval0+0];
-} //
-
-$L__BB2_13:
-barrier.cluster.arrive;
-barrier.cluster.wait;
-add.s32 %r21, %r21, 1;
-setp.lt.s32 %p9, %r21, %r5;
-@%p9 bra $L__BB2_5;
-
-$L__BB2_14:
+$L__BB1_7:
 ret;
 
 }
@@ -436,184 +183,69 @@ ret;
 .explicitcluster
 .reqnctapercluster 8, 1, 1
 {
-.local .align 16 .b8 __local_depot3[16];
-.reg .b64 %SP;
-.reg .b64 %SPL;
-.reg .pred %p<10>;
-.reg .f32 %f<4>;
-.reg .b32 %r<22>;
-.reg .f64 %fd<3>;
-.reg .b64 %rd<22>;
+.reg .pred %p<6>;
+.reg .f32 %f<3>;
+.reg .b32 %r<14>;
+.reg .b64 %rd<9>;
 //
 .shared .align 4 .f32 _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_data;
 //
 .shared .align 4 .u32 _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_flag;
 
-mov.u64 %SPL, __local_depot3;
-cvta.local.u64 %SP, %SPL;
-ld.param.u64 %rd6, [_Z24producer_consumer_kernelILi8EEvPfS0_ii_param_1];
-ld.param.u32 %r5, [_Z24producer_consumer_kernelILi8EEvPfS0_ii_param_3];
-add.u64 %rd7, %SP, 0;
-add.u64 %rd1, %SPL, 0;
+ld.param.u64 %rd4, [_Z24producer_consumer_kernelILi8EEvPfS0_ii_param_1];
+ld.param.u32 %r4, [_Z24producer_consumer_kernelILi8EEvPfS0_ii_param_3];
 mov.b32 %r1, %cluster_ctarank;
-st.local.u32 [%rd1], %r1;
-mov.u64 %rd8, $str;
-cvta.global.u64 %rd9, %rd8;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd9;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r6, [retval0+0];
-} //
-mov.u32 %r2, %tid.x;
-setp.gt.s32 %p1, %r2, 0;
-@%p1 bra $L__BB3_14;
+mov.u32 %r5, %tid.x;
+setp.gt.s32 %p1, %r5, 0;
+@%p1 bra $L__BB2_7;
 
-mov.u32 %r7, _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_data;
+mov.u32 %r6, _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_flag;
 { .reg .b64 %tmp;
-cvt.u64.u32 %tmp, %r7;
-cvta.shared.u64 %rd10, %tmp; }
-mov.u32 %r8, 0;
-mapa.u64 %rd2, %rd10, %r8;
-mov.u32 %r9, _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_flag;
+cvt.u64.u32 %tmp, %r6;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r7, 1;
+mapa.u64 %rd1, %rd5, %r7;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p2, %r4, 1;
+@%p2 bra $L__BB2_7;
+
+cvta.to.global.u64 %rd6, %rd4;
+mul.wide.s32 %rd7, %r1, 4;
+add.s64 %rd2, %rd6, %rd7;
+mov.u32 %r9, _ZZ24producer_consumer_kernelILi8EEvPfS0_iiE9smem_data;
 { .reg .b64 %tmp;
 cvt.u64.u32 %tmp, %r9;
-cvta.shared.u64 %rd11, %tmp; }
-mapa.u64 %rd3, %rd11, %r8;
-or.b32 %r10, %r1, %r2;
-setp.ne.s32 %p2, %r10, 0;
-@%p2 bra $L__BB3_3;
+cvta.shared.u64 %rd8, %tmp; }
+mov.u32 %r13, 0;
+mapa.u64 %rd3, %rd8, %r13;
 
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd2;
-call.uni 
-gpgpusim_register_cluster_coherent_addr, 
-(
-param0
-);
-} //
-st.u32 [%rd3], %r8;
+$L__BB2_3:
+setp.eq.s32 %p3, %r1, 0;
+@%p3 bra $L__BB2_5;
 
-$L__BB3_3:
+$L__BB2_4:
+atom.add.u32 %r10, [%rd1], 0;
+setp.eq.s32 %p4, %r10, 1;
+@%p4 bra $L__BB2_6;
+bra.uni $L__BB2_4;
+
+$L__BB2_5:
+cvt.rn.f32.s32 %f1, %r13;
+add.f32 %f2, %f1, 0f41200000;
+st.f32 [%rd3], %f2;
+atom.exch.b32 %r11, [%rd1], 1;
+
+$L__BB2_6:
+mov.u32 %r12, 1065353216;
+st.global.u32 [%rd2], %r12;
 barrier.cluster.arrive;
 barrier.cluster.wait;
-setp.lt.s32 %p3, %r5, 1;
-@%p3 bra $L__BB3_14;
+add.s32 %r13, %r13, 1;
+setp.lt.s32 %p5, %r13, %r4;
+@%p5 bra $L__BB2_3;
 
-cvta.to.global.u64 %rd12, %rd6;
-mul.wide.s32 %rd13, %r1, 4;
-add.s64 %rd4, %rd12, %rd13;
-mov.u32 %r21, 0;
-mov.u64 %rd14, $str$2;
-cvta.global.u64 %rd15, %rd14;
-mov.u64 %rd17, $str$1;
-cvta.global.u64 %rd18, %rd17;
-
-$L__BB3_5:
-setp.eq.s32 %p4, %r1, 0;
-@%p4 bra $L__BB3_9;
-
-$L__BB3_6:
-atom.add.u32 %r13, [%rd3], 0;
-setp.ne.s32 %p5, %r13, 1;
-@%p5 bra $L__BB3_6;
-
-setp.ne.s32 %p6, %r2, 0;
-@%p6 bra $L__BB3_11;
-
-ld.f32 %f2, [%rd2];
-cvt.f64.f32 %fd1, %f2;
-st.local.u32 [%rd1], %r1;
-st.local.f64 [%rd1+8], %fd1;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd15;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r14, [retval0+0];
-} //
-bra.uni $L__BB3_11;
-
-$L__BB3_9:
-setp.ne.s32 %p7, %r2, 0;
-cvt.rn.f32.s32 %f3, %r21;
-add.f32 %f1, %f3, 0f41200000;
-st.f32 [%rd2], %f1;
-atom.exch.b32 %r15, [%rd3], 1;
-@%p7 bra $L__BB3_11;
-
-mov.u32 %r16, 0;
-st.local.u32 [%rd1], %r16;
-cvt.f64.f32 %fd2, %f1;
-st.local.f64 [%rd1+8], %fd2;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd18;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r17, [retval0+0];
-} //
-
-$L__BB3_11:
-setp.ne.s32 %p8, %r1, 7;
-mov.u32 %r18, 1065353216;
-st.global.u32 [%rd4], %r18;
-@%p8 bra $L__BB3_13;
-
-atom.exch.b32 %r19, [%rd3], 0;
-mov.u64 %rd20, $str$3;
-cvta.global.u64 %rd21, %rd20;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd21;
-.param .b64 param1;
-st.param.b64 [param1+0], 0;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r20, [retval0+0];
-} //
-
-$L__BB3_13:
-barrier.cluster.arrive;
-barrier.cluster.wait;
-add.s32 %r21, %r21, 1;
-setp.lt.s32 %p9, %r21, %r5;
-@%p9 bra $L__BB3_5;
-
-$L__BB3_14:
+$L__BB2_7:
 ret;
 
 }
@@ -627,184 +259,69 @@ ret;
 .explicitcluster
 .reqnctapercluster 16, 1, 1
 {
-.local .align 16 .b8 __local_depot4[16];
-.reg .b64 %SP;
-.reg .b64 %SPL;
-.reg .pred %p<10>;
-.reg .f32 %f<4>;
-.reg .b32 %r<22>;
-.reg .f64 %fd<3>;
-.reg .b64 %rd<22>;
+.reg .pred %p<6>;
+.reg .f32 %f<3>;
+.reg .b32 %r<14>;
+.reg .b64 %rd<9>;
 //
 .shared .align 4 .f32 _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_data;
 //
 .shared .align 4 .u32 _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_flag;
 
-mov.u64 %SPL, __local_depot4;
-cvta.local.u64 %SP, %SPL;
-ld.param.u64 %rd6, [_Z24producer_consumer_kernelILi16EEvPfS0_ii_param_1];
-ld.param.u32 %r5, [_Z24producer_consumer_kernelILi16EEvPfS0_ii_param_3];
-add.u64 %rd7, %SP, 0;
-add.u64 %rd1, %SPL, 0;
+ld.param.u64 %rd4, [_Z24producer_consumer_kernelILi16EEvPfS0_ii_param_1];
+ld.param.u32 %r4, [_Z24producer_consumer_kernelILi16EEvPfS0_ii_param_3];
 mov.b32 %r1, %cluster_ctarank;
-st.local.u32 [%rd1], %r1;
-mov.u64 %rd8, $str;
-cvta.global.u64 %rd9, %rd8;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd9;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r6, [retval0+0];
-} //
-mov.u32 %r2, %tid.x;
-setp.gt.s32 %p1, %r2, 0;
-@%p1 bra $L__BB4_14;
+mov.u32 %r5, %tid.x;
+setp.gt.s32 %p1, %r5, 0;
+@%p1 bra $L__BB3_7;
 
-mov.u32 %r7, _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_data;
+mov.u32 %r6, _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_flag;
 { .reg .b64 %tmp;
-cvt.u64.u32 %tmp, %r7;
-cvta.shared.u64 %rd10, %tmp; }
-mov.u32 %r8, 0;
-mapa.u64 %rd2, %rd10, %r8;
-mov.u32 %r9, _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_flag;
+cvt.u64.u32 %tmp, %r6;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r7, 1;
+mapa.u64 %rd1, %rd5, %r7;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p2, %r4, 1;
+@%p2 bra $L__BB3_7;
+
+cvta.to.global.u64 %rd6, %rd4;
+mul.wide.s32 %rd7, %r1, 4;
+add.s64 %rd2, %rd6, %rd7;
+mov.u32 %r9, _ZZ24producer_consumer_kernelILi16EEvPfS0_iiE9smem_data;
 { .reg .b64 %tmp;
 cvt.u64.u32 %tmp, %r9;
-cvta.shared.u64 %rd11, %tmp; }
-mapa.u64 %rd3, %rd11, %r8;
-or.b32 %r10, %r1, %r2;
-setp.ne.s32 %p2, %r10, 0;
-@%p2 bra $L__BB4_3;
+cvta.shared.u64 %rd8, %tmp; }
+mov.u32 %r13, 0;
+mapa.u64 %rd3, %rd8, %r13;
 
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd2;
-call.uni 
-gpgpusim_register_cluster_coherent_addr, 
-(
-param0
-);
-} //
-st.u32 [%rd3], %r8;
+$L__BB3_3:
+setp.eq.s32 %p3, %r1, 0;
+@%p3 bra $L__BB3_5;
 
-$L__BB4_3:
+$L__BB3_4:
+atom.add.u32 %r10, [%rd1], 0;
+setp.eq.s32 %p4, %r10, 1;
+@%p4 bra $L__BB3_6;
+bra.uni $L__BB3_4;
+
+$L__BB3_5:
+cvt.rn.f32.s32 %f1, %r13;
+add.f32 %f2, %f1, 0f41200000;
+st.f32 [%rd3], %f2;
+atom.exch.b32 %r11, [%rd1], 1;
+
+$L__BB3_6:
+mov.u32 %r12, 1065353216;
+st.global.u32 [%rd2], %r12;
 barrier.cluster.arrive;
 barrier.cluster.wait;
-setp.lt.s32 %p3, %r5, 1;
-@%p3 bra $L__BB4_14;
+add.s32 %r13, %r13, 1;
+setp.lt.s32 %p5, %r13, %r4;
+@%p5 bra $L__BB3_3;
 
-cvta.to.global.u64 %rd12, %rd6;
-mul.wide.s32 %rd13, %r1, 4;
-add.s64 %rd4, %rd12, %rd13;
-mov.u32 %r21, 0;
-mov.u64 %rd14, $str$2;
-cvta.global.u64 %rd15, %rd14;
-mov.u64 %rd17, $str$1;
-cvta.global.u64 %rd18, %rd17;
-
-$L__BB4_5:
-setp.eq.s32 %p4, %r1, 0;
-@%p4 bra $L__BB4_9;
-
-$L__BB4_6:
-atom.add.u32 %r13, [%rd3], 0;
-setp.ne.s32 %p5, %r13, 1;
-@%p5 bra $L__BB4_6;
-
-setp.ne.s32 %p6, %r2, 0;
-@%p6 bra $L__BB4_11;
-
-ld.f32 %f2, [%rd2];
-cvt.f64.f32 %fd1, %f2;
-st.local.u32 [%rd1], %r1;
-st.local.f64 [%rd1+8], %fd1;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd15;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r14, [retval0+0];
-} //
-bra.uni $L__BB4_11;
-
-$L__BB4_9:
-setp.ne.s32 %p7, %r2, 0;
-cvt.rn.f32.s32 %f3, %r21;
-add.f32 %f1, %f3, 0f41200000;
-st.f32 [%rd2], %f1;
-atom.exch.b32 %r15, [%rd3], 1;
-@%p7 bra $L__BB4_11;
-
-mov.u32 %r16, 0;
-st.local.u32 [%rd1], %r16;
-cvt.f64.f32 %fd2, %f1;
-st.local.f64 [%rd1+8], %fd2;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd18;
-.param .b64 param1;
-st.param.b64 [param1+0], %rd7;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r17, [retval0+0];
-} //
-
-$L__BB4_11:
-setp.ne.s32 %p8, %r1, 15;
-mov.u32 %r18, 1065353216;
-st.global.u32 [%rd4], %r18;
-@%p8 bra $L__BB4_13;
-
-atom.exch.b32 %r19, [%rd3], 0;
-mov.u64 %rd20, $str$3;
-cvta.global.u64 %rd21, %rd20;
-{ //
-.reg .b32 temp_param_reg;
-.param .b64 param0;
-st.param.b64 [param0+0], %rd21;
-.param .b64 param1;
-st.param.b64 [param1+0], 0;
-.param .b32 retval0;
-call.uni (retval0), 
-vprintf, 
-(
-param0, 
-param1
-);
-ld.param.b32 %r20, [retval0+0];
-} //
-
-$L__BB4_13:
-barrier.cluster.arrive;
-barrier.cluster.wait;
-add.s32 %r21, %r21, 1;
-setp.lt.s32 %p9, %r21, %r5;
-@%p9 bra $L__BB4_5;
-
-$L__BB4_14:
+$L__BB3_7:
 ret;
 
 }

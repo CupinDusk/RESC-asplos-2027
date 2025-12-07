@@ -67,6 +67,25 @@ __device__ __forceinline__ void st_cg_f32(float* p, float v) {
 #endif
 }
 
+__device__ __forceinline__ int ld_ca_s32(int* p) {
+  int v;
+#if __CUDA_ARCH__ >= 900
+  asm volatile("ld.global.ca.s32 %0, [%1];" : "=r"(v) : "l"(p));
+#else
+  v = *p;
+#endif
+  return v;
+}
+
+// 强制经 L1 的全局写（.wb）——用于atomic flag，让ICCC接管
+__device__ __forceinline__ void st_wb_s32(int* p, int v) {
+#if __CUDA_ARCH__ >= 900
+  asm volatile("st.global.wb.s32 [%0], %1;" : : "l"(p), "r"(v) : "memory");
+#else
+  *p = v;
+#endif
+}
+
 // smid
 __device__ __forceinline__ unsigned get_smid() {
   unsigned smid;
@@ -93,7 +112,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
 #if __CUDA_ARCH__ >= 900
   cg::cluster_group cluster = cg::this_cluster();
   int rank = cluster.block_rank();   // 0..CLUSTER_SIZE-1
-  printf("rank=%d\n", rank);
+  //printf("rank=%d\n", rank);
   int tid  = threadIdx.x;
 
   if (tid >= 1) return;             // 保持你原先“单线程 CTA”框架
@@ -107,10 +126,10 @@ void producer_consumer_kernel(float* __restrict__ g_data,
   int*   dsm_flag = cluster.map_shared_rank(&smem_flag, 0);
 
   // (可选) 保留你的注册逻辑：把“通信地址”注册进去；同时初始化 flag
-  if (tid == 0 && rank == 0) {
-    gpgpusim_register_cluster_coherent_addr(addr);
-    *dsm_flag = 0;
-  }
+  //if (tid == 0 && rank == 0) {
+    //gpgpusim_register_cluster_coherent_addr(addr);
+    //*dsm_flag = 0;
+  //}
 
   // cluster.sync() 确保 cluster 内所有 CTA 已启动且 shared 初始化完成，才能安全访问 DSM
   cluster.sync();
@@ -135,7 +154,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       atomicExch(dsm_flag, 1);
 
       if (tid == 0) {
-        printf("\nCLUSTER-[WRITE] rank=%d, wrote value=%f\n", rank, write_value);
+        //printf("\nCLUSTER-[WRITE] rank=%d, wrote value=%f\n", rank, write_value);
       }
 
     } else { // rank == 1
@@ -148,7 +167,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
       float read_value = *addr;
 
       if (tid == 0) {
-        printf("\nCLUSTER-[READ] rank=%d, read value=%f\n", rank, read_value);
+        //printf("\nCLUSTER-[READ] rank=%d, read value=%f\n", rank, read_value);
       }
 
       // ack：告诉 producer 本轮已消费完，可以进入下一轮
@@ -160,7 +179,7 @@ void producer_consumer_kernel(float* __restrict__ g_data,
     if(rank == CLUSTER_SIZE-1){
       // 本轮结束：由最后一个 rank 把 mailbox 清 0，作为下一轮的 ack
       //atomicExch(dsm_flag, 0);
-      printf("\n本轮结束\n");
+      //printf("\n本轮结束\n");
     }
 
     cluster.sync();
