@@ -48,7 +48,6 @@ regression.sh
 #debug_tools
 debug_tools/WatchYourStep/data/*
 debug_tools/WatchYourStep/ptxjitplus/bin/*
-*log
 *.o
 debug_tools/WatchYourStep/ptxjitplus/config*
 debug_tools/WatchYourStep/ptxjitplus/*.xml

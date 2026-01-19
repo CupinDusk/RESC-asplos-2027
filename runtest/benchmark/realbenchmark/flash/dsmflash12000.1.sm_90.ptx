@@ -1,0 +1,421 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.8
+.target sm_90
+.address_size 64
+
+//
+.global .align 4 .u32 g_turn;
+.global .align 4 .u32 g_dummy_registration_flag;
+//
+//
+//
+//
+//
+//
+
+.visible .entry _Z7fa_tileILi2EEvPfS0_i(
+.param .u64 _Z7fa_tileILi2EEvPfS0_i_param_0,
+.param .u64 _Z7fa_tileILi2EEvPfS0_i_param_1,
+.param .u32 _Z7fa_tileILi2EEvPfS0_i_param_2
+)
+.explicitcluster
+.reqnctapercluster 2, 1, 1
+{
+.reg .pred %p<17>;
+.reg .f32 %f<11>;
+.reg .b32 %r<25>;
+.reg .b64 %rd<13>;
+//
+.shared .align 4 .b8 _ZZ7fa_tileILi2EEvPfS0_iE9smem_tile[48000];
+//
+.shared .align 4 .u32 _ZZ7fa_tileILi2EEvPfS0_iE9smem_flag;
+
+ld.param.u64 %rd4, [_Z7fa_tileILi2EEvPfS0_i_param_1];
+ld.param.u32 %r10, [_Z7fa_tileILi2EEvPfS0_i_param_2];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r11, _ZZ7fa_tileILi2EEvPfS0_iE9smem_tile;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r11;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r12, 0;
+mapa.u64 %rd1, %rd5, %r12;
+mov.u32 %r13, _ZZ7fa_tileILi2EEvPfS0_iE9smem_flag;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r13;
+cvta.shared.u64 %rd6, %tmp; }
+mapa.u64 %rd2, %rd6, %r12;
+mov.u32 %r2, %tid.x;
+or.b32 %r14, %r1, %r2;
+setp.ne.s32 %p2, %r14, 0;
+@%p2 bra $L__BB0_2;
+
+atom.exch.b32 %r15, [%rd2], 0;
+
+$L__BB0_2:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p3, %r10, 1;
+@%p3 bra $L__BB0_20;
+
+setp.eq.s32 %p4, %r1, 1;
+setp.eq.s32 %p5, %r2, 0;
+mov.u32 %r22, 0;
+and.pred %p1, %p5, %p4;
+mov.u32 %r3, %ntid.x;
+cvta.to.global.u64 %rd7, %rd4;
+mul.wide.s32 %rd8, %r1, 4;
+add.s64 %rd3, %rd7, %rd8;
+not.pred %p15, %p1;
+
+$L__BB0_4:
+setp.ne.s32 %p6, %r1, 0;
+@%p6 bra $L__BB0_10;
+
+$L__BB0_5:
+atom.add.u32 %r17, [%rd2], 0;
+setp.ne.s32 %p7, %r17, 0;
+@%p7 bra $L__BB0_5;
+
+setp.gt.s32 %p8, %r2, 11999;
+@%p8 bra $L__BB0_9;
+
+mov.u32 %r23, %r2;
+
+$L__BB0_8:
+add.s32 %r18, %r23, %r22;
+cvt.rn.f32.s32 %f4, %r18;
+mul.f32 %f5, %f4, 0f3A83126F;
+mul.wide.s32 %rd9, %r23, 4;
+add.s64 %rd10, %rd1, %rd9;
+st.f32 [%rd10], %f5;
+add.s32 %r23, %r23, %r3;
+setp.lt.s32 %p9, %r23, 12000;
+@%p9 bra $L__BB0_8;
+
+$L__BB0_9:
+bar.sync 0;
+atom.exch.b32 %r19, [%rd2], 1;
+
+$L__BB0_10:
+setp.eq.s32 %p10, %r1, 0;
+@%p10 bra $L__BB0_17;
+
+$L__BB0_11:
+atom.add.u32 %r20, [%rd2], 0;
+setp.ne.s32 %p11, %r20, 1;
+@%p11 bra $L__BB0_11;
+
+setp.gt.s32 %p12, %r2, 11999;
+mov.f32 %f10, 0f00000000;
+@%p12 bra $L__BB0_15;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r24, %r2;
+
+$L__BB0_14:
+mul.wide.s32 %rd11, %r24, 4;
+add.s64 %rd12, %rd1, %rd11;
+ld.f32 %f8, [%rd12];
+add.f32 %f10, %f10, %f8;
+add.s32 %r24, %r24, %r3;
+setp.lt.s32 %p13, %r24, 12000;
+@%p13 bra $L__BB0_14;
+
+$L__BB0_15:
+setp.ne.s32 %p14, %r2, 0;
+@%p14 bra $L__BB0_17;
+
+st.global.f32 [%rd3], %f10;
+
+$L__BB0_17:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p15 bra $L__BB0_19;
+
+atom.exch.b32 %r21, [%rd2], 0;
+
+$L__BB0_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r22, %r22, 1;
+setp.lt.s32 %p16, %r22, %r10;
+@%p16 bra $L__BB0_4;
+
+$L__BB0_20:
+ret;
+
+}
+//
+.visible .entry _Z7fa_tileILi4EEvPfS0_i(
+.param .u64 _Z7fa_tileILi4EEvPfS0_i_param_0,
+.param .u64 _Z7fa_tileILi4EEvPfS0_i_param_1,
+.param .u32 _Z7fa_tileILi4EEvPfS0_i_param_2
+)
+.explicitcluster
+.reqnctapercluster 4, 1, 1
+{
+.reg .pred %p<17>;
+.reg .f32 %f<11>;
+.reg .b32 %r<25>;
+.reg .b64 %rd<13>;
+//
+.shared .align 4 .b8 _ZZ7fa_tileILi4EEvPfS0_iE9smem_tile[48000];
+//
+.shared .align 4 .u32 _ZZ7fa_tileILi4EEvPfS0_iE9smem_flag;
+
+ld.param.u64 %rd4, [_Z7fa_tileILi4EEvPfS0_i_param_1];
+ld.param.u32 %r10, [_Z7fa_tileILi4EEvPfS0_i_param_2];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r11, _ZZ7fa_tileILi4EEvPfS0_iE9smem_tile;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r11;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r12, 0;
+mapa.u64 %rd1, %rd5, %r12;
+mov.u32 %r13, _ZZ7fa_tileILi4EEvPfS0_iE9smem_flag;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r13;
+cvta.shared.u64 %rd6, %tmp; }
+mapa.u64 %rd2, %rd6, %r12;
+mov.u32 %r2, %tid.x;
+or.b32 %r14, %r1, %r2;
+setp.ne.s32 %p2, %r14, 0;
+@%p2 bra $L__BB1_2;
+
+atom.exch.b32 %r15, [%rd2], 0;
+
+$L__BB1_2:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p3, %r10, 1;
+@%p3 bra $L__BB1_20;
+
+setp.eq.s32 %p4, %r1, 3;
+setp.eq.s32 %p5, %r2, 0;
+mov.u32 %r22, 0;
+and.pred %p1, %p5, %p4;
+mov.u32 %r3, %ntid.x;
+cvta.to.global.u64 %rd7, %rd4;
+mul.wide.s32 %rd8, %r1, 4;
+add.s64 %rd3, %rd7, %rd8;
+not.pred %p15, %p1;
+
+$L__BB1_4:
+setp.ne.s32 %p6, %r1, 0;
+@%p6 bra $L__BB1_10;
+
+$L__BB1_5:
+atom.add.u32 %r17, [%rd2], 0;
+setp.ne.s32 %p7, %r17, 0;
+@%p7 bra $L__BB1_5;
+
+setp.gt.s32 %p8, %r2, 11999;
+@%p8 bra $L__BB1_9;
+
+mov.u32 %r23, %r2;
+
+$L__BB1_8:
+add.s32 %r18, %r23, %r22;
+cvt.rn.f32.s32 %f4, %r18;
+mul.f32 %f5, %f4, 0f3A83126F;
+mul.wide.s32 %rd9, %r23, 4;
+add.s64 %rd10, %rd1, %rd9;
+st.f32 [%rd10], %f5;
+add.s32 %r23, %r23, %r3;
+setp.lt.s32 %p9, %r23, 12000;
+@%p9 bra $L__BB1_8;
+
+$L__BB1_9:
+bar.sync 0;
+atom.exch.b32 %r19, [%rd2], 1;
+
+$L__BB1_10:
+setp.eq.s32 %p10, %r1, 0;
+@%p10 bra $L__BB1_17;
+
+$L__BB1_11:
+atom.add.u32 %r20, [%rd2], 0;
+setp.ne.s32 %p11, %r20, 1;
+@%p11 bra $L__BB1_11;
+
+setp.gt.s32 %p12, %r2, 11999;
+mov.f32 %f10, 0f00000000;
+@%p12 bra $L__BB1_15;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r24, %r2;
+
+$L__BB1_14:
+mul.wide.s32 %rd11, %r24, 4;
+add.s64 %rd12, %rd1, %rd11;
+ld.f32 %f8, [%rd12];
+add.f32 %f10, %f10, %f8;
+add.s32 %r24, %r24, %r3;
+setp.lt.s32 %p13, %r24, 12000;
+@%p13 bra $L__BB1_14;
+
+$L__BB1_15:
+setp.ne.s32 %p14, %r2, 0;
+@%p14 bra $L__BB1_17;
+
+st.global.f32 [%rd3], %f10;
+
+$L__BB1_17:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p15 bra $L__BB1_19;
+
+atom.exch.b32 %r21, [%rd2], 0;
+
+$L__BB1_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r22, %r22, 1;
+setp.lt.s32 %p16, %r22, %r10;
+@%p16 bra $L__BB1_4;
+
+$L__BB1_20:
+ret;
+
+}
+//
+.visible .entry _Z7fa_tileILi8EEvPfS0_i(
+.param .u64 _Z7fa_tileILi8EEvPfS0_i_param_0,
+.param .u64 _Z7fa_tileILi8EEvPfS0_i_param_1,
+.param .u32 _Z7fa_tileILi8EEvPfS0_i_param_2
+)
+.explicitcluster
+.reqnctapercluster 8, 1, 1
+{
+.reg .pred %p<17>;
+.reg .f32 %f<11>;
+.reg .b32 %r<25>;
+.reg .b64 %rd<13>;
+//
+.shared .align 4 .b8 _ZZ7fa_tileILi8EEvPfS0_iE9smem_tile[48000];
+//
+.shared .align 4 .u32 _ZZ7fa_tileILi8EEvPfS0_iE9smem_flag;
+
+ld.param.u64 %rd4, [_Z7fa_tileILi8EEvPfS0_i_param_1];
+ld.param.u32 %r10, [_Z7fa_tileILi8EEvPfS0_i_param_2];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r11, _ZZ7fa_tileILi8EEvPfS0_iE9smem_tile;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r11;
+cvta.shared.u64 %rd5, %tmp; }
+mov.u32 %r12, 0;
+mapa.u64 %rd1, %rd5, %r12;
+mov.u32 %r13, _ZZ7fa_tileILi8EEvPfS0_iE9smem_flag;
+{ .reg .b64 %tmp;
+cvt.u64.u32 %tmp, %r13;
+cvta.shared.u64 %rd6, %tmp; }
+mapa.u64 %rd2, %rd6, %r12;
+mov.u32 %r2, %tid.x;
+or.b32 %r14, %r1, %r2;
+setp.ne.s32 %p2, %r14, 0;
+@%p2 bra $L__BB2_2;
+
+atom.exch.b32 %r15, [%rd2], 0;
+
+$L__BB2_2:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p3, %r10, 1;
+@%p3 bra $L__BB2_20;
+
+setp.eq.s32 %p4, %r1, 7;
+setp.eq.s32 %p5, %r2, 0;
+mov.u32 %r22, 0;
+and.pred %p1, %p5, %p4;
+mov.u32 %r3, %ntid.x;
+cvta.to.global.u64 %rd7, %rd4;
+mul.wide.s32 %rd8, %r1, 4;
+add.s64 %rd3, %rd7, %rd8;
+not.pred %p15, %p1;
+
+$L__BB2_4:
+setp.ne.s32 %p6, %r1, 0;
+@%p6 bra $L__BB2_10;
+
+$L__BB2_5:
+atom.add.u32 %r17, [%rd2], 0;
+setp.ne.s32 %p7, %r17, 0;
+@%p7 bra $L__BB2_5;
+
+setp.gt.s32 %p8, %r2, 11999;
+@%p8 bra $L__BB2_9;
+
+mov.u32 %r23, %r2;
+
+$L__BB2_8:
+add.s32 %r18, %r23, %r22;
+cvt.rn.f32.s32 %f4, %r18;
+mul.f32 %f5, %f4, 0f3A83126F;
+mul.wide.s32 %rd9, %r23, 4;
+add.s64 %rd10, %rd1, %rd9;
+st.f32 [%rd10], %f5;
+add.s32 %r23, %r23, %r3;
+setp.lt.s32 %p9, %r23, 12000;
+@%p9 bra $L__BB2_8;
+
+$L__BB2_9:
+bar.sync 0;
+atom.exch.b32 %r19, [%rd2], 1;
+
+$L__BB2_10:
+setp.eq.s32 %p10, %r1, 0;
+@%p10 bra $L__BB2_17;
+
+$L__BB2_11:
+atom.add.u32 %r20, [%rd2], 0;
+setp.ne.s32 %p11, %r20, 1;
+@%p11 bra $L__BB2_11;
+
+setp.gt.s32 %p12, %r2, 11999;
+mov.f32 %f10, 0f00000000;
+@%p12 bra $L__BB2_15;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r24, %r2;
+
+$L__BB2_14:
+mul.wide.s32 %rd11, %r24, 4;
+add.s64 %rd12, %rd1, %rd11;
+ld.f32 %f8, [%rd12];
+add.f32 %f10, %f10, %f8;
+add.s32 %r24, %r24, %r3;
+setp.lt.s32 %p13, %r24, 12000;
+@%p13 bra $L__BB2_14;
+
+$L__BB2_15:
+setp.ne.s32 %p14, %r2, 0;
+@%p14 bra $L__BB2_17;
+
+st.global.f32 [%rd3], %f10;
+
+$L__BB2_17:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p15 bra $L__BB2_19;
+
+atom.exch.b32 %r21, [%rd2], 0;
+
+$L__BB2_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r22, %r22, 1;
+setp.lt.s32 %p16, %r22, %r10;
+@%p16 bra $L__BB2_4;
+
+$L__BB2_20:
+ret;
+
+}
+
