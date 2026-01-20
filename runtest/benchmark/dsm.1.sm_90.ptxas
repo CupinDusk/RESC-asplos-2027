@@ -3,19 +3,19 @@ ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi16EEvPf
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi16EEvPfS0_ii
     16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 24 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
-ptxas info    : Compile time = 235.788 ms
+ptxas info    : Compile time = 11.943 ms
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi8EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi8EEvPfS0_ii
     16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 24 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
-ptxas info    : Compile time = 13.635 ms
+ptxas info    : Compile time = 7.281 ms
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi4EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi4EEvPfS0_ii
     16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 24 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
-ptxas info    : Compile time = 9.191 ms
+ptxas info    : Compile time = 6.462 ms
 ptxas info    : Compiling entry function '_Z24producer_consumer_kernelILi2EEvPfS0_ii' for 'sm_90'
 ptxas info    : Function properties for _Z24producer_consumer_kernelILi2EEvPfS0_ii
     16 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 24 registers, used 0 barriers, 16 bytes cumulative stack size, 8 bytes smem
-ptxas info    : Compile time = 6.613 ms
+ptxas info    : Compile time = 6.310 ms

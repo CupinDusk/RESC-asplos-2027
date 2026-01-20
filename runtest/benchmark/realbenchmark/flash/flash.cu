@@ -146,7 +146,19 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
   tile_ptr = g_buf;
   flag_ptr = &g_turn;
 
-  if (rank==0 && BACKEND==2) {
+  /*if (rank==0 && BACKEND==2) {
+    if (tid < 32) {
+      register_range_by_line_warp0(tile_ptr, RESERVE_ELEMS * sizeof(float));
+      register_range_by_line_warp0(flag_ptr, sizeof(int));
+    }
+    __syncwarp();
+  }
+  cluster.sync();
+  */
+
+#endif
+
+if (rank==0) {
     if (tid < 32) {
       register_range_by_line_warp0(tile_ptr, RESERVE_ELEMS * sizeof(float));
       register_range_by_line_warp0(flag_ptr, sizeof(int));
@@ -155,7 +167,6 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
   }
 
   cluster.sync();
-#endif
 
   for(int r=0;r<repeat;r++){
     // Producer: rank0 写 tile，发布 flag=1

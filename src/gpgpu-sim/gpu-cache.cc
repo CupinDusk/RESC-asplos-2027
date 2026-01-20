@@ -2158,6 +2158,18 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
         printf("\n[RESC] Read share SUCCESS (special) - addr=0x%llx, owner_sid=%u\n", addr, m_owner->get_sid());
         return access_status;
+      } else {
+        // 读共享失败，返回HIT并返回0（不向主存发出请求）
+        enum cache_request_status access_status = HIT;
+        probe_status = HIT;
+        m_stats.inc_stats(mf->get_access_type(),
+                          m_stats.select_stats_status(probe_status, access_status));
+        m_stats.inc_stats_pw(
+            mf->get_access_type(),
+            m_stats.select_stats_status(probe_status, access_status));
+        m_bandwidth_management.use_data_port(mf, access_status, events);
+
+        return access_status;
       }
     } else {
       // 针对普通地址的读miss，尝试普通的读共享
