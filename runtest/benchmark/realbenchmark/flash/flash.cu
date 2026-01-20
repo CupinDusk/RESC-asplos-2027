@@ -15,6 +15,10 @@ namespace cg = cooperative_groups;
 #define RESERVE_ELEMS 4096
 #endif
 
+#ifndef RESC_LINE_BYTES
+#define RESC_LINE_BYTES 128   // 你 sim 里如果是 64B，就改成 64
+#endif
+
 #define CUDA_CHECK(x) do{auto e=(x); if(e!=cudaSuccess){                       \
   std::fprintf(stderr,"CUDA error %s:%d: %s\n",__FILE__,__LINE__,              \
   cudaGetErrorString(e)); std::exit(1);} }while(0)
@@ -92,11 +96,29 @@ void gpgpusim_register_cluster_coherent_addr(void* addr){
 }
 
 // 按 128B cacheline 注册整个通信 region（强烈建议用于数组）
-__device__ __forceinline__ void register_range_128B(void* base, int num, int bytes){
-  unsigned long long p = (unsigned long long)base;
-  unsigned long long e = p + (unsigned long long)(num*bytes);
-  for(; p < e; p += (unsigned long long)bytes) gpgpusim_register_cluster_coherent_addr((void*)p);
-}
+//__device__ __forceinline__ void register_range_128B(void* base, int num, int bytes){
+//  unsigned long long p = (unsigned long long)base;
+//  unsigned long long e = p + (unsigned long long)(num*bytes);
+//  for(; p < e; p += (unsigned long long)bytes) gpgpusim_register_cluster_coherent_addr((void*)p);
+//}
+
+__device__ __forceinline__ uintptr_t align_down_line(uintptr_t x){
+    return x & ~((uintptr_t)RESC_LINE_BYTES - 1);
+  }
+
+__device__ __forceinline__ void register_range_by_line_warp0(void* base, size_t bytes) {
+    uintptr_t b = (uintptr_t)base;
+    uintptr_t start = align_down_line(b);
+    int nlines = (int)(( (b + bytes - start) + RESC_LINE_BYTES - 1) / RESC_LINE_BYTES);
+
+    int lane = threadIdx.x & 31; // warp0 lanes 0..31
+    for (int off = 0; off < nlines; off += 32) {
+      int idx = off + lane;
+      // 关键：不使用 if(idx<nlines) 来避免 lane divergence
+      uintptr_t line = start + (uintptr_t)((idx < nlines) ? idx : 0) * RESC_LINE_BYTES;
+      gpgpusim_register_cluster_coherent_addr((void*)line);
+    }
+  }
 
 template<int CLUSTER_SIZE>
 __global__ __cluster_dims__(CLUSTER_SIZE,1,1)
@@ -124,13 +146,14 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
   tile_ptr = g_buf;
   flag_ptr = &g_turn;
 
-  if (tid==0 && rank==0 && BACKEND==2){
-    // RESC：注册整个 tile + flag
-    //register_range_128B(tile_ptr, RESERVE_ELEMS, (int)sizeof(float));
-    //register_range_128B(flag_ptr, 1, (int)sizeof(int));
-    gpgpusim_register_cluster_coherent_addr(tile_ptr);
-    gpgpusim_register_cluster_coherent_addr(flag_ptr);
+  if (rank==0 && BACKEND==2) {
+    if (tid < 32) {
+      register_range_by_line_warp0(tile_ptr, RESERVE_ELEMS * sizeof(float));
+      register_range_by_line_warp0(flag_ptr, sizeof(int));
+    }
+    __syncwarp();
   }
+
   cluster.sync();
 #endif
 
