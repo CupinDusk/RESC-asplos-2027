@@ -2156,7 +2156,7 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
       bypassL1D = true;
   }
 
-  
+
 
   if (bypassL1D) {
     // bypass L1 cache

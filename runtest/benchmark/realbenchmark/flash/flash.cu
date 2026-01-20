@@ -183,7 +183,8 @@ if (rank==0) {
       for(int i=tid;i<RESERVE_ELEMS;i+=blockDim.x){
         float v = (float)(i + r) * 0.001f;
 #if BACKEND == 2
-        st_wb_f32(&tile_ptr[i], v);
+        //st_wb_f32(&tile_ptr[i], v);
+        st_cg_f32(&tile_ptr[i], v);
 #elif BACKEND == 0
         st_cg_f32(&tile_ptr[i], v);
 #else
@@ -194,7 +195,8 @@ if (rank==0) {
 #if BACKEND == 1
       atomicExch(flag_ptr, 1);
 #elif BACKEND == 2
-      st_wb_s32(flag_ptr, 1);
+      //st_wb_s32(flag_ptr, 1);
+      st_cg_s32(flag_ptr, 1);
 #else
       st_cg_s32(flag_ptr, 1);
 #endif
@@ -230,7 +232,8 @@ if (rank==0) {
 #if BACKEND == 1
       atomicExch(flag_ptr, 0);
 #elif BACKEND == 2
-      st_wb_s32(flag_ptr, 0);
+      //st_wb_s32(flag_ptr, 0);
+      st_cg_s32(flag_ptr, 0);
 #else
       st_cg_s32(flag_ptr, 0);
 #endif
