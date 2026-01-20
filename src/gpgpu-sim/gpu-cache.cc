@@ -1480,7 +1480,7 @@ cache_request_status data_cache::wr_hit_wb(new_addr_type addr,
   // 支持两种识别方式：
   // 1. 通过cache_op识别（st.global.wb.f32使用CACHE_WRITE_BACK）
   // 2. 通过地址识别（通过环境变量CLUSTER_STATE_TARGET_ADDR设置目标地址）
-  if (!should_set_cluster_state_for_write(addr, mf)) {
+  if (!should_set_cluster_state_for_write(block_addr, mf)) {
     // 如果不需要设置cluster-state，直接返回
     return HIT;
   }
@@ -1884,14 +1884,14 @@ enum cache_request_status data_cache::wr_miss_wa_lazy_fetch_on_read(
   if (m_status != RESERVATION_FAIL) {
     // 针对注册地址的写，写miss时设置cluster-state并尝试特殊的写共享
     l1_cache *l1_this = dynamic_cast<l1_cache*>(this);
-    if (l1_this && should_set_cluster_state_for_write(addr, mf)) {
+    if (l1_this && should_set_cluster_state_for_write(block_addr, mf)) {
       mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
       line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
       sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
 
       // 尝试特殊的写共享
       bool has_share = false;
-      if (l1_this->special_try_cluster_write_share(addr, mf, time, events)) {
+      if (l1_this->special_try_cluster_write_share(block_addr, mf, time, events)) {
         has_share = true;
       }
 
@@ -2138,15 +2138,18 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
 
 
-  //new_addr_type block_addr = m_config.block_addr(addr);
+  // IMPORTANT: L1 tag probes must be done at cache-line granularity.
+  // Probing with raw "addr" makes different offsets within the same line look
+  // like different tags, which breaks caching and RESC sharing behavior.
+  new_addr_type block_addr = m_config.block_addr(addr);
   unsigned cache_index = (unsigned)-1;
   enum cache_request_status probe_status =
-      m_tag_array->probe(addr, cache_index, mf, mf->is_write(), true);
+      m_tag_array->probe(block_addr, cache_index, mf, mf->is_write(), true);
 
   if (!wr && (probe_status == MISS || probe_status == SECTOR_MISS)) {
     // 针对注册地址的读，尝试特殊的读共享
-    if (should_set_cluster_state_for_write(addr, mf)) {
-      if (special_try_cluster_read_share(addr, mf, time, events)) {
+    if (should_set_cluster_state_for_write(block_addr, mf)) {
+      if (special_try_cluster_read_share(block_addr, mf, time, events)) {
         enum cache_request_status access_status = HIT;
         probe_status = HIT;
         m_stats.inc_stats(mf->get_access_type(),
@@ -2173,7 +2176,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       }
     } else {
       // 针对普通地址的读miss，尝试普通的读共享
-      if(try_cluster_read_share(addr, mf, time, events)){
+      if(try_cluster_read_share(block_addr, mf, time, events)){
         enum cache_request_status access_status = HIT;
         probe_status = HIT;
         m_stats.inc_stats(mf->get_access_type(),
@@ -2193,7 +2196,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   // 对于写miss，也尝试从其他SM读取数据（写miss时的读共享）
   if (wr && (probe_status == MISS || probe_status == SECTOR_MISS) &&
       mf->get_access_type() == GLOBAL_ACC_W) {
-    if(try_cluster_write_share(addr, mf, time, events)){
+    if(try_cluster_write_share(block_addr, mf, time, events)){
       enum cache_request_status access_status = HIT;
       probe_status = HIT;
       m_stats.inc_stats(mf->get_access_type(),
@@ -2268,7 +2271,8 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     l1_cache *candidate = core->get_L1D_cache();
 
     unsigned candidate_index = (unsigned)-1;
-    cache_request_status probe_status = candidate->m_tag_array->probe(addr, candidate_index, mf, false, true);
+    cache_request_status probe_status =
+        candidate->m_tag_array->probe(block_addr, candidate_index, mf, false, true);
 
     if(probe_status == HIT){
       // 检查cache block的状态
@@ -2385,12 +2389,11 @@ bool l1_cache::try_cluster_write_share(new_addr_type addr, mem_fetch *mf,
     return false;
   }
 
-  // 检查是否应该设置cluster-state：只对注册的地址设置
-  if (!should_set_cluster_state_for_write(addr, mf)) {
+  new_addr_type block_addr = m_config.block_addr(addr);
+  // 检查是否应该设置cluster-state：只对注册的cache line设置
+  if (!should_set_cluster_state_for_write(block_addr, mf)) {
     return false;
   }
-
-  new_addr_type block_addr = m_config.block_addr(addr);
   l1_cache *source_cache = nullptr;
   unsigned source_index = (unsigned)-1;
 
@@ -2410,7 +2413,8 @@ bool l1_cache::try_cluster_write_share(new_addr_type addr, mem_fetch *mf,
     if (!candidate || candidate == this) continue;
 
     unsigned candidate_index = (unsigned)-1;
-    cache_request_status probe_status = candidate->m_tag_array->probe(addr, candidate_index, mf, false, true);
+    cache_request_status probe_status =
+        candidate->m_tag_array->probe(block_addr, candidate_index, mf, false, true);
 
     if(probe_status == HIT){
       // 检查cache block的状态
@@ -2565,12 +2569,11 @@ bool l1_cache::special_try_cluster_write_share(new_addr_type addr, mem_fetch *mf
     return false;
   }
 
-  // 检查是否应该设置cluster-state：只对注册的地址设置
-  if (!should_set_cluster_state_for_write(addr, mf)) {
+  new_addr_type block_addr = m_config.block_addr(addr);
+  // 检查是否应该设置cluster-state：只对注册的cache line设置
+  if (!should_set_cluster_state_for_write(block_addr, mf)) {
     return false;
   }
-
-  new_addr_type block_addr = m_config.block_addr(addr);
   mem_access_byte_mask_t write_byte_mask = mf->get_access_byte_mask();
   mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
 
@@ -2596,7 +2599,8 @@ bool l1_cache::special_try_cluster_write_share(new_addr_type addr, mem_fetch *mf
     if (!candidate) continue;
 
     unsigned candidate_index = (unsigned)-1;
-    cache_request_status probe_status = candidate->m_tag_array->probe(addr, candidate_index, mf, false, true);
+    cache_request_status probe_status =
+        candidate->m_tag_array->probe(block_addr, candidate_index, mf, false, true);
 
     if (probe_status == HIT || probe_status == HIT_RESERVED) {
       cache_block_t *block = candidate->m_tag_array->get_block(candidate_index);
@@ -2675,12 +2679,11 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     return false;
   }
 
-  // 检查是否应该设置cluster-state：只对注册的地址设置
-  if (!should_set_cluster_state_for_write(addr, mf)) {
+  new_addr_type block_addr = m_config.block_addr(addr);
+  // 检查是否应该设置cluster-state：只对注册的cache line设置
+  if (!should_set_cluster_state_for_write(block_addr, mf)) {
     return false;
   }
-
-  new_addr_type block_addr = m_config.block_addr(addr);
   mem_access_byte_mask_t read_byte_mask = mf->get_access_byte_mask();
   mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
 
@@ -2710,7 +2713,8 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     }
 
     unsigned candidate_index = (unsigned)-1;
-    cache_request_status probe_status = candidate->m_tag_array->probe(addr, candidate_index, mf, false, true);
+    cache_request_status probe_status =
+        candidate->m_tag_array->probe(block_addr, candidate_index, mf, false, true);
 
     if (probe_status == HIT || probe_status == HIT_RESERVED || probe_status == SECTOR_MISS) {
       cache_block_t *block = candidate->m_tag_array->get_block(candidate_index);
