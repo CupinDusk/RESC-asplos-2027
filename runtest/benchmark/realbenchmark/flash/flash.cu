@@ -92,10 +92,10 @@ void gpgpusim_register_cluster_coherent_addr(void* addr){
 }
 
 // 按 128B cacheline 注册整个通信 region（强烈建议用于数组）
-__device__ __forceinline__ void register_range_128B(void* base, int bytes){
+__device__ __forceinline__ void register_range_128B(void* base, int num, int bytes){
   unsigned long long p = (unsigned long long)base;
-  unsigned long long e = p + (unsigned long long)bytes;
-  for(; p < e; p += 128ULL) gpgpusim_register_cluster_coherent_addr((void*)p);
+  unsigned long long e = p + (unsigned long long)(num*bytes);
+  for(; p < e; p += (unsigned long long)bytes) gpgpusim_register_cluster_coherent_addr((void*)p);
 }
 
 template<int CLUSTER_SIZE>
@@ -106,9 +106,11 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
   int rank = cluster.block_rank();
   int tid  = threadIdx.x;
 
-  // DSMEM：每个 CTA 都会分配 RESERVE_ELEMS 大小的 shared（这正是“预留痛点”的放大器）
+  // DSMEM：每个 CTA 都会分配 RESERVE_ELEMS 大小的 shared（这正是“预留痛点”的放大器
+  #if BACKEND == 1
   __shared__ float smem_tile[RESERVE_ELEMS];
   __shared__ int   smem_flag;
+  #endif
 
   float* tile_ptr = nullptr;
   int*   flag_ptr = nullptr;
@@ -124,8 +126,10 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
 
   if (tid==0 && rank==0 && BACKEND==2){
     // RESC：注册整个 tile + flag
-    register_range_128B(tile_ptr, RESERVE_ELEMS * (int)sizeof(float));
-    register_range_128B(flag_ptr, (int)sizeof(int));
+    //register_range_128B(tile_ptr, RESERVE_ELEMS, (int)sizeof(float));
+    //register_range_128B(flag_ptr, 1, (int)sizeof(int));
+    gpgpusim_register_cluster_coherent_addr(tile_ptr);
+    gpgpusim_register_cluster_coherent_addr(flag_ptr);
   }
   cluster.sync();
 #endif
@@ -133,11 +137,15 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
   for(int r=0;r<repeat;r++){
     // Producer: rank0 写 tile，发布 flag=1
     if(rank==0){
+        if (tid == 0) {
 #if BACKEND == 1
       while(atomicAdd(flag_ptr,0)!=0){}
 #else
       while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=0){}
 #endif
+        }
+        __syncthreads();
+
       for(int i=tid;i<RESERVE_ELEMS;i+=blockDim.x){
         float v = (float)(i + r) * 0.001f;
 #if BACKEND == 2
@@ -160,11 +168,15 @@ void fa_tile(float* __restrict__ g_buf, float* __restrict__ out, int repeat){
 
     // Consumers: rank>0 读 tile
     if(rank!=0){
+        if(tid == 0) {
 #if BACKEND == 1
       while(atomicAdd(flag_ptr,0)!=1){}
 #else
       while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=1){}
 #endif
+        }
+        __syncthreads();
+
       float acc=0.f;
       for(int i=tid;i<RESERVE_ELEMS;i+=blockDim.x){
 #if BACKEND == 2
