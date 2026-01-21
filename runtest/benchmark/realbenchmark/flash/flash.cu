@@ -175,7 +175,8 @@ if (rank==0) {
 #if BACKEND == 1
       while(atomicAdd(flag_ptr,0)!=0){}
 #else
-      while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=0){}
+      //while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=0){}
+      while((BACKEND==2? ld_cg_s32(flag_ptr): ld_cg_s32(flag_ptr))!=0){}
 #endif
         }
         __syncthreads();
@@ -208,7 +209,8 @@ if (rank==0) {
 #if BACKEND == 1
       while(atomicAdd(flag_ptr,0)!=1){}
 #else
-      while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=1){}
+      //while((BACKEND==2? ld_ca_s32(flag_ptr): ld_cg_s32(flag_ptr))!=1){}
+      while((BACKEND==2? ld_cg_s32(flag_ptr): ld_cg_s32(flag_ptr))!=1){}
 #endif
         }
         __syncthreads();
@@ -216,7 +218,8 @@ if (rank==0) {
       float acc=0.f;
       for(int i=tid;i<RESERVE_ELEMS;i+=blockDim.x){
 #if BACKEND == 2
-        acc += ld_ca_f32(&tile_ptr[i]);
+        //acc += ld_ca_f32(&tile_ptr[i]);
+        acc += ld_cg_f32(&tile_ptr[i]);
 #elif BACKEND == 0
         acc += ld_cg_f32(&tile_ptr[i]);
 #else
