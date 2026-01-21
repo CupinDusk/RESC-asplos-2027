@@ -233,7 +233,7 @@ GPGPU-Sim: Configuration options:
 -gpgpu_heap_size_limit              8388608 # GPU malloc heap size 
 -gpgpu_runtime_sync_depth_limit                    2 # GPU device runtime synchronize depth
 -gpgpu_runtime_pending_launch_count_limit                 2048 # GPU device runtime pending launch count
--trace_eacb83cbf4aa6727708e7413a82f690fa  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/global1
+-trace_e6a601435bc8192315b08a03e694bdf61  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/global1
 Extracting PTX file and ptxas options    1: global1.1.sm_90.ptx -arch=sm_90 
 nabled                          0 # Turn on traces
 -trace_components                    none # comma seperated list of traces to enable. Complete list found in trace_streams.tup. Default none
@@ -277,7 +277,7 @@ self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/
 Running md5sum using "md5sum /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/global1 "
 self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/global1
 Extracting specific PTX file named global1.1.sm_90.ptx 
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x55d4b34f5e41, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x55a4ac5b8e41, fat_cubin_handle = 1
 GPGPU-Sim PTX: Parsing global1.1.sm_90.ptx
 GPGPU-Sim PTX: allocating global region for "g_turn" from 0x100 to 0x104 (global memory space)
 GPGPU-Sim PTX: allocating global region for "g_dummy_registration_flag" from 0x104 to 0x108 (global memory space)
@@ -292,24 +292,24 @@ GPGPU-Sim PTX: Loading PTXInfo from global1.1.sm_90.ptx
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi8EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi4EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi2EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x55d4b34f5e14, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x55d4b34f5de7, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x55d4b34fb110; deviceAddress = g_turn; deviceName = g_turn
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x55a4ac5b8e14, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x55a4ac5b8de7, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x55a4ac5be110; deviceAddress = g_turn; deviceName = g_turn
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_turn hostVar to name mapping
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x55d4b34fb114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x55a4ac5be114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_dummy_registration_flag hostVar to name mapping
-GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x55d4b34fb110
-GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x55d4b34fb110
-GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x55d4b34fb110
+GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x55a4ac5be110
+GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x55a4ac5be110
+GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x55a4ac5be110
 GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: copying global memory 4 bytes  to  symbol g_turn+0 @0x100 ...
 Not found 
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffef4cd1d60..
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffef4cd1d58..
-GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffef4cd1cfc..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffced3f09e0..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffced3f09d8..
+GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffced3f097c..
 
-GPGPU-Sim PTX: cudaLaunch for 0x0x55d4b34f5e41 (mode=performance simulation) on stream 0
+GPGPU-Sim PTX: cudaLaunch for 0x0x55a4ac5b8e41 (mode=performance simulation) on stream 0
 Not found 
 GPGPU-Sim PTX: finding reconvergence points for '_Z7fa_tileILi8EEvPfS0_i'...
 GPGPU-Sim PTX: Finding dominators for '_Z7fa_tileILi8EEvPfS0_i'...
@@ -370,25 +370,25 @@ GPGPU-Sim uArch: Shader 7 bind to kernel 1 '_Z7fa_tileILi8EEvPfS0_i'
 Destroy streams for kernel 1: size 0
 kernel_name = _Z7fa_tileILi8EEvPfS0_i 
 kernel_launch_uid = 1 
-gpu_sim_cycle = 8489
+gpu_sim_cycle = 8239
 gpu_sim_insn = 72307
-gpu_ipc =       8.5177
-gpu_tot_sim_cycle = 8489
+gpu_ipc =       8.7762
+gpu_tot_sim_cycle = 8239
 gpu_tot_sim_insn = 72307
-gpu_tot_ipc =       8.5177
+gpu_tot_ipc =       8.7762
 gpu_tot_issued_cta = 8
-gpu_occupancy = 11.0881% 
-gpu_tot_occupancy = 11.0881% 
+gpu_occupancy = 10.9921% 
+gpu_tot_occupancy = 10.9921% 
 max_total_param_size = 0
 gpu_stall_dramfull = 0
 gpu_stall_icnt2sh    = 0
-partiton_level_parallism =       0.0046
-partiton_level_parallism_total  =       0.0046
+partiton_level_parallism =       0.0047
+partiton_level_parallism_total  =       0.0047
 partiton_level_parallism_util =       1.0000
 partiton_level_parallism_util_total  =       1.0000
-L2_BW  =       0.2382 GB/Sec
-L2_BW_total  =       0.2382 GB/Sec
-gpu_total_sim_rate=12051
+L2_BW  =       0.2454 GB/Sec
+L2_BW_total  =       0.2454 GB/Sec
+gpu_total_sim_rate=10329
 
 ========= Core cache stats =========
 L1I_cache:
@@ -649,7 +649,7 @@ gpgpu_stall_shd_mem[gl_mem][coal_stall] = 0
 gpgpu_stall_shd_mem[gl_mem][data_port_stall] = 0
 gpu_reg_bank_conflict_stalls = 0
 Warp Occupancy Distribution:
-Stall:256	W0_Idle:107960	W0_Scoreboard:14909	W1:155	W2:0	W3:0	W4:0	W5:0	W6:0	W7:0	W8:0	W9:0	W10:0	W11:0	W12:0	W13:0	W14:0	W15:0	W16:0	W17:0	W18:0	W19:0	W20:0	W21:0	W22:0	W23:0	W24:0	W25:0	W26:0	W27:0	W28:0	W29:0	W30:0	W31:0	W32:2440
+Stall:256	W0_Idle:101681	W0_Scoreboard:13152	W1:155	W2:0	W3:0	W4:0	W5:0	W6:0	W7:0	W8:0	W9:0	W10:0	W11:0	W12:0	W13:0	W14:0	W15:0	W16:0	W17:0	W18:0	W19:0	W20:0	W21:0	W22:0	W23:0	W24:0	W25:0	W26:0	W27:0	W28:0	W29:0	W30:0	W31:0	W32:2440
 single_issue_nums: WS0:765	WS1:610	WS2:610	WS3:610	
 dual_issue_nums: WS0:0	WS1:0	WS2:0	WS3:0	
 traffic_breakdown_coretomem[GLOBAL_ACC_R] = 232 {8:29,}
@@ -660,16 +660,16 @@ maxmflatency = 530
 max_icnt2mem_latency = 8 
 maxmrqlatency = 1 
 max_icnt2sh_latency = 2 
-averagemflatency = 403 
+averagemflatency = 354 
 avg_icnt2mem_latency = 2 
 avg_mrq_latency = 1 
 avg_icnt2sh_latency = 2 
-mrq_lat_table:3 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+mrq_lat_table:2 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 dq_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-mf_lat_table:0 	0 	0 	0 	0 	0 	0 	17 	7 	15 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+mf_lat_table:0 	0 	0 	0 	0 	0 	0 	24 	0 	15 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 icnt2mem_lat_table:0 	33 	4 	2 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 icnt2sh_lat_table:0 	39 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-mf_lat_pw_table:0 	0 	0 	0 	0 	0 	0 	1 	1 	2 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+mf_lat_pw_table:0 	0 	0 	0 	0 	0 	0 	2 	0 	2 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 maximum concurrent accesses to same row:
 dram[0]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -704,7 +704,7 @@ dram[29]:         0         0         0         0         0         0         0 
 dram[30]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[31]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 maximum service time to same row:
-dram[0]:      7039         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
+dram[0]:      6789         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[2]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[3]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -769,7 +769,7 @@ dram[28]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[29]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[30]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[31]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
-average row locality = 3/1 = 3.000000
+average row locality = 2/1 = 2.000000
 number of total memory accesses made:
 dram[0]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -808,7 +808,7 @@ min_bank_accesses = 0!
 min_chip_accesses = 0!
 number of total read accesses:
 dram[0]:         1         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
-dram[1]:         2         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
+dram[1]:         1         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[2]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[3]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[4]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -839,7 +839,7 @@ dram[28]:         0         0         0         0         0         0         0 
 dram[29]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[30]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[31]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
-total dram reads = 3
+total dram reads = 2
 min_bank_accesses = 0!
 min_chip_accesses = 0!
 number of total write accesses:
@@ -879,8 +879,8 @@ total dram writes = 0
 min_bank_accesses = 0!
 min_chip_accesses = 0!
 average mf latency per bank:
-dram[0]:       3907    none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
-dram[1]:       5835    none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
+dram[0]:       3906    none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
+dram[1]:       9915    none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[2]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[3]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[4]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
@@ -950,9 +950,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[0]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8345 n_act=1 n_pre=0 n_ref_event=0 n_req=1 n_rd=1 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0.0001198
+n_cmd=8101 n_nop=8099 n_act=1 n_pre=0 n_ref_event=0 n_req=1 n_rd=1 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0.0001234
 n_activity=75 dram_eff=0.01333
-bk0: 1a 8324i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 1a 8078i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -966,12 +966,12 @@ write_to_read_ratio_blp_rw_average = 0.000000
 GrpLevelPara = 1.000000 
 
 BW Util details:
-bwutil = 0.000120 
-total_CMD = 8347 
+bwutil = 0.000123 
+total_CMD = 8101 
 util_bw = 1 
 Wasted_Col = 23 
 Wasted_Row = 0 
-Idle = 8323 
+Idle = 8077 
 
 BW Util Bottlenecks: 
 RCDc_limit = 23 
@@ -985,8 +985,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8345 
+total_CMD = 8101 
+n_nop = 8099 
 Read = 1 
 Write = 0 
 L2_Alloc = 0 
@@ -1000,9 +1000,9 @@ total_req = 1
 Dual Bus Interface Util: 
 issued_total_row = 1 
 issued_total_col = 1 
-Row_Bus_Util =  0.000120 
-CoL_Bus_Util = 0.000120 
-Either_Row_CoL_Bus_Util = 0.000240 
+Row_Bus_Util =  0.000123 
+CoL_Bus_Util = 0.000123 
+Either_Row_CoL_Bus_Util = 0.000247 
 Issued_on_Two_Bus_Simul_Util = 0.000000 
 issued_two_Eff = 0.000000 
 queue_avg = 0.000000 
@@ -1017,9 +1017,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[1]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8344 n_act=1 n_pre=0 n_ref_event=0 n_req=2 n_rd=2 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0.0002396
-n_activity=97 dram_eff=0.02062
-bk0: 2a 8324i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+n_cmd=8101 n_nop=8099 n_act=1 n_pre=0 n_ref_event=0 n_req=1 n_rd=1 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0.0001234
+n_activity=75 dram_eff=0.01333
+bk0: 1a 8078i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1033,12 +1033,12 @@ write_to_read_ratio_blp_rw_average = 0.000000
 GrpLevelPara = 1.000000 
 
 BW Util details:
-bwutil = 0.000240 
-total_CMD = 8347 
-util_bw = 2 
+bwutil = 0.000123 
+total_CMD = 8101 
+util_bw = 1 
 Wasted_Col = 23 
 Wasted_Row = 0 
-Idle = 8322 
+Idle = 8077 
 
 BW Util Bottlenecks: 
 RCDc_limit = 23 
@@ -1052,24 +1052,24 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8344 
-Read = 2 
+total_CMD = 8101 
+n_nop = 8099 
+Read = 1 
 Write = 0 
 L2_Alloc = 0 
 L2_WB = 0 
 n_act = 1 
 n_pre = 0 
 n_ref = 0 
-n_req = 2 
-total_req = 2 
+n_req = 1 
+total_req = 1 
 
 Dual Bus Interface Util: 
 issued_total_row = 1 
-issued_total_col = 2 
-Row_Bus_Util =  0.000120 
-CoL_Bus_Util = 0.000240 
-Either_Row_CoL_Bus_Util = 0.000359 
+issued_total_col = 1 
+Row_Bus_Util =  0.000123 
+CoL_Bus_Util = 0.000123 
+Either_Row_CoL_Bus_Util = 0.000247 
 Issued_on_Two_Bus_Simul_Util = 0.000000 
 issued_two_Eff = 0.000000 
 queue_avg = 0.000000 
@@ -1084,9 +1084,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[2]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1101,11 +1101,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1119,8 +1119,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1151,9 +1151,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[3]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1168,11 +1168,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1186,8 +1186,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1218,9 +1218,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[4]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1235,11 +1235,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1253,8 +1253,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1285,9 +1285,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[5]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1302,11 +1302,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1320,8 +1320,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1352,9 +1352,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[6]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1369,11 +1369,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1387,8 +1387,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1419,9 +1419,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[7]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1436,11 +1436,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1454,8 +1454,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1486,9 +1486,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[8]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1503,11 +1503,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1521,8 +1521,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1553,9 +1553,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[9]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1570,11 +1570,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1588,8 +1588,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1620,9 +1620,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[10]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1637,11 +1637,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1655,8 +1655,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1687,9 +1687,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[11]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1704,11 +1704,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1722,8 +1722,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1754,9 +1754,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[12]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1771,11 +1771,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1789,8 +1789,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1821,9 +1821,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[13]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1838,11 +1838,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1856,8 +1856,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1888,9 +1888,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[14]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1905,11 +1905,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1923,8 +1923,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -1955,9 +1955,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[15]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -1972,11 +1972,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -1990,8 +1990,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2022,9 +2022,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[16]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2039,11 +2039,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2057,8 +2057,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2089,9 +2089,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[17]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2106,11 +2106,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2124,8 +2124,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2156,9 +2156,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[18]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2173,11 +2173,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2191,8 +2191,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2223,9 +2223,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[19]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2240,11 +2240,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2258,8 +2258,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2290,9 +2290,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[20]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2307,11 +2307,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2325,8 +2325,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2357,9 +2357,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[21]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2374,11 +2374,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2392,8 +2392,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2424,9 +2424,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[22]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2441,11 +2441,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2459,8 +2459,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2491,9 +2491,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[23]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2508,11 +2508,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2526,8 +2526,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2558,9 +2558,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[24]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2575,11 +2575,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2593,8 +2593,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2625,9 +2625,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[25]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2642,11 +2642,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2660,8 +2660,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2692,9 +2692,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[26]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2709,11 +2709,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2727,8 +2727,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2759,9 +2759,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[27]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2776,11 +2776,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2794,8 +2794,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2826,9 +2826,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[28]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2843,11 +2843,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2861,8 +2861,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2893,9 +2893,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[29]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2910,11 +2910,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2928,8 +2928,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -2960,9 +2960,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[30]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -2977,11 +2977,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -2995,8 +2995,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -3027,9 +3027,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[31]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=8347 n_nop=8347 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=8101 n_nop=8101 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 8347i bk1: 0a 8347i bk2: 0a 8347i bk3: 0a 8347i bk4: 0a 8347i bk5: 0a 8347i bk6: 0a 8347i bk7: 0a 8347i bk8: 0a 8347i bk9: 0a 8347i bk10: 0a 8347i bk11: 0a 8347i bk12: 0a 8347i bk13: 0a 8347i bk14: 0a 8347i bk15: 0a 8347i 
+bk0: 0a 8101i bk1: 0a 8101i bk2: 0a 8101i bk3: 0a 8101i bk4: 0a 8101i bk5: 0a 8101i bk6: 0a 8101i bk7: 0a 8101i bk8: 0a 8101i bk9: 0a 8101i bk10: 0a 8101i bk11: 0a 8101i bk12: 0a 8101i bk13: 0a 8101i bk14: 0a 8101i bk15: 0a 8101i 
 
 ------------------------------------------------------------------------
 
@@ -3044,11 +3044,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 8347 
+total_CMD = 8101 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 8347 
+Idle = 8101 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -3062,8 +3062,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 8347 
-n_nop = 8347 
+total_CMD = 8101 
+n_nop = 8101 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -3091,7 +3091,7 @@ mrqq: max=0 avg=0
 
 ========= L2 cache stats =========
 L2_cache_bank[0]: Access = 8, Miss = 2, Miss_rate = 0.250, Pending_hits = 3, Reservation_fails = 270
-L2_cache_bank[1]: Access = 31, Miss = 2, Miss_rate = 0.065, Pending_hits = 6, Reservation_fails = 518
+L2_cache_bank[1]: Access = 31, Miss = 1, Miss_rate = 0.032, Pending_hits = 3, Reservation_fails = 271
 L2_cache_bank[2]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 L2_cache_bank[3]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 L2_cache_bank[4]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
@@ -3123,17 +3123,17 @@ L2_cache_bank[29]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Res
 L2_cache_bank[30]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 L2_cache_bank[31]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 L2_total_cache_accesses = 39
-L2_total_cache_misses = 4
-L2_total_cache_miss_rate = 0.1026
-L2_total_cache_pending_hits = 9
-L2_total_cache_reservation_fails = 788
+L2_total_cache_misses = 3
+L2_total_cache_miss_rate = 0.0769
+L2_total_cache_pending_hits = 6
+L2_total_cache_reservation_fails = 541
 L2_total_cache_breakdown:
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 17
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT_RESERVED] = 9
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 21
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT_RESERVED] = 6
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][MISS] = 1
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][RESERVATION_FAIL] = 788
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][SECTOR_MISS] = 2
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][MSHR_HIT] = 9
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][RESERVATION_FAIL] = 541
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][SECTOR_MISS] = 1
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][MSHR_HIT] = 6
 	L2_cache_stats_breakdown[LOCAL_ACC_R][HIT] = 0
 	L2_cache_stats_breakdown[LOCAL_ACC_R][HIT_RESERVED] = 0
 	L2_cache_stats_breakdown[LOCAL_ACC_R][MISS] = 0
@@ -3197,7 +3197,7 @@ L2_total_cache_breakdown:
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][TOTAL_ACCESS] = 29
 	L2_cache_stats_breakdown[GLOBAL_ACC_W][TOTAL_ACCESS] = 10
 L2_total_cache_reservation_fail_breakdown:
-	L2_cache_stats_fail_breakdown[GLOBAL_ACC_R][MSHR_MERGE_ENRTY_FAIL] = 788
+	L2_cache_stats_fail_breakdown[GLOBAL_ACC_R][MSHR_MERGE_ENRTY_FAIL] = 541
 L2_cache_data_port_util = 0.000
 L2_cache_fill_port_util = 0.000
 
@@ -3207,9 +3207,9 @@ LD_mem_lat_dist  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ST_mem_lat_dist  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ----------------------------Interconnect-DETAILS--------------------------------
 Req_Network_injected_packets_num = 39
-Req_Network_cycles = 8489
-Req_Network_injected_packets_per_cycle =       0.0046 
-Req_Network_conflicts_per_cycle =       0.0037
+Req_Network_cycles = 8239
+Req_Network_injected_packets_per_cycle =       0.0047 
+Req_Network_conflicts_per_cycle =       0.0038
 Req_Network_conflicts_per_cycle_util =       0.7949
 Req_Bank_Level_Parallism =       1.0000
 Req_Network_in_buffer_full_per_cycle =       0.0000
@@ -3218,8 +3218,8 @@ Req_Network_out_buffer_full_per_cycle =       0.0000
 Req_Network_out_buffer_avg_util =       0.0001
 
 Reply_Network_injected_packets_num = 39
-Reply_Network_cycles = 8489
-Reply_Network_injected_packets_per_cycle =        0.0046
+Reply_Network_cycles = 8239
+Reply_Network_injected_packets_per_cycle =        0.0047
 Reply_Network_conflicts_per_cycle =        0.0000
 Reply_Network_conflicts_per_cycle_util =       0.0000
 Reply_Bank_Level_Parallism =       1.0000
@@ -3230,10 +3230,10 @@ Reply_Network_out_buffer_avg_util =       0.0000
 ----------------------------END-of-Interconnect-DETAILS-------------------------
 
 
-gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 6 sec (6 sec)
-gpgpu_simulation_rate = 12051 (inst/sec)
-gpgpu_simulation_rate = 1414 (cycle/sec)
-gpgpu_silicon_slowdown = 1145685x
+gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 7 sec (7 sec)
+gpgpu_simulation_rate = 10329 (inst/sec)
+gpgpu_simulation_rate = 1177 (cycle/sec)
+gpgpu_silicon_slowdown = 1376380x
 GPGPU-Sim: synchronize waiting for inactive GPU simulation
 GPGPU-Sim API: Stream Manager State
 GPGPU-Sim: detected inactive GPU simulation thread

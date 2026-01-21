@@ -233,7 +233,7 @@ GPGPU-Sim: Configuration options:
 -gpgpu_heap_size_limit              8388608 # GPU malloc heap size 
 -gpgpu_runtime_sync_depth_limit                    2 # GPU device runtime synchronize depth
 -gpgpu_runtime_pending_launch_count_limit                 2048 # GPU device runtime pending launch count
--trace_e95e6774f25463a9fc33da9ace009b330  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cgcgresc4096
+-trace_efe38745a81cfc7da0cce0ce1516ca404  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cgcgresc4096
 Extracting PTX file and ptxas options    1: cgcgresc4096.1.sm_90.ptx -arch=sm_90 
 nabled                          0 # Turn on traces
 -trace_components                    none # comma seperated list of traces to enable. Complete list found in trace_streams.tup. Default none
@@ -277,7 +277,7 @@ self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/
 Running md5sum using "md5sum /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cgcgresc4096 "
 self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cgcgresc4096
 Extracting specific PTX file named cgcgresc4096.1.sm_90.ptx 
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x564407959e41, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x56420d2ebe41, fat_cubin_handle = 1
 GPGPU-Sim PTX: Parsing cgcgresc4096.1.sm_90.ptx
 GPGPU-Sim PTX: allocating global region for "g_turn" from 0x100 to 0x104 (global memory space)
 GPGPU-Sim PTX: allocating global region for "g_dummy_registration_flag" from 0x104 to 0x108 (global memory space)
@@ -330,24 +330,24 @@ GPGPU-Sim PTX: Loading PTXInfo from cgcgresc4096.1.sm_90.ptx
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi8EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi4EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi2EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x564407959e14, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x564407959de7, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x564407962110; deviceAddress = g_turn; deviceName = g_turn
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x56420d2ebe14, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x56420d2ebde7, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x56420d2f4110; deviceAddress = g_turn; deviceName = g_turn
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_turn hostVar to name mapping
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x564407962114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x56420d2f4114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_dummy_registration_flag hostVar to name mapping
-GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x564407962110
-GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x564407962110
-GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x564407962110
+GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x56420d2f4110
+GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x56420d2f4110
+GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x56420d2f4110
 GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: copying global memory 4 bytes  to  symbol g_turn+0 @0x100 ...
 Not found 
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffd5feb1b90..
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffd5feb1b88..
-GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffd5feb1b2c..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffe65f833c0..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffe65f833b8..
+GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffe65f8335c..
 
-GPGPU-Sim PTX: cudaLaunch for 0x0x564407959de7 (mode=performance simulation) on stream 0
+GPGPU-Sim PTX: cudaLaunch for 0x0x56420d2ebde7 (mode=performance simulation) on stream 0
 Not found 
 GPGPU-Sim PTX: finding reconvergence points for '_Z7fa_tileILi2EEvPfS0_i'...
 GPGPU-Sim PTX: Finding dominators for '_Z7fa_tileILi2EEvPfS0_i'...
@@ -3791,1056 +3791,28 @@ GPGPU-Sim PTX: PDOM analysis already done for gpgpusim_register_cluster_coherent
 [CLUSTER_STATE] Converted to global address: 0x100
 
 [RESC] Registered cluster coherent address: 0x100
-
-[RESC] Read share SUCCESS (special) - addr=0x100, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000280, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000002a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000002c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000002e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000300, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000320, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000340, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000360, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000380, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000003a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000003c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000003e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000000, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000020, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000040, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000060, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000080, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000000a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000000c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000000e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000100, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000120, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000140, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000160, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000180, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000001a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000001c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000001e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000200, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000220, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000240, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000260, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000680, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000006a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000006c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000006e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000700, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000720, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000740, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000760, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000780, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000007a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000007c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000007e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000400, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000420, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000440, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000460, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000480, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000004a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000004c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000004e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000500, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000520, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000540, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000560, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000580, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000005a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000005c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000005e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000600, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000620, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000640, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000660, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000a80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000aa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ac0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ae0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000b00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000b20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000b40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000b60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000b80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ba0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000bc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000be0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000800, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000820, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000840, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000860, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000880, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000008a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000008c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000008e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000900, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000920, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000940, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000960, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000980, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000009a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000009c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000009e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000a00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000a20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000a40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000a60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000e80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ea0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ec0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ee0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000f00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000f20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000f40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000f60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000f80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000fa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000fc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000fe0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000c00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000c20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000c40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000c60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000c80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ca0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000cc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000ce0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000d00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000d20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000d40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000d60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000d80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000da0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000dc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000de0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000e00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000e20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000e40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00000e60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001280, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000012a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000012c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000012e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001300, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001320, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001340, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001360, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001380, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000013a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000013c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000013e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001000, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001020, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001040, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001060, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001080, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000010a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000010c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000010e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001100, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001120, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001140, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001160, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001180, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000011a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000011c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000011e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001200, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001220, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001240, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001260, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001680, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000016a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000016c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000016e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001700, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001720, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001740, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001760, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001780, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000017a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000017c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000017e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001400, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001420, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001440, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001460, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001480, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000014a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000014c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000014e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001500, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001520, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001540, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001560, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001580, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000015a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000015c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000015e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001600, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001620, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001640, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001660, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001a80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001aa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ac0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ae0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001b00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001b20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001b40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001b60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001b80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ba0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001bc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001be0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001800, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001820, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001840, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001860, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001880, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000018a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000018c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000018e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001900, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001920, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001940, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001960, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001980, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000019a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000019c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000019e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001a00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001a20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001a40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001a60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001e80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ea0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ec0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ee0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001f00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001f20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001f40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001f60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001f80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001fa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001fc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001fe0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001c00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001c20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001c40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001c60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001c80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ca0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001cc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001ce0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001d00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001d20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001d40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001d60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001d80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001da0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001dc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001de0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001e00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001e20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001e40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00001e60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002280, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000022a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000022c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000022e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002300, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002320, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002340, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002360, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002380, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000023a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000023c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000023e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002000, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002020, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002040, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002060, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002080, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000020a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000020c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000020e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002100, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002120, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002140, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002160, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002180, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000021a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000021c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000021e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002200, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002220, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002240, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002260, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002680, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000026a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000026c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000026e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002700, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002720, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002740, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002760, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002780, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000027a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000027c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000027e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002400, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002420, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002440, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002460, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002480, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000024a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000024c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000024e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002500, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002520, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002540, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002560, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002580, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000025a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000025c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000025e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002600, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002620, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002640, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002660, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002a80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002aa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ac0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ae0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002b00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002b20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002b40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002b60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002b80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ba0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002bc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002be0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002800, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002820, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002840, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002860, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002880, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000028a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000028c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000028e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002900, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002920, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002940, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002960, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002980, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000029a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000029c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000029e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002a00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002a20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002a40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002a60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002e80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ea0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ec0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ee0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002f00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002f20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002f40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002f60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002f80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002fa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002fc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002fe0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002c00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002c20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002c40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002c60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002c80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ca0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002cc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002ce0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002d00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002d20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002d40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002d60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002d80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002da0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002dc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002de0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002e00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002e20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002e40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00002e60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003280, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000032a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000032c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000032e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003300, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003320, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003340, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003360, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003380, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000033a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000033c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000033e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003000, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003020, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003040, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003060, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003080, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000030a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000030c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000030e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003100, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003120, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003140, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003160, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003180, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000031a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000031c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000031e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003200, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003220, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003240, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003260, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003680, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000036a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000036c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000036e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003700, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003720, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003740, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003760, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003780, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000037a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000037c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000037e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003400, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003420, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003440, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003460, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003480, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000034a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000034c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000034e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003500, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003520, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003540, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003560, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003580, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000035a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000035c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000035e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003600, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003620, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003640, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003660, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003a80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003aa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ac0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ae0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003b00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003b20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003b40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003b60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003b80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ba0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003bc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003be0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003800, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003820, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003840, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003860, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003880, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000038a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000038c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000038e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003900, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003920, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003940, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003960, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003980, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000039a0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000039c0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf000039e0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003a00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003a20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003a40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003a60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003e80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ea0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ec0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ee0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003f00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003f20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003f40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003f60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003f80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003fa0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003fc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003fe0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003c00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003c20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003c40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003c60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003c80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ca0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003cc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003ce0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003d00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003d20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003d40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003d60, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003d80, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003da0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003dc0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003de0, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003e00, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003e20, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003e40, owner_sid=1
-
-[RESC] Read share SUCCESS (special) - addr=0xf00003e60, owner_sid=1
 Destroy streams for kernel 1: size 0
-GPGPU-Sim: synchronize waiting for inactive GPU simulation
-GPGPU-Sim API: Stream Manager State
 kernel_name = _Z7fa_tileILi2EEvPfS0_i 
 kernel_launch_uid = 1 
-gpu_sim_cycle = 9401
-gpu_sim_insn = 88117
-gpu_ipc =       9.3732
-gpu_tot_sim_cycle = 9401
-gpu_tot_sim_insn = 88117
-gpu_tot_ipc =       9.3732
+gpu_sim_cycle = 13473
+gpu_sim_insn = 88054
+gpu_ipc =       6.5356
+gpu_tot_sim_cycle = 13473
+gpu_tot_sim_insn = 88054
+gpu_tot_ipc =       6.5356
 gpu_tot_issued_cta = 2
-gpu_occupancy = 12.4917% 
-gpu_tot_occupancy = 12.4917% 
+gpu_occupancy = 12.4866% 
+gpu_tot_occupancy = 12.4866% 
 max_total_param_size = 0
 gpu_stall_dramfull = 0
 gpu_stall_icnt2sh    = 0
-partiton_level_parallism =       0.0000
-partiton_level_parallism_total  =       0.0000
-partiton_level_parallism_util =         -nan
-partiton_level_parallism_util_total  =         -nan
-L2_BW  =       0.0000 GB/Sec
-L2_BW_total  =       0.0000 GB/Sec
-gpu_total_sim_rate=9790
+partiton_level_parallism =       0.0773
+partiton_level_parallism_total  =       0.0773
+partiton_level_parallism_util =       1.0029
+partiton_level_parallism_util_total  =       1.0029
+L2_BW  =       4.0055 GB/Sec
+L2_BW_total  =       4.0055 GB/Sec
+gpu_total_sim_rate=9783
 
 ========= Core cache stats =========
 L1I_cache:
@@ -4849,8 +3821,8 @@ L1I_cache:
 	L1I_total_cache_pending_hits = 0
 	L1I_total_cache_reservation_fails = 0
 L1D_cache:
-	L1D_cache_core[0]: Access = 561, Miss = 553, Miss_rate = 0.986, Pending_hits = 0, Reservation_fails = 0
-	L1D_cache_core[1]: Access = 542, Miss = 1, Miss_rate = 0.002, Pending_hits = 0, Reservation_fails = 0
+	L1D_cache_core[0]: Access = 40, Miss = 40, Miss_rate = 1.000, Pending_hits = 0, Reservation_fails = 0
+	L1D_cache_core[1]: Access = 1, Miss = 1, Miss_rate = 1.000, Pending_hits = 0, Reservation_fails = 0
 	L1D_cache_core[2]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 	L1D_cache_core[3]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 	L1D_cache_core[4]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
@@ -4981,12 +3953,12 @@ L1D_cache:
 	L1D_cache_core[129]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 	L1D_cache_core[130]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
 	L1D_cache_core[131]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-	L1D_total_cache_accesses = 1103
-	L1D_total_cache_misses = 554
-	L1D_total_cache_miss_rate = 0.5023
+	L1D_total_cache_accesses = 41
+	L1D_total_cache_misses = 41
+	L1D_total_cache_miss_rate = 1.0000
 	L1D_total_cache_pending_hits = 0
 	L1D_total_cache_reservation_fails = 0
-	L1D_cache_data_port_util = 0.056
+	L1D_cache_data_port_util = 0.000
 	L1D_cache_fill_port_util = 0.000
 L1C_cache:
 	L1C_total_cache_accesses = 0
@@ -5000,7 +3972,7 @@ L1T_cache:
 	L1T_total_cache_reservation_fails = 0
 
 Total_core_cache_stats:
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 541
+	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 0
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][HIT_RESERVED] = 0
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][MISS] = 0
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][RESERVATION_FAIL] = 0
@@ -5024,11 +3996,11 @@ Total_core_cache_stats:
 	Total_core_cache_stats_breakdown[TEXTURE_ACC_R][RESERVATION_FAIL] = 0
 	Total_core_cache_stats_breakdown[TEXTURE_ACC_R][SECTOR_MISS] = 0
 	Total_core_cache_stats_breakdown[TEXTURE_ACC_R][MSHR_HIT] = 0
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][HIT] = 8
+	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][HIT] = 0
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][HIT_RESERVED] = 0
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][MISS] = 130
+	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][MISS] = 1
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][RESERVATION_FAIL] = 0
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][SECTOR_MISS] = 384
+	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][SECTOR_MISS] = 0
 	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][MSHR_HIT] = 0
 	Total_core_cache_stats_breakdown[LOCAL_ACC_W][HIT] = 0
 	Total_core_cache_stats_breakdown[LOCAL_ACC_W][HIT_RESERVED] = 0
@@ -5066,8 +4038,7 @@ Total_core_cache_stats:
 	Total_core_cache_stats_breakdown[L2_WR_ALLOC_R][RESERVATION_FAIL] = 0
 	Total_core_cache_stats_breakdown[L2_WR_ALLOC_R][SECTOR_MISS] = 0
 	Total_core_cache_stats_breakdown[L2_WR_ALLOC_R][MSHR_HIT] = 0
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_R][TOTAL_ACCESS] = 541
-	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][TOTAL_ACCESS] = 522
+	Total_core_cache_stats_breakdown[GLOBAL_ACC_W][TOTAL_ACCESS] = 1
 	Total_core_cache_stats_breakdown[LOCAL_ACC_W][TOTAL_ACCESS] = 40
 
 Total_core_cache_fail_stats:
@@ -5076,16 +4047,16 @@ warp_id:
 0, 1, 2, 3, 4, 5, 6, 7, 
 distro:
 286, 189, 189, 189, 189, 189, 189, 189, 
-gpgpu_n_tot_thrd_icount = 93728
-gpgpu_n_tot_w_icount = 2929
-gpgpu_n_stall_shd_mem = 5
+gpgpu_n_tot_thrd_icount = 91712
+gpgpu_n_tot_w_icount = 2866
+gpgpu_n_stall_shd_mem = 773
 gpgpu_n_mem_read_local = 0
 gpgpu_n_mem_write_local = 0
-gpgpu_n_mem_read_global = 0
-gpgpu_n_mem_write_global = 0
+gpgpu_n_mem_read_global = 520
+gpgpu_n_mem_write_global = 521
 gpgpu_n_mem_texture = 0
 gpgpu_n_mem_const = 0
-gpgpu_n_load_insn  = 4125
+gpgpu_n_load_insn  = 4104
 gpgpu_n_store_insn = 4354
 gpgpu_n_shmem_insn = 0
 gpgpu_n_sstarr_insn = 0
@@ -5099,23 +4070,31 @@ gpgpu_n_cmem_portconflict = 0
 gpgpu_stall_shd_mem[c_mem][resource_stall] = 0
 gpgpu_stall_shd_mem[s_mem][bk_conf] = 0
 gpgpu_stall_shd_mem[gl_mem][resource_stall] = 0
-gpgpu_stall_shd_mem[gl_mem][coal_stall] = 5
+gpgpu_stall_shd_mem[gl_mem][coal_stall] = 773
 gpgpu_stall_shd_mem[gl_mem][data_port_stall] = 0
 gpu_reg_bank_conflict_stalls = 0
 Warp Occupancy Distribution:
-Stall:62	W0_Idle:27410	W0_Scoreboard:8723	W1:91	W2:0	W3:0	W4:0	W5:0	W6:0	W7:0	W8:0	W9:0	W10:0	W11:0	W12:0	W13:0	W14:0	W15:0	W16:0	W17:0	W18:0	W19:0	W20:0	W21:0	W22:0	W23:0	W24:0	W25:0	W26:0	W27:0	W28:0	W29:0	W30:0	W31:0	W32:2838
-single_issue_nums: WS0:871	WS1:686	WS2:686	WS3:686	
+Stall:63	W0_Idle:45212	W0_Scoreboard:23447	W1:28	W2:0	W3:0	W4:0	W5:0	W6:0	W7:0	W8:0	W9:0	W10:0	W11:0	W12:0	W13:0	W14:0	W15:0	W16:0	W17:0	W18:0	W19:0	W20:0	W21:0	W22:0	W23:0	W24:0	W25:0	W26:0	W27:0	W28:0	W29:0	W30:0	W31:0	W32:2838
+single_issue_nums: WS0:808	WS1:686	WS2:686	WS3:686	
 dual_issue_nums: WS0:0	WS1:0	WS2:0	WS3:0	
-maxmflatency = 0 
-max_icnt2mem_latency = 0 
-maxmrqlatency = 0 
-max_icnt2sh_latency = 0 
-mrq_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+traffic_breakdown_coretomem[GLOBAL_ACC_R] = 4160 {8:520,}
+traffic_breakdown_coretomem[GLOBAL_ACC_W] = 20840 {40:521,}
+traffic_breakdown_memtocore[GLOBAL_ACC_R] = 20800 {40:520,}
+traffic_breakdown_memtocore[GLOBAL_ACC_W] = 4168 {8:521,}
+maxmflatency = 523 
+max_icnt2mem_latency = 2 
+maxmrqlatency = 1 
+max_icnt2sh_latency = 2 
+averagemflatency = 248 
+avg_icnt2mem_latency = 2 
+avg_mrq_latency = 1 
+avg_icnt2sh_latency = 2 
+mrq_lat_table:1 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 dq_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-mf_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-icnt2mem_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-icnt2sh_lat_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
-mf_lat_pw_table:0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+mf_lat_table:0 	0 	0 	0 	0 	0 	0 	1040 	0 	1 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+icnt2mem_lat_table:0 	1041 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+icnt2sh_lat_table:0 	1041 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
+mf_lat_pw_table:0 	0 	0 	0 	0 	0 	0 	13 	0 	1 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	
 maximum concurrent accesses to same row:
 dram[0]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -5184,7 +4163,7 @@ dram[30]:         0         0         0         0         0         0         0 
 dram[31]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 average row accesses per activate:
 dram[0]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
-dram[1]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
+dram[1]:       inf      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[2]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[3]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[4]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
@@ -5215,7 +4194,7 @@ dram[28]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[29]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[30]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
 dram[31]:      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan      -nan 
-average row locality = 0/0 = -nan
+average row locality = 1/0 = inf
 number of total memory accesses made:
 dram[0]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -5254,7 +4233,7 @@ min_bank_accesses = 0!
 min_chip_accesses = 0!
 number of total read accesses:
 dram[0]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
-dram[1]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
+dram[1]:         1         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[2]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[3]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[4]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
@@ -5285,7 +4264,7 @@ dram[28]:         0         0         0         0         0         0         0 
 dram[29]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[30]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
 dram[31]:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 
-total dram reads = 0
+total dram reads = 1
 min_bank_accesses = 0!
 min_chip_accesses = 0!
 number of total write accesses:
@@ -5326,7 +4305,7 @@ min_bank_accesses = 0!
 min_chip_accesses = 0!
 average mf latency per bank:
 dram[0]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
-dram[1]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
+dram[1]:       8459    none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[2]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[3]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[4]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
@@ -5358,47 +4337,47 @@ dram[29]:     none      none      none      none      none      none      none  
 dram[30]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 dram[31]:     none      none      none      none      none      none      none      none      none      none      none      none      none      none      none      none  
 maximum mf latency per bank:
-dram[0]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[1]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[2]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[3]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[4]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[5]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[6]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[7]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[8]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[9]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[10]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[11]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[12]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[13]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[14]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[15]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[16]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[17]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[18]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[19]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[20]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[21]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[22]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[23]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[24]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[25]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[26]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[27]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[28]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[29]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[30]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-dram[31]:          0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[0]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[1]:        523       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[2]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[3]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[4]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[5]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[6]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[7]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[8]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[9]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[10]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[11]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[12]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[13]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[14]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[15]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[16]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[17]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[18]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[19]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[20]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[21]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[22]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[23]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[24]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[25]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[26]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[27]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[28]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[29]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[30]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
+dram[31]:        248       248         0         0         0         0         0         0         0         0         0         0         0         0         0         0
 Memory Partition 0: 
 Cache L2_bank_000:
 MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[0]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5413,11 +4392,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5431,8 +4410,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5463,31 +4442,31 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[1]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
-n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+n_cmd=13248 n_nop=13246 n_act=1 n_pre=0 n_ref_event=0 n_req=1 n_rd=1 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=7.548e-05
+n_activity=75 dram_eff=0.01333
+bk0: 1a 13225i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
-Row_Buffer_Locality = -nan
-Row_Buffer_Locality_read = -nan
+Row_Buffer_Locality = 1.000000
+Row_Buffer_Locality_read = 1.000000
 Row_Buffer_Locality_write = -nan
-Bank_Level_Parallism = -nan
-Bank_Level_Parallism_Col = -nan
-Bank_Level_Parallism_Ready = -nan
-write_to_read_ratio_blp_rw_average = -nan
-GrpLevelPara = -nan 
+Bank_Level_Parallism = 1.000000
+Bank_Level_Parallism_Col = 1.000000
+Bank_Level_Parallism_Ready = 1.000000
+write_to_read_ratio_blp_rw_average = 0.000000
+GrpLevelPara = 1.000000 
 
 BW Util details:
-bwutil = 0.000000 
-total_CMD = 9244 
-util_bw = 0 
-Wasted_Col = 0 
+bwutil = 0.000075 
+total_CMD = 13248 
+util_bw = 1 
+Wasted_Col = 23 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13224 
 
 BW Util Bottlenecks: 
-RCDc_limit = 0 
+RCDc_limit = 23 
 RCDWRc_limit = 0 
 WTRc_limit = 0 
 RTWc_limit = 0 
@@ -5498,26 +4477,26 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
-Read = 0 
+total_CMD = 13248 
+n_nop = 13246 
+Read = 1 
 Write = 0 
 L2_Alloc = 0 
 L2_WB = 0 
-n_act = 0 
+n_act = 1 
 n_pre = 0 
 n_ref = 0 
-n_req = 0 
-total_req = 0 
+n_req = 1 
+total_req = 1 
 
 Dual Bus Interface Util: 
-issued_total_row = 0 
-issued_total_col = 0 
-Row_Bus_Util =  0.000000 
-CoL_Bus_Util = 0.000000 
-Either_Row_CoL_Bus_Util = 0.000000 
+issued_total_row = 1 
+issued_total_col = 1 
+Row_Bus_Util =  0.000075 
+CoL_Bus_Util = 0.000075 
+Either_Row_CoL_Bus_Util = 0.000151 
 Issued_on_Two_Bus_Simul_Util = 0.000000 
-issued_two_Eff = -nan 
+issued_two_Eff = 0.000000 
 queue_avg = 0.000000 
 
 
@@ -5530,9 +4509,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[2]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5547,11 +4526,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5565,8 +4544,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5597,9 +4576,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[3]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5614,11 +4593,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5632,8 +4611,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5664,9 +4643,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[4]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5681,11 +4660,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5699,8 +4678,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5731,9 +4710,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[5]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5748,11 +4727,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5766,8 +4745,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5798,9 +4777,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[6]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5815,11 +4794,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5833,8 +4812,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5865,9 +4844,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[7]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5882,11 +4861,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5900,8 +4879,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5932,9 +4911,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[8]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -5949,11 +4928,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -5967,8 +4946,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -5999,9 +4978,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[9]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6016,11 +4995,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6034,8 +5013,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6066,9 +5045,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[10]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6083,11 +5062,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6101,8 +5080,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6133,9 +5112,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[11]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6150,11 +5129,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6168,8 +5147,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6200,9 +5179,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[12]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6217,11 +5196,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6235,8 +5214,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6267,9 +5246,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[13]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6284,11 +5263,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6302,8 +5281,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6334,9 +5313,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[14]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6351,11 +5330,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6369,8 +5348,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6401,9 +5380,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[15]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6418,11 +5397,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6436,8 +5415,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6468,9 +5447,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[16]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6485,11 +5464,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6503,8 +5482,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6535,9 +5514,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[17]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6552,11 +5531,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6570,8 +5549,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6602,9 +5581,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[18]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6619,11 +5598,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6637,8 +5616,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6669,9 +5648,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[19]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6686,11 +5665,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6704,8 +5683,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6736,9 +5715,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[20]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6753,11 +5732,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6771,8 +5750,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6803,9 +5782,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[21]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6820,11 +5799,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6838,8 +5817,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6870,9 +5849,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[22]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6887,11 +5866,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6905,8 +5884,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -6937,9 +5916,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[23]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -6954,11 +5933,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -6972,8 +5951,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7004,9 +5983,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[24]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7021,11 +6000,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7039,8 +6018,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7071,9 +6050,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[25]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7088,11 +6067,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7106,8 +6085,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7138,9 +6117,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[26]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7155,11 +6134,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7173,8 +6152,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7205,9 +6184,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[27]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7222,11 +6201,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7240,8 +6219,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7272,9 +6251,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[28]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7289,11 +6268,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7307,8 +6286,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7339,9 +6318,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[29]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7356,11 +6335,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7374,8 +6353,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7406,9 +6385,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[30]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7423,11 +6402,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7441,8 +6420,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7473,9 +6452,9 @@ MSHR contents
 
 In Dram Latency Queue (total = 0): 
 DRAM[31]: 16 bks, busW=16 BL=2 CL=23, tRRD=7 tCCD=1, tRCD=23 tRAS=53 tRP=23 tRC=75
-n_cmd=9244 n_nop=9244 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
+n_cmd=13248 n_nop=13248 n_act=0 n_pre=0 n_ref_event=0 n_req=0 n_rd=0 n_rd_L2_A=0 n_write=0 n_wr_bk=0 bw_util=0
 n_activity=0 dram_eff=-nan
-bk0: 0a 9244i bk1: 0a 9244i bk2: 0a 9244i bk3: 0a 9244i bk4: 0a 9244i bk5: 0a 9244i bk6: 0a 9244i bk7: 0a 9244i bk8: 0a 9244i bk9: 0a 9244i bk10: 0a 9244i bk11: 0a 9244i bk12: 0a 9244i bk13: 0a 9244i bk14: 0a 9244i bk15: 0a 9244i 
+bk0: 0a 13248i bk1: 0a 13248i bk2: 0a 13248i bk3: 0a 13248i bk4: 0a 13248i bk5: 0a 13248i bk6: 0a 13248i bk7: 0a 13248i bk8: 0a 13248i bk9: 0a 13248i bk10: 0a 13248i bk11: 0a 13248i bk12: 0a 13248i bk13: 0a 13248i bk14: 0a 13248i bk15: 0a 13248i 
 
 ------------------------------------------------------------------------
 
@@ -7490,11 +6469,11 @@ GrpLevelPara = -nan
 
 BW Util details:
 bwutil = 0.000000 
-total_CMD = 9244 
+total_CMD = 13248 
 util_bw = 0 
 Wasted_Col = 0 
 Wasted_Row = 0 
-Idle = 9244 
+Idle = 13248 
 
 BW Util Bottlenecks: 
 RCDc_limit = 0 
@@ -7508,8 +6487,8 @@ WTRc_limit_alone = 0
 RTWc_limit_alone = 0 
 
 Commands details: 
-total_CMD = 9244 
-n_nop = 9244 
+total_CMD = 13248 
+n_nop = 13248 
 Read = 0 
 Write = 0 
 L2_Alloc = 0 
@@ -7536,46 +6515,47 @@ dram_eff_bins: 0 0 0 0 0 0 0 0 0 0
 mrqq: max=0 avg=0
 
 ========= L2 cache stats =========
-L2_cache_bank[0]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[1]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[2]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[3]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[4]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[5]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[6]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[7]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[8]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[9]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[10]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[11]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[12]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[13]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[14]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[15]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[16]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[17]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[18]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[19]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[20]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[21]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[22]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[23]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[24]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[25]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[26]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[27]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[28]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[29]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[30]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_cache_bank[31]: Access = 0, Miss = 0, Miss_rate = -nan, Pending_hits = 0, Reservation_fails = 0
-L2_total_cache_accesses = 0
-L2_total_cache_misses = 0
+L2_cache_bank[0]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[1]: Access = 49, Miss = 17, Miss_rate = 0.347, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[2]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[3]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[4]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[5]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[6]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[7]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[8]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[9]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[10]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[11]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[12]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[13]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[14]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[15]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[16]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[17]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[18]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[19]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[20]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[21]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[22]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[23]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[24]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[25]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[26]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[27]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[28]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[29]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[30]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_cache_bank[31]: Access = 32, Miss = 16, Miss_rate = 0.500, Pending_hits = 0, Reservation_fails = 0
+L2_total_cache_accesses = 1041
+L2_total_cache_misses = 513
+L2_total_cache_miss_rate = 0.4928
 L2_total_cache_pending_hits = 0
 L2_total_cache_reservation_fails = 0
 L2_total_cache_breakdown:
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT] = 519
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][HIT_RESERVED] = 0
-	L2_cache_stats_breakdown[GLOBAL_ACC_R][MISS] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][MISS] = 1
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][RESERVATION_FAIL] = 0
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][SECTOR_MISS] = 0
 	L2_cache_stats_breakdown[GLOBAL_ACC_R][MSHR_HIT] = 0
@@ -7597,11 +6577,11 @@ L2_total_cache_breakdown:
 	L2_cache_stats_breakdown[TEXTURE_ACC_R][RESERVATION_FAIL] = 0
 	L2_cache_stats_breakdown[TEXTURE_ACC_R][SECTOR_MISS] = 0
 	L2_cache_stats_breakdown[TEXTURE_ACC_R][MSHR_HIT] = 0
-	L2_cache_stats_breakdown[GLOBAL_ACC_W][HIT] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_W][HIT] = 9
 	L2_cache_stats_breakdown[GLOBAL_ACC_W][HIT_RESERVED] = 0
-	L2_cache_stats_breakdown[GLOBAL_ACC_W][MISS] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_W][MISS] = 128
 	L2_cache_stats_breakdown[GLOBAL_ACC_W][RESERVATION_FAIL] = 0
-	L2_cache_stats_breakdown[GLOBAL_ACC_W][SECTOR_MISS] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_W][SECTOR_MISS] = 384
 	L2_cache_stats_breakdown[GLOBAL_ACC_W][MSHR_HIT] = 0
 	L2_cache_stats_breakdown[LOCAL_ACC_W][HIT] = 0
 	L2_cache_stats_breakdown[LOCAL_ACC_W][HIT_RESERVED] = 0
@@ -7639,42 +6619,46 @@ L2_total_cache_breakdown:
 	L2_cache_stats_breakdown[L2_WR_ALLOC_R][RESERVATION_FAIL] = 0
 	L2_cache_stats_breakdown[L2_WR_ALLOC_R][SECTOR_MISS] = 0
 	L2_cache_stats_breakdown[L2_WR_ALLOC_R][MSHR_HIT] = 0
+	L2_cache_stats_breakdown[GLOBAL_ACC_R][TOTAL_ACCESS] = 520
+	L2_cache_stats_breakdown[GLOBAL_ACC_W][TOTAL_ACCESS] = 521
 L2_total_cache_reservation_fail_breakdown:
-L2_cache_data_port_util = 0.000
+L2_cache_data_port_util = 0.001
 L2_cache_fill_port_util = 0.000
 
-icnt_total_pkts_mem_to_simt=0
-icnt_total_pkts_simt_to_mem=0
+icnt_total_pkts_mem_to_simt=1041
+icnt_total_pkts_simt_to_mem=1041
 LD_mem_lat_dist  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ST_mem_lat_dist  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ----------------------------Interconnect-DETAILS--------------------------------
-Req_Network_injected_packets_num = 0
-Req_Network_cycles = 9401
-Req_Network_injected_packets_per_cycle =       0.0000 
+Req_Network_injected_packets_num = 1041
+Req_Network_cycles = 13473
+Req_Network_injected_packets_per_cycle =       0.0773 
 Req_Network_conflicts_per_cycle =       0.0000
-Req_Network_conflicts_per_cycle_util =         -nan
-Req_Bank_Level_Parallism =         -nan
+Req_Network_conflicts_per_cycle_util =       0.0000
+Req_Bank_Level_Parallism =       1.0029
 Req_Network_in_buffer_full_per_cycle =       0.0000
 Req_Network_in_buffer_avg_util =       0.0000
 Req_Network_out_buffer_full_per_cycle =       0.0000
-Req_Network_out_buffer_avg_util =       0.0000
+Req_Network_out_buffer_avg_util =       0.0024
 
-Reply_Network_injected_packets_num = 0
-Reply_Network_cycles = 9401
-Reply_Network_injected_packets_per_cycle =        0.0000
+Reply_Network_injected_packets_num = 1041
+Reply_Network_cycles = 13473
+Reply_Network_injected_packets_per_cycle =        0.0773
 Reply_Network_conflicts_per_cycle =        0.0000
-Reply_Network_conflicts_per_cycle_util =         -nan
-Reply_Bank_Level_Parallism =         -nan
+Reply_Network_conflicts_per_cycle_util =       0.0000
+Reply_Bank_Level_Parallism =       1.0029
 Reply_Network_in_buffer_full_per_cycle =       0.0000
 Reply_Network_in_buffer_avg_util =       0.0000
 Reply_Network_out_buffer_full_per_cycle =       0.0000
-Reply_Network_out_buffer_avg_util =       0.0000
+Reply_Network_out_buffer_avg_util =       0.0006
 ----------------------------END-of-Interconnect-DETAILS-------------------------
 
 
 gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 9 sec (9 sec)
-gpgpu_simulation_rate = 9790 (inst/sec)
-gpgpu_simulation_rate = 1044 (cycle/sec)
-gpgpu_silicon_slowdown = 1551724x
+gpgpu_simulation_rate = 9783 (inst/sec)
+gpgpu_simulation_rate = 1497 (cycle/sec)
+gpgpu_silicon_slowdown = 1082164x
+GPGPU-Sim: synchronize waiting for inactive GPU simulation
+GPGPU-Sim API: Stream Manager State
 GPGPU-Sim: detected inactive GPU simulation thread
 GPGPU-Sim: *** exit detected ***

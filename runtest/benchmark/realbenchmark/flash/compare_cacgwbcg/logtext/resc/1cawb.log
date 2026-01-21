@@ -233,7 +233,7 @@ GPGPU-Sim: Configuration options:
 -gpgpu_heap_size_limit              8388608 # GPU malloc heap size 
 -gpgpu_runtime_sync_depth_limit                    2 # GPU device runtime synchronize depth
 -gpgpu_runtime_pending_launch_count_limit                 2048 # GPU device runtime pending launch count
--trace_ead2b497b093b193142d8011f57ac4f50  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cawbresc1
+-trace_e7a6b5b52bcadd97d2c3f7e2788e987eb  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cawbresc1
 Extracting PTX file and ptxas options    1: cawbresc1.1.sm_90.ptx -arch=sm_90 
 nabled                          0 # Turn on traces
 -trace_components                    none # comma seperated list of traces to enable. Complete list found in trace_streams.tup. Default none
@@ -277,7 +277,7 @@ self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/
 Running md5sum using "md5sum /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cawbresc1 "
 self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/compare_cacgwbcg/cawbresc1
 Extracting specific PTX file named cawbresc1.1.sm_90.ptx 
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x558c3bb4de41, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi8EEvPfS0_i : hostFun 0x0x564fd1015e41, fat_cubin_handle = 1
 GPGPU-Sim PTX: Parsing cawbresc1.1.sm_90.ptx
 GPGPU-Sim PTX: allocating global region for "g_turn" from 0x100 to 0x104 (global memory space)
 GPGPU-Sim PTX: allocating global region for "g_dummy_registration_flag" from 0x104 to 0x108 (global memory space)
@@ -330,24 +330,24 @@ GPGPU-Sim PTX: Loading PTXInfo from cawbresc1.1.sm_90.ptx
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi8EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi4EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z7fa_tileILi2EEvPfS0_i' : regs=20, lmem=0, smem=0, cmem=0
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x558c3bb4de14, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x558c3bb4dde7, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x558c3bb56110; deviceAddress = g_turn; deviceName = g_turn
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi4EEvPfS0_i : hostFun 0x0x564fd1015e14, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z7fa_tileILi2EEvPfS0_i : hostFun 0x0x564fd1015de7, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x564fd101e110; deviceAddress = g_turn; deviceName = g_turn
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_turn hostVar to name mapping
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x558c3bb56114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x564fd101e114; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_dummy_registration_flag hostVar to name mapping
-GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x558c3bb56110
-GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x558c3bb56110
-GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x558c3bb56110
+GPGPU-Sim PTX: cudaMemcpyToSymbol: symbol = 0x564fd101e110
+GPGPU-Sim PTX: starting gpgpu_ptx_sim_memcpy_symbol with hostVar 0x0x564fd101e110
+GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: Found PTX symbol w/ hostVar=0x564fd101e110
 GPGPU-Sim PTX: gpgpu_ptx_sim_memcpy_symbol: copying global memory 4 bytes  to  symbol g_turn+0 @0x100 ...
 Not found 
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffda7f4cd30..
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffda7f4cd28..
-GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffda7f4cccc..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7fffcb70fb80..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7fffcb70fb78..
+GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7fffcb70fb1c..
 
-GPGPU-Sim PTX: cudaLaunch for 0x0x558c3bb4dde7 (mode=performance simulation) on stream 0
+GPGPU-Sim PTX: cudaLaunch for 0x0x564fd1015de7 (mode=performance simulation) on stream 0
 Not found 
 GPGPU-Sim PTX: finding reconvergence points for '_Z7fa_tileILi2EEvPfS0_i'...
 GPGPU-Sim PTX: Finding dominators for '_Z7fa_tileILi2EEvPfS0_i'...
@@ -1780,8 +1780,6 @@ GPGPU-Sim PTX: PDOM analysis already done for gpgpusim_register_cluster_coherent
 
 [RESC] Read share SUCCESS (special) - addr=0xf00000000, owner_sid=1
 Destroy streams for kernel 1: size 0
-GPGPU-Sim: synchronize waiting for inactive GPU simulation
-GPGPU-Sim API: Stream Manager State
 kernel_name = _Z7fa_tileILi2EEvPfS0_i 
 kernel_launch_uid = 1 
 gpu_sim_cycle = 7290
@@ -1802,7 +1800,7 @@ partiton_level_parallism_util =         -nan
 partiton_level_parallism_util_total  =         -nan
 L2_BW  =       0.0000 GB/Sec
 L2_BW_total  =       0.0000 GB/Sec
-gpu_total_sim_rate=2444
+gpu_total_sim_rate=4400
 
 ========= Core cache stats =========
 L1I_cache:
@@ -4634,9 +4632,11 @@ Reply_Network_out_buffer_avg_util =       0.0000
 ----------------------------END-of-Interconnect-DETAILS-------------------------
 
 
-gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 9 sec (9 sec)
-gpgpu_simulation_rate = 2444 (inst/sec)
-gpgpu_simulation_rate = 810 (cycle/sec)
-gpgpu_silicon_slowdown = 2000000x
+gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 5 sec (5 sec)
+gpgpu_simulation_rate = 4400 (inst/sec)
+gpgpu_simulation_rate = 1458 (cycle/sec)
+gpgpu_silicon_slowdown = 1111111x
+GPGPU-Sim: synchronize waiting for inactive GPU simulation
+GPGPU-Sim API: Stream Manager State
 GPGPU-Sim: detected inactive GPU simulation thread
 GPGPU-Sim: *** exit detected ***
