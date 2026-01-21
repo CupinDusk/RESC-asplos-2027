@@ -3,20 +3,20 @@ ptxas info    : Compiling entry function '_Z7fa_tileILi8EEvPfS0_i' for 'sm_90'
 ptxas info    : Function properties for _Z7fa_tileILi8EEvPfS0_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 20 registers, used 1 barriers
-ptxas info    : Compile time = 17.825 ms
+ptxas info    : Compile time = 17.703 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Compiling entry function '_Z7fa_tileILi4EEvPfS0_i' for 'sm_90'
 ptxas info    : Function properties for _Z7fa_tileILi4EEvPfS0_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 20 registers, used 1 barriers
-ptxas info    : Compile time = 13.180 ms
+ptxas info    : Compile time = 13.454 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Compiling entry function '_Z7fa_tileILi2EEvPfS0_i' for 'sm_90'
 ptxas info    : Function properties for _Z7fa_tileILi2EEvPfS0_i
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
 ptxas info    : Used 20 registers, used 1 barriers
-ptxas info    : Compile time = 12.679 ms
+ptxas info    : Compile time = 13.803 ms
 ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
     0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads

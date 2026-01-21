@@ -12,7 +12,17 @@ nvcc -arch=sm_90 flash.cu -o cawbresc${RESERVE_ELEMS} -DBACKEND=2 -DRESERVE_ELEM
 nvcc -arch=sm_90 flash.cu -o cacgresc${RESERVE_ELEMS} -DBACKEND=2 -DRESERVE_ELEMS=${RESERVE_ELEMS} -DREAD_MODE=1 -DWRITE_MODE=0 -lcudart && patchelf --remove-rpath cacgresc${RESERVE_ELEMS}
 
 # 运行所有配置
-./cacgresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cacg.log
-./cawbresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cawb.log
-./cgwbresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cgwb.log
-./cgcgresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cgcg.log
+./cacgresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cacg21.log
+./cawbresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cawb21.log
+./cgwbresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cgwb21.log
+./cgcgresc${RESERVE_ELEMS} 2 1 > logtext/resc/${RESERVE_ELEMS}cgcg21.log
+
+./cacgresc${RESERVE_ELEMS} 4 1 > logtext/resc/${RESERVE_ELEMS}cacg41.log
+./cawbresc${RESERVE_ELEMS} 4 1 > logtext/resc/${RESERVE_ELEMS}cawb41.log
+./cgwbresc${RESERVE_ELEMS} 4 1 > logtext/resc/${RESERVE_ELEMS}cgwb41.log
+./cgcgresc${RESERVE_ELEMS} 4 1 > logtext/resc/${RESERVE_ELEMS}cgcg41.log
+
+./cacgresc${RESERVE_ELEMS} 8 1 > logtext/resc/${RESERVE_ELEMS}cacg81.log
+./cawbresc${RESERVE_ELEMS} 8 1 > logtext/resc/${RESERVE_ELEMS}cawb81.log
+./cgwbresc${RESERVE_ELEMS} 8 1 > logtext/resc/${RESERVE_ELEMS}cgwb81.log
+./cgcgresc${RESERVE_ELEMS} 8 1 > logtext/resc/${RESERVE_ELEMS}cgcg81.log
