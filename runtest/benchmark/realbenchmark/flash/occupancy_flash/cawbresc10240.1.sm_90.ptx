@@ -1,0 +1,1253 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.8
+.target sm_90
+.address_size 64
+
+.global .align 4 .u32 g_dummy_registration_flag;
+
+.func gpgpusim_register_cluster_coherent_addr(
+.param .b64 gpgpusim_register_cluster_coherent_addr_param_0
+)
+{
+.reg .b32 %r<3>;
+
+
+ld.param.u32 %r1, [gpgpusim_register_cluster_coherent_addr_param_0];
+and.b32 %r2, %r1, 1;
+st.volatile.global.u32 [g_dummy_registration_flag], %r2;
+ret;
+
+}
+//
+.visible .entry _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii(
+.param .u64 _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_0,
+.param .u64 _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_1,
+.param .u64 _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_2,
+.param .u32 _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_3,
+.param .u32 _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_4
+)
+.explicitcluster
+.reqnctapercluster 2, 1, 1
+{
+.reg .pred %p<41>;
+.reg .f32 %f<11>;
+.reg .b32 %r<102>;
+.reg .b64 %rd<54>;
+
+
+ld.param.u64 %rd6, [_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_0];
+ld.param.u64 %rd8, [_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_1];
+ld.param.u64 %rd7, [_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_2];
+ld.param.u32 %r49, [_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_3];
+ld.param.u32 %r50, [_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii_param_4];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r2, %ctaid.x;
+shr.u32 %r3, %r2, 1;
+min.s32 %r51, %r50, 10240;
+max.s32 %r4, %r51, 1;
+mul.wide.u32 %rd9, %r3, 4;
+add.s64 %rd1, %rd8, %rd9;
+mov.u32 %r5, %tid.x;
+or.b32 %r52, %r1, %r5;
+setp.ne.s32 %p2, %r52, 0;
+@%p2 bra $L__BB1_2;
+
+mov.u32 %r53, 0;
+//
+st.global.wb.s32 [%rd1],%r53;
+//
+
+$L__BB1_2:
+mul.wide.u32 %rd11, %r3, 16384;
+shl.b64 %rd12, %rd11, 2;
+add.s64 %rd2, %rd6, %rd12;
+setp.ne.s32 %p3, %r1, 0;
+@%p3 bra $L__BB1_19;
+
+setp.gt.s32 %p4, %r5, 31;
+@%p4 bra $L__BB1_18;
+
+mul.wide.u32 %rd13, %r4, 4;
+and.b64 %rd3, %rd2, -128;
+add.s64 %rd14, %rd2, 127;
+sub.s64 %rd15, %rd14, %rd3;
+add.s64 %rd16, %rd15, %rd13;
+shr.u64 %rd17, %rd16, 7;
+cvt.u32.u64 %r6, %rd17;
+and.b32 %r7, %r5, 31;
+setp.lt.s32 %p5, %r6, 1;
+@%p5 bra $L__BB1_11;
+
+add.s32 %r55, %r6, -1;
+shr.u32 %r8, %r55, 5;
+add.s32 %r56, %r8, 1;
+and.b32 %r92, %r56, 3;
+setp.lt.u32 %p6, %r55, 96;
+mov.u32 %r90, 0;
+@%p6 bra $L__BB1_8;
+
+or.b32 %r88, %r7, 96;
+add.s32 %r58, %r92, -1;
+sub.s32 %r87, %r58, %r8;
+mov.u32 %r90, 0;
+
+$L__BB1_7:
+add.s32 %r59, %r88, -96;
+setp.lt.s32 %p7, %r59, %r6;
+selp.b32 %r60, %r59, 0, %p7;
+mul.wide.u32 %rd18, %r60, 128;
+add.s64 %rd19, %rd18, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd19;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r61, %r88, -64;
+setp.lt.s32 %p8, %r61, %r6;
+selp.b32 %r62, %r61, 0, %p8;
+mul.wide.u32 %rd20, %r62, 128;
+add.s64 %rd21, %rd20, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd21;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r63, %r88, -32;
+setp.lt.s32 %p9, %r63, %r6;
+selp.b32 %r64, %r63, 0, %p9;
+mul.wide.u32 %rd22, %r64, 128;
+add.s64 %rd23, %rd22, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd23;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p10, %r88, %r6;
+selp.b32 %r65, %r88, 0, %p10;
+mul.wide.u32 %rd24, %r65, 128;
+add.s64 %rd25, %rd24, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd25;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r90, %r90, 128;
+add.s32 %r88, %r88, 128;
+add.s32 %r87, %r87, 4;
+setp.ne.s32 %p11, %r87, 0;
+@%p11 bra $L__BB1_7;
+
+$L__BB1_8:
+setp.eq.s32 %p12, %r92, 0;
+@%p12 bra $L__BB1_11;
+
+add.s32 %r91, %r90, %r7;
+
+$L__BB1_10:
+.pragma "nounroll";
+setp.lt.s32 %p13, %r91, %r6;
+selp.b32 %r66, %r91, 0, %p13;
+mul.wide.u32 %rd26, %r66, 128;
+add.s64 %rd27, %rd26, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd27;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r91, %r91, 32;
+add.s32 %r92, %r92, -1;
+setp.ne.s32 %p14, %r92, 0;
+@%p14 bra $L__BB1_10;
+
+$L__BB1_11:
+and.b64 %rd4, %rd1, -128;
+add.s64 %rd28, %rd1, 131;
+sub.s64 %rd29, %rd28, %rd4;
+shr.u64 %rd30, %rd29, 7;
+cvt.u32.u64 %r24, %rd30;
+setp.lt.s32 %p15, %r24, 1;
+@%p15 bra $L__BB1_18;
+
+add.s32 %r68, %r24, -1;
+shr.u32 %r25, %r68, 5;
+add.s32 %r69, %r25, 1;
+and.b32 %r98, %r69, 3;
+setp.lt.u32 %p16, %r68, 96;
+mov.u32 %r96, 0;
+@%p16 bra $L__BB1_15;
+
+or.b32 %r94, %r7, 96;
+add.s32 %r71, %r98, -1;
+sub.s32 %r93, %r71, %r25;
+mov.u32 %r96, 0;
+
+$L__BB1_14:
+add.s32 %r72, %r94, -96;
+setp.lt.s32 %p17, %r72, %r24;
+selp.b32 %r73, %r72, 0, %p17;
+mul.wide.u32 %rd31, %r73, 128;
+add.s64 %rd32, %rd31, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd32;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r74, %r94, -64;
+setp.lt.s32 %p18, %r74, %r24;
+selp.b32 %r75, %r74, 0, %p18;
+mul.wide.u32 %rd33, %r75, 128;
+add.s64 %rd34, %rd33, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd34;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r76, %r94, -32;
+setp.lt.s32 %p19, %r76, %r24;
+selp.b32 %r77, %r76, 0, %p19;
+mul.wide.u32 %rd35, %r77, 128;
+add.s64 %rd36, %rd35, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd36;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p20, %r94, %r24;
+selp.b32 %r78, %r94, 0, %p20;
+mul.wide.u32 %rd37, %r78, 128;
+add.s64 %rd38, %rd37, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd38;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r96, %r96, 128;
+add.s32 %r94, %r94, 128;
+add.s32 %r93, %r93, 4;
+setp.ne.s32 %p21, %r93, 0;
+@%p21 bra $L__BB1_14;
+
+$L__BB1_15:
+setp.eq.s32 %p22, %r98, 0;
+@%p22 bra $L__BB1_18;
+
+add.s32 %r97, %r96, %r7;
+
+$L__BB1_17:
+.pragma "nounroll";
+setp.lt.s32 %p23, %r97, %r24;
+selp.b32 %r79, %r97, 0, %p23;
+mul.wide.u32 %rd39, %r79, 128;
+add.s64 %rd40, %rd39, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd40;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r97, %r97, 32;
+add.s32 %r98, %r98, -1;
+setp.ne.s32 %p24, %r98, 0;
+@%p24 bra $L__BB1_17;
+
+$L__BB1_18:
+bar.warp.sync -1;
+
+$L__BB1_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p25, %r49, 1;
+@%p25 bra $L__BB1_39;
+
+setp.eq.s32 %p26, %r5, 0;
+mov.u32 %r99, 0;
+setp.eq.s32 %p27, %r1, 1;
+and.pred %p1, %p26, %p27;
+mov.u32 %r41, %ntid.x;
+and.b32 %r81, %r2, -2;
+cvt.u64.u32 %rd41, %r81;
+cvt.s64.s32 %rd42, %r1;
+add.s64 %rd43, %rd42, %rd41;
+cvta.to.global.u64 %rd44, %rd7;
+shl.b64 %rd45, %rd43, 2;
+add.s64 %rd5, %rd44, %rd45;
+not.pred %p39, %p1;
+
+$L__BB1_21:
+@%p3 bra $L__BB1_28;
+
+setp.ne.s32 %p29, %r5, 0;
+@%p29 bra $L__BB1_24;
+
+$L__BB1_23:
+//
+ld.global.ca.s32 %r82,[%rd1];
+//
+setp.ne.s32 %p30, %r82, 0;
+@%p30 bra $L__BB1_23;
+
+$L__BB1_24:
+setp.ge.s32 %p31, %r5, %r4;
+bar.sync 0;
+@%p31 bra $L__BB1_27;
+
+add.s32 %r43, %r99, %r3;
+mov.u32 %r100, %r5;
+
+$L__BB1_26:
+add.s32 %r83, %r43, %r100;
+cvt.rn.f32.s32 %f5, %r83;
+mul.f32 %f4, %f5, 0f3A83126F;
+mul.wide.s32 %rd48, %r100, 4;
+add.s64 %rd47, %rd2, %rd48;
+//
+st.global.wb.f32 [%rd47],%f4;
+//
+add.s32 %r100, %r100, %r41;
+setp.lt.s32 %p32, %r100, %r4;
+@%p32 bra $L__BB1_26;
+
+$L__BB1_27:
+bar.sync 0;
+mov.u32 %r84, 1;
+//
+st.global.wb.s32 [%rd1],%r84;
+//
+membar.gl;
+
+$L__BB1_28:
+setp.eq.s32 %p33, %r1, 0;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p33 bra $L__BB1_36;
+
+setp.ne.s32 %p34, %r5, 0;
+@%p34 bra $L__BB1_31;
+
+$L__BB1_30:
+//
+ld.global.ca.s32 %r85,[%rd1];
+//
+setp.ne.s32 %p35, %r85, 1;
+@%p35 bra $L__BB1_30;
+
+$L__BB1_31:
+setp.ge.s32 %p36, %r5, %r4;
+bar.sync 0;
+mov.f32 %f10, 0f00000000;
+@%p36 bra $L__BB1_34;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r101, %r5;
+
+$L__BB1_33:
+mul.wide.s32 %rd52, %r101, 4;
+add.s64 %rd51, %rd2, %rd52;
+//
+ld.global.ca.f32 %f8,[%rd51];
+//
+add.f32 %f10, %f10, %f8;
+add.s32 %r101, %r101, %r41;
+setp.lt.s32 %p37, %r101, %r4;
+@%p37 bra $L__BB1_33;
+
+$L__BB1_34:
+@%p34 bra $L__BB1_36;
+
+st.global.f32 [%rd5], %f10;
+
+$L__BB1_36:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p39 bra $L__BB1_38;
+
+mov.u32 %r86, 0;
+//
+st.global.wb.s32 [%rd1],%r86;
+//
+
+$L__BB1_38:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r99, %r99, 1;
+setp.lt.s32 %p40, %r99, %r49;
+@%p40 bra $L__BB1_21;
+
+$L__BB1_39:
+ret;
+
+}
+//
+.visible .entry _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii(
+.param .u64 _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_0,
+.param .u64 _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_1,
+.param .u64 _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_2,
+.param .u32 _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_3,
+.param .u32 _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_4
+)
+.explicitcluster
+.reqnctapercluster 4, 1, 1
+{
+.reg .pred %p<41>;
+.reg .f32 %f<11>;
+.reg .b32 %r<103>;
+.reg .b64 %rd<54>;
+
+
+ld.param.u64 %rd6, [_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_0];
+ld.param.u64 %rd8, [_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_1];
+ld.param.u64 %rd7, [_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_2];
+ld.param.u32 %r49, [_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_3];
+ld.param.u32 %r50, [_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii_param_4];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r2, %ctaid.x;
+shr.u32 %r3, %r2, 2;
+min.s32 %r51, %r50, 10240;
+max.s32 %r4, %r51, 1;
+shl.b32 %r52, %r3, 2;
+cvt.u64.u32 %rd9, %r52;
+add.s64 %rd1, %rd8, %rd9;
+mov.u32 %r5, %tid.x;
+or.b32 %r53, %r1, %r5;
+setp.ne.s32 %p2, %r53, 0;
+@%p2 bra $L__BB2_2;
+
+mov.u32 %r54, 0;
+//
+st.global.wb.s32 [%rd1],%r54;
+//
+
+$L__BB2_2:
+mul.wide.u32 %rd11, %r3, 16384;
+shl.b64 %rd12, %rd11, 2;
+add.s64 %rd2, %rd6, %rd12;
+setp.ne.s32 %p3, %r1, 0;
+@%p3 bra $L__BB2_19;
+
+setp.gt.s32 %p4, %r5, 31;
+@%p4 bra $L__BB2_18;
+
+mul.wide.u32 %rd13, %r4, 4;
+and.b64 %rd3, %rd2, -128;
+add.s64 %rd14, %rd2, 127;
+sub.s64 %rd15, %rd14, %rd3;
+add.s64 %rd16, %rd15, %rd13;
+shr.u64 %rd17, %rd16, 7;
+cvt.u32.u64 %r6, %rd17;
+and.b32 %r7, %r5, 31;
+setp.lt.s32 %p5, %r6, 1;
+@%p5 bra $L__BB2_11;
+
+add.s32 %r56, %r6, -1;
+shr.u32 %r8, %r56, 5;
+add.s32 %r57, %r8, 1;
+and.b32 %r93, %r57, 3;
+setp.lt.u32 %p6, %r56, 96;
+mov.u32 %r91, 0;
+@%p6 bra $L__BB2_8;
+
+or.b32 %r89, %r7, 96;
+add.s32 %r59, %r93, -1;
+sub.s32 %r88, %r59, %r8;
+mov.u32 %r91, 0;
+
+$L__BB2_7:
+add.s32 %r60, %r89, -96;
+setp.lt.s32 %p7, %r60, %r6;
+selp.b32 %r61, %r60, 0, %p7;
+mul.wide.u32 %rd18, %r61, 128;
+add.s64 %rd19, %rd18, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd19;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r62, %r89, -64;
+setp.lt.s32 %p8, %r62, %r6;
+selp.b32 %r63, %r62, 0, %p8;
+mul.wide.u32 %rd20, %r63, 128;
+add.s64 %rd21, %rd20, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd21;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r64, %r89, -32;
+setp.lt.s32 %p9, %r64, %r6;
+selp.b32 %r65, %r64, 0, %p9;
+mul.wide.u32 %rd22, %r65, 128;
+add.s64 %rd23, %rd22, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd23;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p10, %r89, %r6;
+selp.b32 %r66, %r89, 0, %p10;
+mul.wide.u32 %rd24, %r66, 128;
+add.s64 %rd25, %rd24, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd25;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r91, %r91, 128;
+add.s32 %r89, %r89, 128;
+add.s32 %r88, %r88, 4;
+setp.ne.s32 %p11, %r88, 0;
+@%p11 bra $L__BB2_7;
+
+$L__BB2_8:
+setp.eq.s32 %p12, %r93, 0;
+@%p12 bra $L__BB2_11;
+
+add.s32 %r92, %r91, %r7;
+
+$L__BB2_10:
+.pragma "nounroll";
+setp.lt.s32 %p13, %r92, %r6;
+selp.b32 %r67, %r92, 0, %p13;
+mul.wide.u32 %rd26, %r67, 128;
+add.s64 %rd27, %rd26, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd27;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r92, %r92, 32;
+add.s32 %r93, %r93, -1;
+setp.ne.s32 %p14, %r93, 0;
+@%p14 bra $L__BB2_10;
+
+$L__BB2_11:
+and.b64 %rd4, %rd1, -128;
+add.s64 %rd28, %rd1, 131;
+sub.s64 %rd29, %rd28, %rd4;
+shr.u64 %rd30, %rd29, 7;
+cvt.u32.u64 %r24, %rd30;
+setp.lt.s32 %p15, %r24, 1;
+@%p15 bra $L__BB2_18;
+
+add.s32 %r69, %r24, -1;
+shr.u32 %r25, %r69, 5;
+add.s32 %r70, %r25, 1;
+and.b32 %r99, %r70, 3;
+setp.lt.u32 %p16, %r69, 96;
+mov.u32 %r97, 0;
+@%p16 bra $L__BB2_15;
+
+or.b32 %r95, %r7, 96;
+add.s32 %r72, %r99, -1;
+sub.s32 %r94, %r72, %r25;
+mov.u32 %r97, 0;
+
+$L__BB2_14:
+add.s32 %r73, %r95, -96;
+setp.lt.s32 %p17, %r73, %r24;
+selp.b32 %r74, %r73, 0, %p17;
+mul.wide.u32 %rd31, %r74, 128;
+add.s64 %rd32, %rd31, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd32;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r75, %r95, -64;
+setp.lt.s32 %p18, %r75, %r24;
+selp.b32 %r76, %r75, 0, %p18;
+mul.wide.u32 %rd33, %r76, 128;
+add.s64 %rd34, %rd33, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd34;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r77, %r95, -32;
+setp.lt.s32 %p19, %r77, %r24;
+selp.b32 %r78, %r77, 0, %p19;
+mul.wide.u32 %rd35, %r78, 128;
+add.s64 %rd36, %rd35, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd36;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p20, %r95, %r24;
+selp.b32 %r79, %r95, 0, %p20;
+mul.wide.u32 %rd37, %r79, 128;
+add.s64 %rd38, %rd37, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd38;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r97, %r97, 128;
+add.s32 %r95, %r95, 128;
+add.s32 %r94, %r94, 4;
+setp.ne.s32 %p21, %r94, 0;
+@%p21 bra $L__BB2_14;
+
+$L__BB2_15:
+setp.eq.s32 %p22, %r99, 0;
+@%p22 bra $L__BB2_18;
+
+add.s32 %r98, %r97, %r7;
+
+$L__BB2_17:
+.pragma "nounroll";
+setp.lt.s32 %p23, %r98, %r24;
+selp.b32 %r80, %r98, 0, %p23;
+mul.wide.u32 %rd39, %r80, 128;
+add.s64 %rd40, %rd39, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd40;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r98, %r98, 32;
+add.s32 %r99, %r99, -1;
+setp.ne.s32 %p24, %r99, 0;
+@%p24 bra $L__BB2_17;
+
+$L__BB2_18:
+bar.warp.sync -1;
+
+$L__BB2_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p25, %r49, 1;
+@%p25 bra $L__BB2_39;
+
+setp.eq.s32 %p26, %r5, 0;
+mov.u32 %r100, 0;
+setp.eq.s32 %p27, %r1, 3;
+and.pred %p1, %p26, %p27;
+mov.u32 %r41, %ntid.x;
+and.b32 %r82, %r2, -4;
+cvt.u64.u32 %rd41, %r82;
+cvt.s64.s32 %rd42, %r1;
+add.s64 %rd43, %rd42, %rd41;
+cvta.to.global.u64 %rd44, %rd7;
+shl.b64 %rd45, %rd43, 2;
+add.s64 %rd5, %rd44, %rd45;
+not.pred %p39, %p1;
+
+$L__BB2_21:
+@%p3 bra $L__BB2_28;
+
+setp.ne.s32 %p29, %r5, 0;
+@%p29 bra $L__BB2_24;
+
+$L__BB2_23:
+//
+ld.global.ca.s32 %r83,[%rd1];
+//
+setp.ne.s32 %p30, %r83, 0;
+@%p30 bra $L__BB2_23;
+
+$L__BB2_24:
+setp.ge.s32 %p31, %r5, %r4;
+bar.sync 0;
+@%p31 bra $L__BB2_27;
+
+add.s32 %r43, %r100, %r3;
+mov.u32 %r101, %r5;
+
+$L__BB2_26:
+add.s32 %r84, %r43, %r101;
+cvt.rn.f32.s32 %f5, %r84;
+mul.f32 %f4, %f5, 0f3A83126F;
+mul.wide.s32 %rd48, %r101, 4;
+add.s64 %rd47, %rd2, %rd48;
+//
+st.global.wb.f32 [%rd47],%f4;
+//
+add.s32 %r101, %r101, %r41;
+setp.lt.s32 %p32, %r101, %r4;
+@%p32 bra $L__BB2_26;
+
+$L__BB2_27:
+bar.sync 0;
+mov.u32 %r85, 1;
+//
+st.global.wb.s32 [%rd1],%r85;
+//
+membar.gl;
+
+$L__BB2_28:
+setp.eq.s32 %p33, %r1, 0;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p33 bra $L__BB2_36;
+
+setp.ne.s32 %p34, %r5, 0;
+@%p34 bra $L__BB2_31;
+
+$L__BB2_30:
+//
+ld.global.ca.s32 %r86,[%rd1];
+//
+setp.ne.s32 %p35, %r86, 1;
+@%p35 bra $L__BB2_30;
+
+$L__BB2_31:
+setp.ge.s32 %p36, %r5, %r4;
+bar.sync 0;
+mov.f32 %f10, 0f00000000;
+@%p36 bra $L__BB2_34;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r102, %r5;
+
+$L__BB2_33:
+mul.wide.s32 %rd52, %r102, 4;
+add.s64 %rd51, %rd2, %rd52;
+//
+ld.global.ca.f32 %f8,[%rd51];
+//
+add.f32 %f10, %f10, %f8;
+add.s32 %r102, %r102, %r41;
+setp.lt.s32 %p37, %r102, %r4;
+@%p37 bra $L__BB2_33;
+
+$L__BB2_34:
+@%p34 bra $L__BB2_36;
+
+st.global.f32 [%rd5], %f10;
+
+$L__BB2_36:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p39 bra $L__BB2_38;
+
+mov.u32 %r87, 0;
+//
+st.global.wb.s32 [%rd1],%r87;
+//
+
+$L__BB2_38:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r100, %r100, 1;
+setp.lt.s32 %p40, %r100, %r49;
+@%p40 bra $L__BB2_21;
+
+$L__BB2_39:
+ret;
+
+}
+//
+.visible .entry _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii(
+.param .u64 _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_0,
+.param .u64 _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_1,
+.param .u64 _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_2,
+.param .u32 _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_3,
+.param .u32 _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_4
+)
+.explicitcluster
+.reqnctapercluster 8, 1, 1
+{
+.reg .pred %p<41>;
+.reg .f32 %f<11>;
+.reg .b32 %r<102>;
+.reg .b64 %rd<54>;
+
+
+ld.param.u64 %rd6, [_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_0];
+ld.param.u64 %rd8, [_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_1];
+ld.param.u64 %rd7, [_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_2];
+ld.param.u32 %r49, [_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_3];
+ld.param.u32 %r50, [_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii_param_4];
+mov.b32 %r1, %cluster_ctarank;
+mov.u32 %r2, %ctaid.x;
+shr.u32 %r3, %r2, 3;
+min.s32 %r51, %r50, 10240;
+max.s32 %r4, %r51, 1;
+mul.wide.u32 %rd9, %r3, 4;
+add.s64 %rd1, %rd8, %rd9;
+mov.u32 %r5, %tid.x;
+or.b32 %r52, %r1, %r5;
+setp.ne.s32 %p2, %r52, 0;
+@%p2 bra $L__BB3_2;
+
+mov.u32 %r53, 0;
+//
+st.global.wb.s32 [%rd1],%r53;
+//
+
+$L__BB3_2:
+mul.wide.u32 %rd11, %r3, 16384;
+shl.b64 %rd12, %rd11, 2;
+add.s64 %rd2, %rd6, %rd12;
+setp.ne.s32 %p3, %r1, 0;
+@%p3 bra $L__BB3_19;
+
+setp.gt.s32 %p4, %r5, 31;
+@%p4 bra $L__BB3_18;
+
+mul.wide.u32 %rd13, %r4, 4;
+and.b64 %rd3, %rd2, -128;
+add.s64 %rd14, %rd2, 127;
+sub.s64 %rd15, %rd14, %rd3;
+add.s64 %rd16, %rd15, %rd13;
+shr.u64 %rd17, %rd16, 7;
+cvt.u32.u64 %r6, %rd17;
+and.b32 %r7, %r5, 31;
+setp.lt.s32 %p5, %r6, 1;
+@%p5 bra $L__BB3_11;
+
+add.s32 %r55, %r6, -1;
+shr.u32 %r8, %r55, 5;
+add.s32 %r56, %r8, 1;
+and.b32 %r92, %r56, 3;
+setp.lt.u32 %p6, %r55, 96;
+mov.u32 %r90, 0;
+@%p6 bra $L__BB3_8;
+
+or.b32 %r88, %r7, 96;
+add.s32 %r58, %r92, -1;
+sub.s32 %r87, %r58, %r8;
+mov.u32 %r90, 0;
+
+$L__BB3_7:
+add.s32 %r59, %r88, -96;
+setp.lt.s32 %p7, %r59, %r6;
+selp.b32 %r60, %r59, 0, %p7;
+mul.wide.u32 %rd18, %r60, 128;
+add.s64 %rd19, %rd18, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd19;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r61, %r88, -64;
+setp.lt.s32 %p8, %r61, %r6;
+selp.b32 %r62, %r61, 0, %p8;
+mul.wide.u32 %rd20, %r62, 128;
+add.s64 %rd21, %rd20, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd21;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r63, %r88, -32;
+setp.lt.s32 %p9, %r63, %r6;
+selp.b32 %r64, %r63, 0, %p9;
+mul.wide.u32 %rd22, %r64, 128;
+add.s64 %rd23, %rd22, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd23;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p10, %r88, %r6;
+selp.b32 %r65, %r88, 0, %p10;
+mul.wide.u32 %rd24, %r65, 128;
+add.s64 %rd25, %rd24, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd25;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r90, %r90, 128;
+add.s32 %r88, %r88, 128;
+add.s32 %r87, %r87, 4;
+setp.ne.s32 %p11, %r87, 0;
+@%p11 bra $L__BB3_7;
+
+$L__BB3_8:
+setp.eq.s32 %p12, %r92, 0;
+@%p12 bra $L__BB3_11;
+
+add.s32 %r91, %r90, %r7;
+
+$L__BB3_10:
+.pragma "nounroll";
+setp.lt.s32 %p13, %r91, %r6;
+selp.b32 %r66, %r91, 0, %p13;
+mul.wide.u32 %rd26, %r66, 128;
+add.s64 %rd27, %rd26, %rd3;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd27;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r91, %r91, 32;
+add.s32 %r92, %r92, -1;
+setp.ne.s32 %p14, %r92, 0;
+@%p14 bra $L__BB3_10;
+
+$L__BB3_11:
+and.b64 %rd4, %rd1, -128;
+add.s64 %rd28, %rd1, 131;
+sub.s64 %rd29, %rd28, %rd4;
+shr.u64 %rd30, %rd29, 7;
+cvt.u32.u64 %r24, %rd30;
+setp.lt.s32 %p15, %r24, 1;
+@%p15 bra $L__BB3_18;
+
+add.s32 %r68, %r24, -1;
+shr.u32 %r25, %r68, 5;
+add.s32 %r69, %r25, 1;
+and.b32 %r98, %r69, 3;
+setp.lt.u32 %p16, %r68, 96;
+mov.u32 %r96, 0;
+@%p16 bra $L__BB3_15;
+
+or.b32 %r94, %r7, 96;
+add.s32 %r71, %r98, -1;
+sub.s32 %r93, %r71, %r25;
+mov.u32 %r96, 0;
+
+$L__BB3_14:
+add.s32 %r72, %r94, -96;
+setp.lt.s32 %p17, %r72, %r24;
+selp.b32 %r73, %r72, 0, %p17;
+mul.wide.u32 %rd31, %r73, 128;
+add.s64 %rd32, %rd31, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd32;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r74, %r94, -64;
+setp.lt.s32 %p18, %r74, %r24;
+selp.b32 %r75, %r74, 0, %p18;
+mul.wide.u32 %rd33, %r75, 128;
+add.s64 %rd34, %rd33, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd34;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r76, %r94, -32;
+setp.lt.s32 %p19, %r76, %r24;
+selp.b32 %r77, %r76, 0, %p19;
+mul.wide.u32 %rd35, %r77, 128;
+add.s64 %rd36, %rd35, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd36;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+setp.lt.s32 %p20, %r94, %r24;
+selp.b32 %r78, %r94, 0, %p20;
+mul.wide.u32 %rd37, %r78, 128;
+add.s64 %rd38, %rd37, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd38;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r96, %r96, 128;
+add.s32 %r94, %r94, 128;
+add.s32 %r93, %r93, 4;
+setp.ne.s32 %p21, %r93, 0;
+@%p21 bra $L__BB3_14;
+
+$L__BB3_15:
+setp.eq.s32 %p22, %r98, 0;
+@%p22 bra $L__BB3_18;
+
+add.s32 %r97, %r96, %r7;
+
+$L__BB3_17:
+.pragma "nounroll";
+setp.lt.s32 %p23, %r97, %r24;
+selp.b32 %r79, %r97, 0, %p23;
+mul.wide.u32 %rd39, %r79, 128;
+add.s64 %rd40, %rd39, %rd4;
+{ //
+.reg .b32 temp_param_reg;
+.param .b64 param0;
+st.param.b64 [param0+0], %rd40;
+call.uni 
+gpgpusim_register_cluster_coherent_addr, 
+(
+param0
+);
+} //
+add.s32 %r97, %r97, 32;
+add.s32 %r98, %r98, -1;
+setp.ne.s32 %p24, %r98, 0;
+@%p24 bra $L__BB3_17;
+
+$L__BB3_18:
+bar.warp.sync -1;
+
+$L__BB3_19:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+setp.lt.s32 %p25, %r49, 1;
+@%p25 bra $L__BB3_39;
+
+setp.eq.s32 %p26, %r5, 0;
+mov.u32 %r99, 0;
+setp.eq.s32 %p27, %r1, 7;
+and.pred %p1, %p26, %p27;
+mov.u32 %r41, %ntid.x;
+and.b32 %r81, %r2, -8;
+cvt.u64.u32 %rd41, %r81;
+cvt.s64.s32 %rd42, %r1;
+add.s64 %rd43, %rd42, %rd41;
+cvta.to.global.u64 %rd44, %rd7;
+shl.b64 %rd45, %rd43, 2;
+add.s64 %rd5, %rd44, %rd45;
+not.pred %p39, %p1;
+
+$L__BB3_21:
+@%p3 bra $L__BB3_28;
+
+setp.ne.s32 %p29, %r5, 0;
+@%p29 bra $L__BB3_24;
+
+$L__BB3_23:
+//
+ld.global.ca.s32 %r82,[%rd1];
+//
+setp.ne.s32 %p30, %r82, 0;
+@%p30 bra $L__BB3_23;
+
+$L__BB3_24:
+setp.ge.s32 %p31, %r5, %r4;
+bar.sync 0;
+@%p31 bra $L__BB3_27;
+
+add.s32 %r43, %r99, %r3;
+mov.u32 %r100, %r5;
+
+$L__BB3_26:
+add.s32 %r83, %r43, %r100;
+cvt.rn.f32.s32 %f5, %r83;
+mul.f32 %f4, %f5, 0f3A83126F;
+mul.wide.s32 %rd48, %r100, 4;
+add.s64 %rd47, %rd2, %rd48;
+//
+st.global.wb.f32 [%rd47],%f4;
+//
+add.s32 %r100, %r100, %r41;
+setp.lt.s32 %p32, %r100, %r4;
+@%p32 bra $L__BB3_26;
+
+$L__BB3_27:
+bar.sync 0;
+mov.u32 %r84, 1;
+//
+st.global.wb.s32 [%rd1],%r84;
+//
+membar.gl;
+
+$L__BB3_28:
+setp.eq.s32 %p33, %r1, 0;
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p33 bra $L__BB3_36;
+
+setp.ne.s32 %p34, %r5, 0;
+@%p34 bra $L__BB3_31;
+
+$L__BB3_30:
+//
+ld.global.ca.s32 %r85,[%rd1];
+//
+setp.ne.s32 %p35, %r85, 1;
+@%p35 bra $L__BB3_30;
+
+$L__BB3_31:
+setp.ge.s32 %p36, %r5, %r4;
+bar.sync 0;
+mov.f32 %f10, 0f00000000;
+@%p36 bra $L__BB3_34;
+
+mov.f32 %f10, 0f00000000;
+mov.u32 %r101, %r5;
+
+$L__BB3_33:
+mul.wide.s32 %rd52, %r101, 4;
+add.s64 %rd51, %rd2, %rd52;
+//
+ld.global.ca.f32 %f8,[%rd51];
+//
+add.f32 %f10, %f10, %f8;
+add.s32 %r101, %r101, %r41;
+setp.lt.s32 %p37, %r101, %r4;
+@%p37 bra $L__BB3_33;
+
+$L__BB3_34:
+@%p34 bra $L__BB3_36;
+
+st.global.f32 [%rd5], %f10;
+
+$L__BB3_36:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+@%p39 bra $L__BB3_38;
+
+mov.u32 %r86, 0;
+//
+st.global.wb.s32 [%rd1],%r86;
+//
+
+$L__BB3_38:
+barrier.cluster.arrive;
+barrier.cluster.wait;
+add.s32 %r99, %r99, 1;
+setp.lt.s32 %p40, %r99, %r49;
+@%p40 bra $L__BB3_21;
+
+$L__BB3_39:
+ret;
+
+}
+

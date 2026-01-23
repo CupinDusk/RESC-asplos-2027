@@ -1,0 +1,22 @@
+ptxas info    : 4 bytes gmem
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 1 barriers
+ptxas info    : Compile time = 16.678 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 1 barriers
+ptxas info    : Compile time = 12.965 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 26 registers, used 1 barriers
+ptxas info    : Compile time = 12.312 ms
+ptxas info    : Function properties for gpgpusim_register_cluster_coherent_addr
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads

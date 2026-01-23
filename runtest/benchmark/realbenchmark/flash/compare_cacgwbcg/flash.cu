@@ -217,7 +217,11 @@ if (rank==0 && BACKEND==2) {
 #else
       st_cg_s32(flag_ptr, 1);
 #endif
+      // 确保flag写入对其他rank可见（避免死锁）
+      __threadfence();
     }
+    // 确保所有rank都看到flag更新
+    cluster.sync();
 
     // Consumers: rank>0 读 tile
     if(rank!=0){

@@ -1,0 +1,16 @@
+ptxas info    : 4 bytes gmem
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 20 registers, used 1 barriers
+ptxas info    : Compile time = 10.121 ms
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 20 registers, used 1 barriers
+ptxas info    : Compile time = 6.202 ms
+ptxas info    : Compiling entry function '_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii' for 'sm_90'
+ptxas info    : Function properties for _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 20 registers, used 1 barriers
+ptxas info    : Compile time = 5.813 ms
