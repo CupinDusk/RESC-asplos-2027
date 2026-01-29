@@ -60,7 +60,9 @@ class ptx_recognizer;
 #include "cuda_device_runtime.h"
 
 // 声明注册函数（在gpu-cache.cc中定义）
-extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr);
+extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr,
+                                                        unsigned gpc_id,
+                                                        unsigned cluster_slot);
 
 #include <stdarg.h>
 #include "../../libcuda/gpgpu_context.h"
@@ -2804,7 +2806,20 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
     }
 
     // 注册 global 地址（cache 操作中使用的地址格式）
-    gpgpusim_register_cluster_coherent_addr(global_addr);
+    // 按 TB-cluster 维度注册：key = (gpc_id, cluster_slot)
+    unsigned gpc_id = 0;
+    unsigned cluster_slot = 0;
+    shader_core_ctx *sc = dynamic_cast<shader_core_ctx *>(thread->get_core());
+    if (sc) {
+      cluster_slot = sc->get_warp_cluster_slot(thread->get_hw_wid());
+      simt_core_cluster *scc = sc->get_simt_core_cluster();
+      if (scc && scc->m_gpc) gpc_id = scc->m_gpc->get_gpc_id();
+    } else {
+      // fallback: treat as global registration bucket
+      gpc_id = 0;
+      cluster_slot = 0;
+    }
+    gpgpusim_register_cluster_coherent_addr(global_addr, gpc_id, cluster_slot);
 
 
     return;

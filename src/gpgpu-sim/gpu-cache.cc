@@ -31,17 +31,26 @@
 #include "gpu-cache.h"
 #include <assert.h>
 #include <vector>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <cstdlib>
 #include <cstring>
 #include "gpu-sim.h"
 #include "hashing.h"
 #include "stat-tool.h"
+#include "shader.h"
 
-// 用于存储需要维护cluster一致性的地址集合
-// 这些地址由CUDA代码通过 gpgpusim_register_cluster_coherent_addr() 函数注册
-static std::set<new_addr_type> g_cluster_coherent_addrs;
+// 用于存储需要维护cluster一致性的地址集合（按 TB-cluster 维度）
+// key = (gpc_id, cluster_slot) 组成的 64-bit key
+static std::unordered_map<unsigned long long, std::unordered_set<new_addr_type>>
+    g_cluster_coherent_addrs_by_cluster;
 static bool g_cluster_coherent_addrs_initialized = false;
+
+static inline unsigned long long make_cluster_key(unsigned gpc_id,
+                                                  unsigned cluster_slot) {
+  return (static_cast<unsigned long long>(gpc_id) << 32) |
+         static_cast<unsigned long long>(cluster_slot);
+}
 
 // 用于识别需要设置cluster-state的目标地址（向后兼容，通过环境变量设置）
 // 可以通过环境变量 CLUSTER_STATE_TARGET_ADDR 设置（十六进制地址）
@@ -61,21 +70,35 @@ static void init_cluster_state_target_addr() {
   }
 }
 
-// 注册需要维护cluster一致性的地址（由CUDA代码调用）
-extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr) {
+// 注册需要维护cluster一致性的地址（由CUDA代码调用 / 由指令拦截器转发）
+// 注意：这是“按 TB-cluster(=cluster_slot) 维度”注册，仅对同一 (gpc,slot) 的访问生效。
+extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr,
+                                                       unsigned gpc_id,
+                                                       unsigned cluster_slot) {
   if (!g_cluster_coherent_addrs_initialized) {
     g_cluster_coherent_addrs_initialized = true;
   }
-  g_cluster_coherent_addrs.insert(addr);
-  printf("\n[RESC] Registered cluster coherent address: 0x%llx\n",
-         (unsigned long long)addr);
+  const unsigned long long key = make_cluster_key(gpc_id, cluster_slot);
+  g_cluster_coherent_addrs_by_cluster[key].insert(addr);
+  printf("\n[RESC] Registered cluster coherent address: 0x%llx (gpc=%u slot=%u)\n",
+         (unsigned long long)addr, gpc_id, cluster_slot);
 }
 
-// 检查地址是否已注册为需要维护cluster一致性
-static bool is_cluster_coherent_addr(new_addr_type addr) {
-  // 检查是否在注册的地址集合中
-  if (g_cluster_coherent_addrs.find(addr) != g_cluster_coherent_addrs.end()) {
-    return true;
+static bool is_cluster_coherent_addr_for_mf(new_addr_type addr,
+                                           shader_core_ctx *owner,
+                                           mem_fetch *mf) {
+  if (!owner || !mf) return false;
+
+  unsigned wid = mf->get_inst().warp_id();
+  unsigned cluster_slot = owner->get_warp_cluster_slot(wid);
+  simt_core_cluster *scc = owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return false;
+  unsigned gpc_id = scc->m_gpc->get_gpc_id();
+
+  const unsigned long long key = make_cluster_key(gpc_id, cluster_slot);
+  auto it = g_cluster_coherent_addrs_by_cluster.find(key);
+  if (it != g_cluster_coherent_addrs_by_cluster.end()) {
+    if (it->second.find(addr) != it->second.end()) return true;
   }
 
   // 向后兼容：检查环境变量设置的目标地址
@@ -88,9 +111,11 @@ static bool is_cluster_coherent_addr(new_addr_type addr) {
 }
 
 // 检查是否应该对当前写操作设置cluster-state
-static bool should_set_cluster_state_for_write(new_addr_type addr, mem_fetch *mf) {
-  // 方法1：检查地址是否已注册为需要维护cluster一致性
-  if (is_cluster_coherent_addr(addr)) {
+static bool should_set_cluster_state_for_write(new_addr_type addr,
+                                               l1_cache *l1_this,
+                                               mem_fetch *mf) {
+  // 方法1：检查地址是否已注册为需要维护cluster一致性（按 TB-cluster 维度）
+  if (l1_this && is_cluster_coherent_addr_for_mf(addr, l1_this->m_owner, mf)) {
     // printf("\n[CLUSTER_STATE] MATCH! Address 0x%llx is registered\n", (unsigned long long)addr);
     return true;
   }
@@ -1158,7 +1183,8 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
 
   // 针对普通地址的读miss，保留脏字节标记，只取无脏字节标记的部分
   if (!mf->is_write() && mf->get_access_type() == GLOBAL_ACC_R &&
-      !should_set_cluster_state_for_write(e->second.m_block_addr, mf)) {
+      !should_set_cluster_state_for_write(e->second.m_block_addr,
+                                          dynamic_cast<l1_cache *>(this), mf)) {
     unsigned cache_index = (unsigned)-1;
     if (m_config.m_alloc_policy == ON_MISS) {
       cache_index = e->second.m_cache_index;
@@ -1250,7 +1276,10 @@ void baseline_cache::fill(mem_fetch *mf, unsigned time) {
     write_mf = original_mf;
   }
 
-  if (is_write_fill && should_set_cluster_state_for_write(e->second.m_block_addr, write_mf)) {
+  if (is_write_fill &&
+      should_set_cluster_state_for_write(e->second.m_block_addr,
+                                         dynamic_cast<l1_cache *>(this),
+                                         write_mf)) {
     unsigned cache_index = (unsigned)-1;
     if (m_config.m_alloc_policy == ON_MISS) {
       cache_index = e->second.m_cache_index;
@@ -1480,7 +1509,8 @@ cache_request_status data_cache::wr_hit_wb(new_addr_type addr,
   // 支持两种识别方式：
   // 1. 通过cache_op识别（st.global.wb.f32使用CACHE_WRITE_BACK）
   // 2. 通过地址识别（通过环境变量CLUSTER_STATE_TARGET_ADDR设置目标地址）
-  if (!should_set_cluster_state_for_write(block_addr, mf)) {
+  if (!should_set_cluster_state_for_write(block_addr,
+                                          dynamic_cast<l1_cache *>(this), mf)) {
     // 如果不需要设置cluster-state，直接返回
     return HIT;
   }
@@ -1884,7 +1914,7 @@ enum cache_request_status data_cache::wr_miss_wa_lazy_fetch_on_read(
   if (m_status != RESERVATION_FAIL) {
     // 针对注册地址的写，写miss时设置cluster-state并尝试特殊的写共享
     l1_cache *l1_this = dynamic_cast<l1_cache*>(this);
-    if (l1_this && should_set_cluster_state_for_write(block_addr, mf)) {
+    if (l1_this && should_set_cluster_state_for_write(block_addr, l1_this, mf)) {
       mem_access_sector_mask_t sector_mask = mf->get_access_sector_mask();
       line_cache_block *line_block = dynamic_cast<line_cache_block*>(block);
       sector_cache_block *sector_block = dynamic_cast<sector_cache_block*>(block);
@@ -2148,7 +2178,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
   if (!wr && (probe_status == MISS || probe_status == SECTOR_MISS)) {
     // 针对注册地址的读，尝试特殊的读共享
-    if (should_set_cluster_state_for_write(block_addr, mf)) {
+    if (should_set_cluster_state_for_write(block_addr, this, mf)) {
       if (special_try_cluster_read_share(block_addr, mf, time, events)) {
         enum cache_request_status access_status = HIT;
         probe_status = HIT;
@@ -2161,7 +2191,9 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
         printf("\n[RESC] Read share SUCCESS (special) - addr=0x%llx, owner_sid=%u\n", addr, m_owner->get_sid());
         return access_status;
-      } else {
+      }
+      /*
+      else {
         // 读共享失败，返回HIT并返回0（不向主存发出请求）
         enum cache_request_status access_status = HIT;
         probe_status = HIT;
@@ -2174,6 +2206,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 
         return access_status;
       }
+      */
     } else {
       // 针对普通地址的读miss，尝试普通的读共享
       if(try_cluster_read_share(block_addr, mf, time, events)){
@@ -2391,7 +2424,7 @@ bool l1_cache::try_cluster_write_share(new_addr_type addr, mem_fetch *mf,
 
   new_addr_type block_addr = m_config.block_addr(addr);
   // 检查是否应该设置cluster-state：只对注册的cache line设置
-  if (!should_set_cluster_state_for_write(block_addr, mf)) {
+  if (!should_set_cluster_state_for_write(block_addr, this, mf)) {
     return false;
   }
   l1_cache *source_cache = nullptr;
@@ -2571,7 +2604,7 @@ bool l1_cache::special_try_cluster_write_share(new_addr_type addr, mem_fetch *mf
 
   new_addr_type block_addr = m_config.block_addr(addr);
   // 检查是否应该设置cluster-state：只对注册的cache line设置
-  if (!should_set_cluster_state_for_write(block_addr, mf)) {
+  if (!should_set_cluster_state_for_write(block_addr, this, mf)) {
     return false;
   }
   mem_access_byte_mask_t write_byte_mask = mf->get_access_byte_mask();
@@ -2681,7 +2714,7 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
 
   new_addr_type block_addr = m_config.block_addr(addr);
   // 检查是否应该设置cluster-state：只对注册的cache line设置
-  if (!should_set_cluster_state_for_write(block_addr, mf)) {
+  if (!should_set_cluster_state_for_write(block_addr, this, mf)) {
     return false;
   }
   mem_access_byte_mask_t read_byte_mask = mf->get_access_byte_mask();

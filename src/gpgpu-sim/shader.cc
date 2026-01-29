@@ -1542,10 +1542,39 @@ void rrr_scheduler::order_warps() {
 }
 
 void gto_scheduler::order_warps() {
-  order_by_priority(m_next_cycle_prioritized_warps, m_supervised_warps,
-                    m_last_supervised_issued, m_supervised_warps.size(),
-                    ORDERING_GREEDY_THEN_PRIORITY_FUNC,
-                    scheduler_unit::sort_warps_by_oldest_dynamic_id);
+  // NOTE: GTO is "greedy then oldest", which can starve other warps in tight
+  // spin loops (e.g., polling flags) and lead to apparent deadlocks. To avoid
+  // starvation, we cap how long we stay greedy on the same warp consecutively.
+  // When the streak exceeds a threshold, temporarily fall back to an LRR-like
+  // rotation for one ordering step (breaking starvation), then resume GTO.
+  const unsigned kMaxGreedyStreak = 8;  // stronger fairness for spin workloads
+  const bool allow_greedy = (m_greedy_streak < kMaxGreedyStreak);
+
+  if (allow_greedy) {
+    order_by_priority(m_next_cycle_prioritized_warps, m_supervised_warps,
+                      m_last_supervised_issued, m_supervised_warps.size(),
+                      ORDERING_GREEDY_THEN_PRIORITY_FUNC,
+                      scheduler_unit::sort_warps_by_oldest_dynamic_id);
+  } else {
+    // LRR rotation starting after the last issued warp to guarantee fairness.
+    order_lrr(m_next_cycle_prioritized_warps, m_supervised_warps,
+              m_last_supervised_issued, m_supervised_warps.size());
+    // Reset streak so we don't permanently stick in fallback.
+    m_greedy_streak = 0;
+  }
+}
+
+void gto_scheduler::do_on_warp_issued(
+    unsigned warp_id, unsigned num_issued,
+    const std::vector<shd_warp_t *>::const_iterator &prioritized_iter) {
+  scheduler_unit::do_on_warp_issued(warp_id, num_issued, prioritized_iter);
+  (void)prioritized_iter;
+  if (m_last_greedy_warp_id == warp_id) {
+    m_greedy_streak++;
+  } else {
+    m_last_greedy_warp_id = warp_id;
+    m_greedy_streak = 1;
+  }
 }
 
 void oldest_scheduler::order_warps() {

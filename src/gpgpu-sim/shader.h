@@ -509,12 +509,21 @@ class gto_scheduler : public scheduler_unit {
                 register_set *mem_out, int id)
       : scheduler_unit(stats, shader, scoreboard, simt, warp, sp_out, dp_out,
                        sfu_out, int_out, tensor_core_out, spec_cores_out,
-                       mem_out, id) {}
+                       mem_out, id),
+        m_last_greedy_warp_id((unsigned)-1),
+        m_greedy_streak(0) {}
   virtual ~gto_scheduler() {}
   virtual void order_warps();
+ protected:
+  virtual void do_on_warp_issued(
+      unsigned warp_id, unsigned num_issued,
+      const std::vector<shd_warp_t *>::const_iterator &prioritized_iter);
   virtual void done_adding_supervised_warps() {
     m_last_supervised_issued = m_supervised_warps.begin();
   }
+ private:
+  unsigned m_last_greedy_warp_id;
+  unsigned m_greedy_streak;
 };
 
 class oldest_scheduler : public scheduler_unit {
