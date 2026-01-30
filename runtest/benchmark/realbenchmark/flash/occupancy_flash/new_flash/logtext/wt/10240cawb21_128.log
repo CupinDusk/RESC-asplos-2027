@@ -233,7 +233,7 @@ GPGPU-Sim: Configuration options:
 -gpgpu_heap_size_limit              8388608 # GPU malloc heap size 
 -gpgpu_runtime_sync_depth_limit                    2 # GPU device runtime synchronize depth
 -gpgpu_runtime_pending_launch_count_limit                 2048 # GPU device runtime pending launch count
--trace_e0c41da0f7079dd176c38b7b525182e46  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/new_flash/cawbresc10240
+-trace_ea4d7443aaba52f598f405ce20142c7cc  /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/new_flash/cawbresc10240
 Extracting PTX file and ptxas options    1: cawbresc10240.1.sm_90.ptx -arch=sm_90 
 nabled                          0 # Turn on traces
 -trace_components                    none # comma seperated list of traces to enable. Complete list found in trace_streams.tup. Default none
@@ -277,7 +277,7 @@ self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/
 Running md5sum using "md5sum /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/new_flash/cawbresc10240 "
 self exe links to: /legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/new_flash/cawbresc10240
 Extracting specific PTX file named cawbresc10240.1.sm_90.ptx 
-GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii : hostFun 0x0x555f936a1561, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi8EEvPfPiS0_ii : hostFun 0x0x55a50e11e561, fat_cubin_handle = 1
 GPGPU-Sim PTX: Parsing cawbresc10240.1.sm_90.ptx
 GPGPU-Sim PTX: allocating global region for "g_dummy_registration_flag" from 0x100 to 0x104 (global memory space)
 GPGPU-Sim PTX: allocating stack frame region for .param "gpgpusim_register_cluster_coherent_addr_param_0" from 0x0 to 0x8
@@ -329,9 +329,9 @@ GPGPU-Sim PTX: Loading PTXInfo from cawbresc10240.1.sm_90.ptx
 GPGPU-Sim PTX: Kernel '_Z21fa_tile_many_clustersILi8EEvPfPiS0_ii' : regs=26, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z21fa_tile_many_clustersILi4EEvPfPiS0_ii' : regs=26, lmem=0, smem=0, cmem=0
 GPGPU-Sim PTX: Kernel '_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii' : regs=26, lmem=0, smem=0, cmem=0
-GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii : hostFun 0x0x555f936a1524, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii : hostFun 0x0x555f936a14e7, fat_cubin_handle = 1
-GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x555f936aa150; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
+GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi4EEvPfPiS0_ii : hostFun 0x0x55a50e11e524, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterFunction _Z21fa_tile_many_clustersILi2EEvPfPiS0_ii : hostFun 0x0x55a50e11e4e7, fat_cubin_handle = 1
+GPGPU-Sim PTX: __cudaRegisterVar: hostVar = 0x55a50e127150; deviceAddress = g_dummy_registration_flag; deviceName = g_dummy_registration_flag
 GPGPU-Sim PTX: __cudaRegisterVar: Registering const memory space of 4 bytes
 GPGPU-Sim PTX registering global g_dummy_registration_flag hostVar to name mapping
 GPGPU-Sim: synchronize waiting for inactive GPU simulation
@@ -339,13 +339,13 @@ GPGPU-Sim API: Stream Manager State
 GPGPU-Sim: detected inactive GPU simulation thread
 event update
 Not found 
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffc720d0080..
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffc720d0078..
-GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7ffc720d0070..
-GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffc720cfff4..
-GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7ffc720cfff0..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7fff291f9dc0..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7fff291f9db8..
+GPGPU-Sim PTX: Setting up arguments for 8 bytes starting at 0x7fff291f9db0..
+GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7fff291f9d34..
+GPGPU-Sim PTX: Setting up arguments for 4 bytes starting at 0x7fff291f9d30..
 
-GPGPU-Sim PTX: cudaLaunch for 0x0x555f936a14e7 (mode=performance simulation) on stream 0
+GPGPU-Sim PTX: cudaLaunch for 0x0x55a50e11e4e7 (mode=performance simulation) on stream 0
 Not found 
 GPGPU-Sim PTX: finding reconvergence points for '_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii'...
 GPGPU-Sim PTX: Finding dominators for '_Z21fa_tile_many_clustersILi2EEvPfPiS0_ii'...
@@ -173890,7 +173890,7 @@ partiton_level_parallism_util =      18.4145
 partiton_level_parallism_util_total  =      18.4145
 L2_BW  =     122.3256 GB/Sec
 L2_BW_total  =     122.3256 GB/Sec
-gpu_total_sim_rate=176772
+gpu_total_sim_rate=170225
 
 ========= Core cache stats =========
 L1I_cache:
@@ -176737,12 +176737,12 @@ Reply_Network_out_buffer_avg_util =       0.0179
 ----------------------------END-of-Interconnect-DETAILS-------------------------
 
 
-gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 26 sec (26 sec)
-gpgpu_simulation_rate = 176772 (inst/sec)
-gpgpu_simulation_rate = 298 (cycle/sec)
-gpgpu_silicon_slowdown = 5436241x
+gpgpu_simulation_time = 0 days, 0 hrs, 0 min, 27 sec (27 sec)
+gpgpu_simulation_rate = 170225 (inst/sec)
+gpgpu_simulation_rate = 287 (cycle/sec)
+gpgpu_silicon_slowdown = 5644599x
 event update
 GPGPU-Sim API: cudaEventSynchronize ** waiting for event
 GPGPU-Sim API: cudaEventSynchronize ** event detected
-BACKEND=2 cluster=2 num_clusters=128 repeat=1 RESERVE=10240 ACTUAL=512 STRIDE=16384 READ_MODE=1 WRITE_MODE=1 time_ms=26000.000
+BACKEND=2 cluster=2 num_clusters=128 repeat=1 RESERVE=10240 ACTUAL=512 STRIDE=16384 READ_MODE=1 WRITE_MODE=1 time_ms=27000.000
 GPGPU-Sim: *** exit detected ***
