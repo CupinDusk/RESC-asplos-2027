@@ -1,0 +1,16 @@
+ptxas info    : 4 bytes gmem
+ptxas info    : Compiling entry function '_Z29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiii' for 'sm_90'
+ptxas info    : Function properties for _Z29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 1 barriers
+ptxas info    : Compile time = 33.119 ms
+ptxas info    : Compiling entry function '_Z29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiii' for 'sm_90'
+ptxas info    : Function properties for _Z29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 1 barriers
+ptxas info    : Compile time = 18.572 ms
+ptxas info    : Compiling entry function '_Z29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiii' for 'sm_90'
+ptxas info    : Function properties for _Z29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers
+ptxas info    : Compile time = 12.144 ms

@@ -1,0 +1,2481 @@
+typedef char __nv_bool;
+# 2876 "/usr/local/cuda/bin/../targets/x86_64-linux/include/driver_types.h"
+struct CUstream_st;
+# 2881 "/usr/local/cuda/bin/../targets/x86_64-linux/include/driver_types.h"
+struct CUevent_st;
+# 49 "/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h" 3
+struct _IO_FILE;
+# 75 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+struct ClusterMeta;
+# 2991 "/usr/include/c++/11/type_traits" 3
+struct _ZSt10__nonesuch;
+# 78 "/usr/include/c++/11/bits/atomic_base.h" 3
+enum _ZSt12memory_order {
+# 80 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_relaxed,
+# 81 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_consume,
+# 82 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_acquire,
+# 83 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_release,
+# 84 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_acq_rel,
+# 85 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt20memory_order_seq_cst};
+# 89 "/usr/include/c++/11/bits/atomic_base.h" 3
+enum _ZSt23__memory_order_modifier {
+# 91 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt19__memory_order_mask = 65535U,
+# 92 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt28__memory_order_modifier_mask = 4294901760U,
+# 93 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt26__memory_order_hle_acquire = 65536U,
+# 94 "/usr/include/c++/11/bits/atomic_base.h" 3
+_ZSt26__memory_order_hle_release = 131072U};
+# 51 "/usr/include/c++/11/bits/uses_allocator.h" 3
+struct _ZSt15allocator_arg_t;
+# 85 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+enum _ZN2nv6target6detail11sm_selectorE {
+# 86 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_35E = 35ULL,
+# 86 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_37E = 37ULL,
+# 87 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_50E = 50ULL,
+# 87 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_52E = 52ULL,
+# 87 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_53E,
+# 88 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_60E = 60ULL,
+# 88 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_61E,
+# 88 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_62E,
+# 89 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_70E = 70ULL,
+# 89 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_72E = 72ULL,
+# 89 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_75E = 75ULL,
+# 90 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_80E = 80ULL,
+# 90 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_86E = 86ULL,
+# 90 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_87E,
+# 91 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_89E = 89ULL,
+# 91 "/usr/local/cuda/bin/../targets/x86_64-linux/include/nv/target" 3
+_ZN2nv6target6detail11sm_selector5sm_90E};
+# 13 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_scopes.h" 3
+enum _ZN4cuda3std3__48__detail12thread_scopeE {
+# 14 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_scopes.h" 3
+_ZN4cuda3std3__48__detail19thread_scope_systemE,
+# 15 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_scopes.h" 3
+_ZN4cuda3std3__48__detail19thread_scope_deviceE,
+# 16 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_scopes.h" 3
+_ZN4cuda3std3__48__detail18thread_scope_blockE,
+# 17 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_scopes.h" 3
+_ZN4cuda3std3__48__detail19thread_scope_threadE = 10};
+# 27 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/__functional/../__type_traits/nat.h" 3
+struct _ZN4cuda3std3__45__natE;
+# 130 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/__functional/../__utility/../__tuple_dir/sfinae_helpers.h" 3
+struct _ZN4cuda3std3__430__check_tuple_constructor_failE;
+# 27 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/__functional/../__utility/../__utility/piecewise_construct.h" 3
+struct _ZN4cuda3std3__421piecewise_construct_tE;
+# 139 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+enum _ZN4cuda3std3__417float_round_styleE {
+# 141 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__419round_indeterminateE = (-1),
+# 142 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__417round_toward_zeroE,
+# 143 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__416round_to_nearestE,
+# 144 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__421round_toward_infinityE,
+# 145 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__425round_toward_neg_infinityE};
+# 148 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+enum _ZN4cuda3std3__418float_denorm_styleE {
+# 150 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__420denorm_indeterminateE = (-1),
+# 151 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__413denorm_absentE,
+# 152 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/limits" 3
+_ZN4cuda3std3__414denorm_presentE};
+# 647 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+enum _ZN4cuda3std3__421__legacy_memory_orderE {
+# 648 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_relaxedE,
+# 649 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_consumeE,
+# 650 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_acquireE,
+# 651 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_releaseE,
+# 652 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_acq_relE,
+# 653 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__412__mo_seq_cstE};
+# 678 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+enum _ZN4cuda3std3__412memory_orderE {
+# 679 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_relaxedE,
+# 680 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_consumeE,
+# 681 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_acquireE,
+# 682 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_releaseE,
+# 683 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_acq_relE,
+# 684 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__420memory_order_seq_cstE};
+# 1084 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+enum _ZN4cuda3std3__425__cxx_is_always_lock_freeIiEUt_E {
+# 1084 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/atomic" 3
+_ZN4cuda3std3__425__cxx_is_always_lock_freeIiE7__valueE = 1};
+# 86 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/driver_abi.h"
+struct _ZN18cooperative_groups4__v17details14grid_workspaceE;
+# 89 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group10group_dataE;
+# 107 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7tg_dataE;
+# 94 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7gg_dataE;
+# 123 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+union _ZN18cooperative_groups4__v112thread_groupUt_E;
+# 86 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_groupE;
+# 161 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE;
+# 446 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v113cluster_groupE;
+# 72 "/usr/include/x86_64-linux-gnu/bits/types.h" 3
+typedef long __intmax_t;
+# 73 "/usr/include/x86_64-linux-gnu/bits/types.h" 3
+typedef unsigned long __uintmax_t;
+# 209 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3
+typedef unsigned long size_t;
+#include "crt/device_runtime.h"
+# 7 "/usr/include/x86_64-linux-gnu/bits/types/FILE.h" 3
+typedef struct _IO_FILE FILE;
+# 90 "/usr/include/stdint.h" 3
+typedef unsigned long uintptr_t;
+# 101 "/usr/include/stdint.h" 3
+typedef __intmax_t intmax_t;
+# 102 "/usr/include/stdint.h" 3
+typedef __uintmax_t uintmax_t;
+# 75 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+struct ClusterMeta {
+# 76 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int flags[8];
+# 77 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int counts[8];
+# 78 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int offsets[8];
+# 79 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int total_elems;
+# 80 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int epoch;
+# 81 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int pad[6];} __attribute__((__aligned__(128)));
+# 280 "/usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h" 3
+typedef unsigned long _ZSt6size_t;
+# 51 "/usr/include/c++/11/bits/uses_allocator.h" 3
+struct _ZSt15allocator_arg_t {};
+# 27 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/__functional/../__utility/../__utility/piecewise_construct.h" 3
+struct _ZN4cuda3std3__421piecewise_construct_tE {};
+# 89 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group10group_dataE {
+# 90 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int _unused: 1;
+# 91 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int type: 7;
+# 91 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int: 0;};
+# 107 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7tg_dataE {
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int is_tiled: 1;
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int type: 7;
+# 110 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int size: 24;
+# 112 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int metaGroupSize: 16;
+# 113 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned int metaGroupRank: 16;
+# 115 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned mask;
+# 117 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned _res;};
+# 94 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7gg_dataE {
+# 95 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v17details14grid_workspaceE *gridWs;};
+# 123 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+union _ZN18cooperative_groups4__v112thread_groupUt_E {
+# 124 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group10group_dataE group;
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7tg_dataE coalesced;
+# 126 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_group7gg_dataE grid;} __attribute__((__aligned__(8)));
+# 86 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v112thread_groupE {
+# 130 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+union _ZN18cooperative_groups4__v112thread_groupUt_E _data;};
+# 161 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE { struct _ZN18cooperative_groups4__v112thread_groupE __b_N18cooperative_groups4__v112thread_groupE;};
+# 446 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct _ZN18cooperative_groups4__v113cluster_groupE { struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE __b_N18cooperative_groups4__v117thread_group_baseILj6EEE;};
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError __cudaCDP2Malloc(void **, size_t);
+# 240 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(extern  __no_sc__) enum cudaError __cudaCDP2GetLastError(void);
+# 242 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(extern  __no_sc__) const char *__cudaCDP2GetErrorString(enum cudaError);
+# 251 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(extern  __no_sc__) enum cudaError __cudaCDP2EventRecord(struct CUevent_st *, struct CUstream_st *);
+# 255 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(extern  __no_sc__) enum cudaError __cudaCDP2EventDestroy(struct CUevent_st *);
+# 257 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(extern  __no_sc__) enum cudaError __cudaCDP2Free(void *);
+# 501 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83716cudaGetLastErrorEv(void);
+# 511 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ const char *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cudaGetErrorStringE9cudaError(enum cudaError);
+# 556 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83715cudaEventRecordEP10CUevent_stP11CUstream_st(struct CUevent_st *, struct CUstream_st *);
+# 576 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83716cudaEventDestroyEP10CUevent_st(struct CUevent_st *);
+# 586 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8378cudaFreeEPv(void *);
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocEPPvm(void **, size_t);
+#if !defined(__CUDABE__)
+# 153 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/common_functions.h"
+ __device_builtin__ ___device__(extern  __no_sc__) int printf(const char *__restrict__, ...);
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+# 341 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/math_functions.h"
+ __device_builtin__ ___device__(extern  __no_sc__) int min(const int, const int);
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+# 416 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/math_functions.h"
+ __device_builtin__ ___device__(extern  __no_sc__) int max(const int, const int);
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+# 173 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/device_functions.h"
+ __device_builtin__ ___device__(extern  __no_sc__) void __syncthreads(void);
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+# 64 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+ __device_builtin__ ___device__(extern  __no_sc__) int __iAtomicAdd(int *, int);
+#endif
+#if !defined(__CUDABE__)
+# 66 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+ __device_builtin__ ___device__(extern  __no_sc__) int __iAtomicExch(int *, int);
+#endif
+# 105 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+___device__(static  __no_sc__) __inline__ int _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8379atomicAddEPii(int *, int);
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+___device__(static  __no_sc__) __inline__ int _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(int *, int);
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710__syncwarpEj(unsigned);
+#if !defined(__CUDABE__)
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+ __device_builtin__ ___device__(extern  __no_sc__) void __nvvm_bar_warp_sync(unsigned);
+#endif
+# 91 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(extern  __no_sc__) void *__nv_cluster_map_shared_rank_impl(const void *, unsigned);
+# 100 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(extern  __no_sc__) unsigned __nv_clusterRelativeBlockRank_impl(void);
+# 102 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(extern  __no_sc__) void __nv_cluster_barrier_arrive_impl(void);
+# 104 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(extern  __no_sc__) void __nv_cluster_barrier_wait_impl(void);
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83725__cluster_map_shared_rankEPKvj(const void *, unsigned);
+# 175 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ unsigned _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83726__clusterRelativeBlockRankEv(void);
+# 185 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83724__cluster_barrier_arriveEv(void);
+# 195 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83722__cluster_barrier_waitEv(void);
+# 3641 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/device_functions.h"
+___device__(extern  __no_sc__) unsigned __cudaPushCallConfiguration(struct dim3, struct dim3, size_t, struct CUstream_st *);
+# 154 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __noinline__ void gpgpusim_register_cluster_coherent_addr(void *);
+# 159 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) uintptr_t _Z15align_down_linem(uintptr_t);
+# 163 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _Z28register_range_by_line_warp0Pvm(void *, size_t);
+# 175 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _Z5mix32j(unsigned);
+# 761 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocIfEE9cudaErrorPPT_m(float **, size_t);
+# 761 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocI11ClusterMetaEE9cudaErrorPPT_m(struct ClusterMeta **, size_t);
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ extern void _Z29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiii(float *__restrict__, struct ClusterMeta *__restrict__, float *__restrict__, int, int, int, int);
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ extern void _Z29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiii(float *__restrict__, struct ClusterMeta *__restrict__, float *__restrict__, int, int, int, int);
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ extern void _Z29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiii(float *__restrict__, struct ClusterMeta *__restrict__, float *__restrict__, int, int, int, int);
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+___device__(static  __no_sc__) __inline__ void _ZN4dim3C1Ejjj(struct dim3 *const, unsigned, unsigned, unsigned);
+___device__(static  __no_sc__) __inline__ void _ZN4dim3C2Ejjj(struct dim3 *const, unsigned, unsigned, unsigned);
+# 134 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v112thread_groupC1Ej(struct _ZN18cooperative_groups4__v112thread_groupE *const, unsigned);
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v112thread_groupC2Ej(struct _ZN18cooperative_groups4__v112thread_groupE *const, unsigned);
+# 162 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v117thread_group_baseILj6EEC1Ev(struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE *const);
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v117thread_group_baseILj6EEC2Ev(struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE *const);
+# 452 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v113cluster_groupC1Ev(struct _ZN18cooperative_groups4__v113cluster_groupE *const);
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v113cluster_groupC2Ev(struct _ZN18cooperative_groups4__v113cluster_groupE *const);
+# 462 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v113cluster_group4syncEv(void);
+# 499 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _ZN18cooperative_groups4__v113cluster_group10block_rankEv(void);
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) float *_ZN18cooperative_groups4__v113cluster_group15map_shared_rankIfEEPT_S4_i(float *, int);
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct ClusterMeta *_ZN18cooperative_groups4__v113cluster_group15map_shared_rankI11ClusterMetaEEPT_S5_i(struct ClusterMeta *, int);
+# 569 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster14barrier_arriveEv(void);
+# 574 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster12barrier_waitEv(void);
+# 579 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster4syncEv(void);
+# 601 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster10block_rankEv(void);
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) float *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankIfEEPT_S6_i(float *, int);
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct ClusterMeta *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankI11ClusterMetaEEPT_S7_i(struct ClusterMeta *, int);
+# 546 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct _ZN18cooperative_groups4__v113cluster_groupE _ZN18cooperative_groups4__v112this_clusterEv(void);
+static  __device__  __var_used__ const char __T0[132];
+static  __device__  __var_used__ const char __T1[115];
+static  __device__  __var_used__ const char __T2[116];
+static  __device__  __var_used__ const char __T3[116];
+# 152 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __device__  __var_used__ volatile int g_dummy_registration_flag;
+# 19 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_cuda.h" 3
+static  __device__  __var_used__ const int _ZZN4cuda3std3__48__detail21__stronger_order_cudaEiiE7__xform[4];
+static  __device__  __var_used__ const char __T4[181];
+static  __device__  __var_used__ const char __T5[188];
+static  __device__  __var_used__ const char __T6[176];
+# 241 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ float _ZZ29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiiiE12smem_payload[32];
+# 242 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ struct ClusterMeta _ZZ29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiiiE9smem_meta;
+# 241 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ float _ZZ29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiiiE12smem_payload[32];
+# 242 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ struct ClusterMeta _ZZ29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiiiE9smem_meta;
+# 241 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ float _ZZ29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiiiE12smem_payload[32];
+# 242 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __shared__  __var_used__ struct ClusterMeta _ZZ29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiiiE9smem_meta;
+#include "common_functions.h"
+static  __device__  __var_used__ const char __T0[132] = "void cuda::std::__4::__libcpp_thread_sleep_for(cuda::std::__4::chrono::duration<long long, cuda::std::__4::ratio<1L, 1000000000L" ">>)";
+static  __device__  __var_used__ const char __T1[115] = "void cuda::std::__4::__detail::__atomic_thread_fence_cuda(int, cuda::std::__4::__detail::__thread_scope_block_tag)";
+static  __device__  __var_used__ const char __T2[116] = "void cuda::std::__4::__detail::__atomic_thread_fence_cuda(int, cuda::std::__4::__detail::__thread_scope_device_tag)";
+static  __device__  __var_used__ const char __T3[116] = "void cuda::std::__4::__detail::__atomic_thread_fence_cuda(int, cuda::std::__4::__detail::__thread_scope_system_tag)";
+# 152 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+static  __device__  __var_used__ volatile int g_dummy_registration_flag = 0;
+# 19 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda/std/detail/libcxx/include/support/atomic/atomic_cuda.h" 3
+static  __device__  __var_used__ const int _ZZN4cuda3std3__48__detail21__stronger_order_cudaEiiE7__xform[4] = {3,4,4,3};
+static  __device__  __var_used__ const char __T4[181] = "void cuda::std::__4::__detail::__atomic_load_cuda(const volatile _Type *, _Type *, int, cuda::std::__4::__detail::__thread_scope" "_system_tag) [with _Type = int; int <anonymous> = 0]";
+static  __device__  __var_used__ const char __T5[188] = "void cuda::std::__4::__detail::__atomic_exchange_cuda(volatile _Type *, _Type *, _Type *, int, cuda::std::__4::__detail::__threa" "d_scope_system_tag) [with _Type = int; int <anonymous> = 0]";
+static  __device__  __var_used__ const char __T6[176] = "void cuda::std::__4::__detail::__atomic_store_cuda(volatile _Type *, _Type *, int, cuda::std::__4::__detail::__thread_scope_syst" "em_tag) [with _Type = int; int <anonymous> = 0]";
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError __cudaCDP2Malloc(
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+void **p, 
+# 109 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+size_t s){
+# 110 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{
+# 111 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return cudaErrorUnknown;
+# 112 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 501 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83716cudaGetLastErrorEv(void){
+# 502 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{
+# 503 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return __cudaCDP2GetLastError();
+# 504 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 511 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ const char *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cudaGetErrorStringE9cudaError(
+# 511 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+enum cudaError error){
+# 512 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{
+# 513 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return __cudaCDP2GetErrorString(error);
+# 514 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 556 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83715cudaEventRecordEP10CUevent_stP11CUstream_st(
+# 556 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+struct CUevent_st *event, 
+# 556 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+struct CUstream_st *stream){
+# 557 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{  struct CUevent_st *__T7;
+ struct CUstream_st *__T8;
+# 558 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return ((__T7 = event) , (void)(__T8 = stream)) , (__cudaCDP2EventRecord(__T7, __T8));
+# 559 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 576 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83716cudaEventDestroyEP10CUevent_st(
+# 576 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+struct CUevent_st *event){
+# 577 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{
+# 578 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return __cudaCDP2EventDestroy(event);
+# 579 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 586 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8378cudaFreeEPv(
+# 586 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+void *devPtr){
+# 587 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{
+# 588 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return __cudaCDP2Free(devPtr);
+# 589 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocEPPvm(
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+void **devPtr, 
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+size_t size){
+# 592 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+{  void **__T9;
+ size_t __T10;
+# 593 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+return ((__T9 = devPtr) , (void)(__T10 = size)) , (__cudaCDP2Malloc(__T9, __T10));
+# 594 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h"
+}}
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+#if !defined(__CUDABE__)
+#endif
+# 105 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+___device__(static  __no_sc__) __inline__ int _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8379atomicAddEPii(
+# 105 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+int *address, 
+# 105 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+int val){
+# 106 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+{  int *__T11;
+ int __T12;
+# 107 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+return ((__T11 = address) , (void)(__T12 = val)) , (__iAtomicAdd(__T11, __T12));
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+}}
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+___device__(static  __no_sc__) __inline__ int _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+int *address, 
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+int val){
+# 126 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+{  int *__T13;
+ int __T14;
+# 127 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+return ((__T13 = address) , (void)(__T14 = val)) , (__iAtomicExch(__T13, __T14));
+# 128 "/usr/local/cuda/bin/../targets/x86_64-linux/include/device_atomic_functions.hpp"
+}}
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710__syncwarpEj(
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+unsigned mask){
+# 108 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+{
+# 110 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+{
+# 110 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+__nvvm_bar_warp_sync(mask);
+# 110 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+return; }
+# 111 "/usr/local/cuda/bin/../targets/x86_64-linux/include/sm_30_intrinsics.hpp"
+}}
+#if !defined(__CUDABE__)
+#endif
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83725__cluster_map_shared_rankEPKvj(
+# 125 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+const void *ptr, 
+# 126 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+unsigned target_block_rank){
+# 127 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+{  const void *__T15;
+ unsigned __T16;
+# 128 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+return ((__T15 = ptr) , (void)(__T16 = target_block_rank)) , (__nv_cluster_map_shared_rank_impl(__T15, __T16));
+# 129 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+}}
+# 175 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ unsigned _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83726__clusterRelativeBlockRankEv(void){
+# 176 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+{
+# 177 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+return __nv_clusterRelativeBlockRank_impl();
+# 178 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+}}
+# 185 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83724__cluster_barrier_arriveEv(void){
+# 186 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+{
+# 187 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+__nv_cluster_barrier_arrive_impl(); 
+# 188 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+}}
+# 195 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+___device__(static  __no_sc__) __inline__ void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83722__cluster_barrier_waitEv(void){
+# 196 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+{
+# 197 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+__nv_cluster_barrier_wait_impl(); 
+# 198 "/usr/local/cuda/bin/../targets/x86_64-linux/include/crt/sm_90_rt.hpp"
+}}
+# 154 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __noinline__ void gpgpusim_register_cluster_coherent_addr(
+# 154 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+void *addr){
+# 154 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 155 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+g_dummy_registration_flag = ((int)(((unsigned long long)addr) & 1ULL));
+# 156 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+0; 
+# 157 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 159 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) uintptr_t _Z15align_down_linem(
+# 159 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+uintptr_t x){
+# 159 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 160 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+return x & 18446744073709551488UL;
+# 161 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 163 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _Z28register_range_by_line_warp0Pvm(
+# 163 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+void *base, 
+# 163 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+size_t bytes){
+# 163 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 164 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ uintptr_t __cuda_local_var_77239_13_non_const_b;
+# 165 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ uintptr_t __cuda_local_var_77240_13_non_const_start;
+# 166 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77241_7_non_const_nlines;
+# 167 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77242_7_non_const_lane;
+# 164 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77239_13_non_const_b = ((uintptr_t)base);
+# 165 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77240_13_non_const_start = (_Z15align_down_linem(__cuda_local_var_77239_13_non_const_b));
+# 166 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77241_7_non_const_nlines = ((int)(((((__cuda_local_var_77239_13_non_const_b + bytes) - __cuda_local_var_77240_13_non_const_start) + 128UL) - 1UL) / 128UL));
+# 167 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77242_7_non_const_lane = ((int)((threadIdx.x) & 31U));
+# 168 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 168 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int off;
+# 168 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+off = 0;
+# 168 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; off < __cuda_local_var_77241_7_non_const_nlines; off += 32)
+# 168 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 169 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77244_9_non_const_idx;
+# 170 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ uintptr_t __cuda_local_var_77245_15_non_const_line;
+# 169 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77244_9_non_const_idx = (off + __cuda_local_var_77242_7_non_const_lane);
+# 170 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77245_15_non_const_line = (__cuda_local_var_77240_13_non_const_start + (((uintptr_t)((__cuda_local_var_77244_9_non_const_idx < __cuda_local_var_77241_7_non_const_nlines) ? __cuda_local_var_77244_9_non_const_idx : 0)) * 128UL));
+# 171 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+gpgpusim_register_cluster_coherent_addr(((void *)__cuda_local_var_77245_15_non_const_line));
+# 172 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} } 
+# 173 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 175 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _Z5mix32j(
+# 175 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+unsigned x){
+# 175 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 176 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+x ^= (x >> 16);
+# 177 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+x *= 2146121005U;
+# 178 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+x ^= (x >> 15);
+# 179 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+x *= 2221713035U;
+# 180 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+x ^= (x >> 16);
+# 181 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+return x;
+# 182 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 761 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocIfEE9cudaErrorPPT_m(
+# 762 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+float **devPtr, 
+# 763 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+size_t size){
+# 765 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+{  void **__T17;
+ size_t __T18;
+# 766 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+return ((__T17 = ((void **)((void *)devPtr))) , (void)(__T18 = size)) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocEPPvm(__T17, __T18));
+# 767 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+}}
+# 761 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+___device__(static  __no_sc__) __inline__ enum cudaError _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocI11ClusterMetaEE9cudaErrorPPT_m(
+# 762 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+struct ClusterMeta **devPtr, 
+# 763 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+size_t size){
+# 765 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+{  void **__T19;
+ size_t __T20;
+# 766 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+return ((__T19 = ((void **)((void *)devPtr))) , (void)(__T20 = size)) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710cudaMallocEPPvm(__T19, __T20));
+# 767 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h"
+}}
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ void _Z29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiii(
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ g_payload, 
+# 215 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+struct ClusterMeta *__restrict__ g_meta, 
+# 216 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ out, 
+# 217 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int repeat, 
+# 218 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(avg_elems), 
+# 219 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(burst_period), 
+# 220 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(reuse_passes)){__copy_param(int avg_elems,__val_param(avg_elems));__copy_param(int burst_period,__val_param(burst_period));__copy_param(int reuse_passes,__val_param(reuse_passes));
+# 221 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T30;
+ int __T31;
+ void *__T32;
+ unsigned long __T33;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct _ZN18cooperative_groups4__v113cluster_groupE __cuda_local_var_77272_21_non_const_cluster;
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77273_13_non_const_rank;
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77274_13_non_const_tid;
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77275_13_non_const_cluster_id;
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77281_13_const_consumers;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77282_13_non_const_hotset_elems;
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float *__cuda_local_var_77284_10_non_const_payload;
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct ClusterMeta *__cuda_local_var_77285_16_non_const_meta;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+memset((char *)&__cuda_local_var_77272_21_non_const_cluster, 0,sizeof(__cuda_local_var_77272_21_non_const_cluster));
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77272_21_non_const_cluster = (_ZN18cooperative_groups4__v112this_clusterEv());
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77273_13_non_const_rank = ((int)(_ZN18cooperative_groups4__v113cluster_group10block_rankEv()));
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77274_13_non_const_tid = ((int)(threadIdx.x));
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77275_13_non_const_cluster_id = ((int)((blockIdx.x) / 2U));
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (avg_elems < 1) {
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+avg_elems = 1; }
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (reuse_passes < 1) {
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+reuse_passes = 1; }
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (burst_period < 1) {
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+burst_period = 1; }
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77281_13_const_consumers = 1;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77282_13_non_const_hotset_elems = (max(1, (((__T30 = (min(16384, 32))) , (void)(__T31 = (avg_elems * 8))) , (min(__T30, __T31)))));
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)0LL);
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)0LL);
+# 243 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankIfEEPT_S4_i((_ZZ29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiiiE12smem_payload), 0)));
+# 244 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankI11ClusterMetaEEPT_S5_i((&_ZZ29dynamic_mailbox_many_clustersILi2EEvPfP11ClusterMetaS0_iiiiE9smem_meta), 0)));
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (__cuda_local_var_77274_13_non_const_tid == 0))
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = 0;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < 8; ++i)
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + i)), 0);
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + i)) = 0;
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + i)) = 0;
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 255 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = 0;
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = 0;
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 258 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (0))
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid < 32)
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 262 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_Z28register_range_by_line_warp0Pvm(((void *)__cuda_local_var_77285_16_non_const_meta), 128UL);
+# 263 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T32 = ((void *)__cuda_local_var_77284_10_non_const_payload)) , (void)(__T33 = (((size_t)__cuda_local_var_77282_13_non_const_hotset_elems) * 4UL))) , (void)(_Z28register_range_by_line_warp0Pvm(__T32, __T33));
+# 264 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 265 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710__syncwarpEj(4294967295U);
+# 266 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 268 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int r;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+r = 0;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; r < repeat; ++r)
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77318_15_non_const_target_epoch;
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77318_15_non_const_target_epoch = (r + 1);
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank == 0)
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77355_17_non_const_total;
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77322_13_non_const_cursor;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77323_19_non_const_base_per_consumer;
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor = 0;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77323_19_non_const_base_per_consumer = (max(1, (avg_elems / (max(1, 1)))));
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 2; ++dst)
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ unsigned __cuda_local_var_77326_20_non_const_seed;
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77329_21_non_const_remain_consumers;
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77330_15_non_const_remaining;
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77331_15_non_const_max_for_this;
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77334_15_non_const_cnt;
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77326_20_non_const_seed = (_Z5mix32j((((((unsigned)(__cuda_local_var_77275_13_non_const_cluster_id + 1)) * 1315423911U) ^ (((unsigned)(r + 11)) * 2654435761U)) ^ (((unsigned)(dst + 7)) * 2246822519U))));
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77329_21_non_const_remain_consumers = (2 - dst);
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77330_15_non_const_remaining = (__cuda_local_var_77282_13_non_const_hotset_elems - __cuda_local_var_77322_13_non_const_cursor);
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = ((__cuda_local_var_77329_21_non_const_remain_consumers > 0) ? (__cuda_local_var_77330_15_non_const_remaining / __cuda_local_var_77329_21_non_const_remain_consumers) : __cuda_local_var_77330_15_non_const_remaining);
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77331_15_non_const_max_for_this < 0) {
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = 0; }
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77326_20_non_const_seed & 7U) == 0U)
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 289 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+else 
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T34;
+ int __T35;
+ int __T36;
+ int __T37;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77338_17_non_const_small;
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77339_17_non_const_burst;
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ __nv_bool __cuda_local_var_77340_18_non_const_is_burst;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77338_17_non_const_small = (1 + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(__cuda_local_var_77323_19_non_const_base_per_consumer * 2)))));
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77339_17_non_const_burst = (((__T34 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T35 = (max(1, ((__cuda_local_var_77323_19_non_const_base_per_consumer * 8) + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(max(1, (__cuda_local_var_77323_19_non_const_base_per_consumer * 2))))))))))) , (min(__T34, __T35)));
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77340_18_non_const_is_burst = ((__nv_bool)((((r + __cuda_local_var_77275_13_non_const_cluster_id) + dst) % burst_period) == 0));
+# 294 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = ((__cuda_local_var_77340_18_non_const_is_burst) ? __cuda_local_var_77339_17_non_const_burst : (((__T36 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T37 = __cuda_local_var_77338_17_non_const_small)) , (min(__T36, __T37))));
+# 295 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + dst)) = __cuda_local_var_77322_13_non_const_cursor;
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + dst)) = __cuda_local_var_77334_15_non_const_cnt;
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 299 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor += __cuda_local_var_77334_15_non_const_cnt;
+# 300 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = __cuda_local_var_77322_13_non_const_cursor;
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = __cuda_local_var_77318_15_non_const_target_epoch;
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 304 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 306 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77355_17_non_const_total = (__cuda_local_var_77285_16_non_const_meta->total_elems);
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77355_17_non_const_total; i += (blockDim.x))
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77357_15_non_const_v;
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77357_15_non_const_v = (((float)(((i + 1) ^ (__cuda_local_var_77275_13_non_const_cluster_id << 4)) ^ (r << 1))) * (0.001F));
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(__cuda_local_var_77284_10_non_const_payload + i)) = __cuda_local_var_77357_15_non_const_v;
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 312 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 314 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 2; ++dst)
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int *__T38;
+ int __T39;
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T38 = ((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + dst))) , (void)(__T39 = __cuda_local_var_77318_15_non_const_target_epoch)) , (void)(_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(__T38, __T39));
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 322 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 323 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 324 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank != 0)
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77380_13_non_const_acc;
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+while ((_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8379atomicAddEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + __cuda_local_var_77273_13_non_const_rank)), 0)) < __cuda_local_var_77318_15_non_const_target_epoch)
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 329 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 330 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 331 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc = (0.0F);
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int pass;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+pass = 0;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; pass < reuse_passes; ++pass)
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77382_19_non_const_count;
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77383_19_non_const_offset;
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77382_19_non_const_count = (*(((__cuda_local_var_77285_16_non_const_meta->counts)) + __cuda_local_var_77273_13_non_const_rank));
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77383_19_non_const_offset = (*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + __cuda_local_var_77273_13_non_const_rank));
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77382_19_non_const_count; i += (blockDim.x))
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 338 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc += (*(__cuda_local_var_77284_10_non_const_payload + (__cuda_local_var_77383_19_non_const_offset + i)));
+# 339 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 340 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 343 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(out[((((size_t)__cuda_local_var_77275_13_non_const_cluster_id) * 2UL) + ((size_t)__cuda_local_var_77273_13_non_const_rank))]) = __cuda_local_var_77380_13_non_const_acc;
+# 344 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 345 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 349 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 350 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} } 
+# 352 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ void _Z29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiii(
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ g_payload, 
+# 215 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+struct ClusterMeta *__restrict__ g_meta, 
+# 216 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ out, 
+# 217 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int repeat, 
+# 218 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(avg_elems), 
+# 219 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(burst_period), 
+# 220 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(reuse_passes)){__copy_param(int avg_elems,__val_param(avg_elems));__copy_param(int burst_period,__val_param(burst_period));__copy_param(int reuse_passes,__val_param(reuse_passes));
+# 221 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T40;
+ int __T41;
+ void *__T42;
+ unsigned long __T43;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct _ZN18cooperative_groups4__v113cluster_groupE __cuda_local_var_77272_21_non_const_cluster;
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77273_13_non_const_rank;
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77274_13_non_const_tid;
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77275_13_non_const_cluster_id;
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77281_13_const_consumers;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77282_13_non_const_hotset_elems;
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float *__cuda_local_var_77284_10_non_const_payload;
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct ClusterMeta *__cuda_local_var_77285_16_non_const_meta;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+memset((char *)&__cuda_local_var_77272_21_non_const_cluster, 0,sizeof(__cuda_local_var_77272_21_non_const_cluster));
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77272_21_non_const_cluster = (_ZN18cooperative_groups4__v112this_clusterEv());
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77273_13_non_const_rank = ((int)(_ZN18cooperative_groups4__v113cluster_group10block_rankEv()));
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77274_13_non_const_tid = ((int)(threadIdx.x));
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77275_13_non_const_cluster_id = ((int)((blockIdx.x) / 4U));
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (avg_elems < 1) {
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+avg_elems = 1; }
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (reuse_passes < 1) {
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+reuse_passes = 1; }
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (burst_period < 1) {
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+burst_period = 1; }
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77281_13_const_consumers = 3;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77282_13_non_const_hotset_elems = (max(1, (((__T40 = (min(16384, 32))) , (void)(__T41 = (avg_elems * 8))) , (min(__T40, __T41)))));
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)0LL);
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)0LL);
+# 243 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankIfEEPT_S4_i((_ZZ29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiiiE12smem_payload), 0)));
+# 244 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankI11ClusterMetaEEPT_S5_i((&_ZZ29dynamic_mailbox_many_clustersILi4EEvPfP11ClusterMetaS0_iiiiE9smem_meta), 0)));
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (__cuda_local_var_77274_13_non_const_tid == 0))
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = 0;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < 8; ++i)
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + i)), 0);
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + i)) = 0;
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + i)) = 0;
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 255 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = 0;
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = 0;
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 258 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (0))
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid < 32)
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 262 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_Z28register_range_by_line_warp0Pvm(((void *)__cuda_local_var_77285_16_non_const_meta), 128UL);
+# 263 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T42 = ((void *)__cuda_local_var_77284_10_non_const_payload)) , (void)(__T43 = (((size_t)__cuda_local_var_77282_13_non_const_hotset_elems) * 4UL))) , (void)(_Z28register_range_by_line_warp0Pvm(__T42, __T43));
+# 264 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 265 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710__syncwarpEj(4294967295U);
+# 266 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 268 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int r;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+r = 0;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; r < repeat; ++r)
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77318_15_non_const_target_epoch;
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77318_15_non_const_target_epoch = (r + 1);
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank == 0)
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77355_17_non_const_total;
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77322_13_non_const_cursor;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77323_19_non_const_base_per_consumer;
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor = 0;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77323_19_non_const_base_per_consumer = (max(1, (avg_elems / (max(1, 3)))));
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 4; ++dst)
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ unsigned __cuda_local_var_77326_20_non_const_seed;
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77329_21_non_const_remain_consumers;
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77330_15_non_const_remaining;
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77331_15_non_const_max_for_this;
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77334_15_non_const_cnt;
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77326_20_non_const_seed = (_Z5mix32j((((((unsigned)(__cuda_local_var_77275_13_non_const_cluster_id + 1)) * 1315423911U) ^ (((unsigned)(r + 11)) * 2654435761U)) ^ (((unsigned)(dst + 7)) * 2246822519U))));
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77329_21_non_const_remain_consumers = (4 - dst);
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77330_15_non_const_remaining = (__cuda_local_var_77282_13_non_const_hotset_elems - __cuda_local_var_77322_13_non_const_cursor);
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = ((__cuda_local_var_77329_21_non_const_remain_consumers > 0) ? (__cuda_local_var_77330_15_non_const_remaining / __cuda_local_var_77329_21_non_const_remain_consumers) : __cuda_local_var_77330_15_non_const_remaining);
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77331_15_non_const_max_for_this < 0) {
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = 0; }
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77326_20_non_const_seed & 7U) == 0U)
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 289 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+else 
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T44;
+ int __T45;
+ int __T46;
+ int __T47;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77338_17_non_const_small;
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77339_17_non_const_burst;
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ __nv_bool __cuda_local_var_77340_18_non_const_is_burst;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77338_17_non_const_small = (1 + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(__cuda_local_var_77323_19_non_const_base_per_consumer * 2)))));
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77339_17_non_const_burst = (((__T44 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T45 = (max(1, ((__cuda_local_var_77323_19_non_const_base_per_consumer * 8) + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(max(1, (__cuda_local_var_77323_19_non_const_base_per_consumer * 2))))))))))) , (min(__T44, __T45)));
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77340_18_non_const_is_burst = ((__nv_bool)((((r + __cuda_local_var_77275_13_non_const_cluster_id) + dst) % burst_period) == 0));
+# 294 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = ((__cuda_local_var_77340_18_non_const_is_burst) ? __cuda_local_var_77339_17_non_const_burst : (((__T46 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T47 = __cuda_local_var_77338_17_non_const_small)) , (min(__T46, __T47))));
+# 295 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + dst)) = __cuda_local_var_77322_13_non_const_cursor;
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + dst)) = __cuda_local_var_77334_15_non_const_cnt;
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 299 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor += __cuda_local_var_77334_15_non_const_cnt;
+# 300 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = __cuda_local_var_77322_13_non_const_cursor;
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = __cuda_local_var_77318_15_non_const_target_epoch;
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 304 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 306 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77355_17_non_const_total = (__cuda_local_var_77285_16_non_const_meta->total_elems);
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77355_17_non_const_total; i += (blockDim.x))
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77357_15_non_const_v;
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77357_15_non_const_v = (((float)(((i + 1) ^ (__cuda_local_var_77275_13_non_const_cluster_id << 4)) ^ (r << 1))) * (0.001F));
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(__cuda_local_var_77284_10_non_const_payload + i)) = __cuda_local_var_77357_15_non_const_v;
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 312 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 314 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 4; ++dst)
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int *__T48;
+ int __T49;
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T48 = ((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + dst))) , (void)(__T49 = __cuda_local_var_77318_15_non_const_target_epoch)) , (void)(_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(__T48, __T49));
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 322 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 323 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 324 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank != 0)
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77380_13_non_const_acc;
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+while ((_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8379atomicAddEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + __cuda_local_var_77273_13_non_const_rank)), 0)) < __cuda_local_var_77318_15_non_const_target_epoch)
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 329 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 330 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 331 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc = (0.0F);
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int pass;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+pass = 0;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; pass < reuse_passes; ++pass)
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77382_19_non_const_count;
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77383_19_non_const_offset;
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77382_19_non_const_count = (*(((__cuda_local_var_77285_16_non_const_meta->counts)) + __cuda_local_var_77273_13_non_const_rank));
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77383_19_non_const_offset = (*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + __cuda_local_var_77273_13_non_const_rank));
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77382_19_non_const_count; i += (blockDim.x))
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 338 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc += (*(__cuda_local_var_77284_10_non_const_payload + (__cuda_local_var_77383_19_non_const_offset + i)));
+# 339 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 340 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 343 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(out[((((size_t)__cuda_local_var_77275_13_non_const_cluster_id) * 4UL) + ((size_t)__cuda_local_var_77273_13_non_const_rank))]) = __cuda_local_var_77380_13_non_const_acc;
+# 344 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 345 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 349 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 350 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} } 
+# 352 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__global__ __var_used__ void _Z29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiii(
+# 214 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ g_payload, 
+# 215 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+struct ClusterMeta *__restrict__ g_meta, 
+# 216 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+float *__restrict__ out, 
+# 217 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int repeat, 
+# 218 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(avg_elems), 
+# 219 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(burst_period), 
+# 220 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+int __val_param(reuse_passes)){__copy_param(int avg_elems,__val_param(avg_elems));__copy_param(int burst_period,__val_param(burst_period));__copy_param(int reuse_passes,__val_param(reuse_passes));
+# 221 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T50;
+ int __T51;
+ void *__T52;
+ unsigned long __T53;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct _ZN18cooperative_groups4__v113cluster_groupE __cuda_local_var_77272_21_non_const_cluster;
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77273_13_non_const_rank;
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77274_13_non_const_tid;
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77275_13_non_const_cluster_id;
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77281_13_const_consumers;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77282_13_non_const_hotset_elems;
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float *__cuda_local_var_77284_10_non_const_payload;
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ struct ClusterMeta *__cuda_local_var_77285_16_non_const_meta;
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+memset((char *)&__cuda_local_var_77272_21_non_const_cluster, 0,sizeof(__cuda_local_var_77272_21_non_const_cluster));
+# 225 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77272_21_non_const_cluster = (_ZN18cooperative_groups4__v112this_clusterEv());
+# 226 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77273_13_non_const_rank = ((int)(_ZN18cooperative_groups4__v113cluster_group10block_rankEv()));
+# 227 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77274_13_non_const_tid = ((int)(threadIdx.x));
+# 228 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77275_13_non_const_cluster_id = ((int)((blockIdx.x) / 8U));
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (avg_elems < 1) {
+# 230 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+avg_elems = 1; }
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (reuse_passes < 1) {
+# 231 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+reuse_passes = 1; }
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (burst_period < 1) {
+# 232 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+burst_period = 1; }
+# 234 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77281_13_const_consumers = 7;
+# 235 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77282_13_non_const_hotset_elems = (max(1, (((__T50 = (min(16384, 32))) , (void)(__T51 = (avg_elems * 8))) , (min(__T50, __T51)))));
+# 237 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)0LL);
+# 238 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)0LL);
+# 243 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77284_10_non_const_payload = ((float *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankIfEEPT_S4_i((_ZZ29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiiiE12smem_payload), 0)));
+# 244 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77285_16_non_const_meta = ((struct ClusterMeta *)(_ZN18cooperative_groups4__v113cluster_group15map_shared_rankI11ClusterMetaEEPT_S5_i((&_ZZ29dynamic_mailbox_many_clustersILi8EEvPfP11ClusterMetaS0_iiiiE9smem_meta), 0)));
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (__cuda_local_var_77274_13_non_const_tid == 0))
+# 250 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = 0;
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < 8; ++i)
+# 251 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + i)), 0);
+# 252 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + i)) = 0;
+# 253 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + i)) = 0;
+# 254 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 255 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = 0;
+# 256 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = 0;
+# 257 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 258 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77273_13_non_const_rank == 0) && (0))
+# 260 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid < 32)
+# 261 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 262 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_Z28register_range_by_line_warp0Pvm(((void *)__cuda_local_var_77285_16_non_const_meta), 128UL);
+# 263 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T52 = ((void *)__cuda_local_var_77284_10_non_const_payload)) , (void)(__T53 = (((size_t)__cuda_local_var_77282_13_non_const_hotset_elems) * 4UL))) , (void)(_Z28register_range_by_line_warp0Pvm(__T52, __T53));
+# 264 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 265 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710__syncwarpEj(4294967295U);
+# 266 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 268 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int r;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+r = 0;
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; r < repeat; ++r)
+# 270 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77318_15_non_const_target_epoch;
+# 271 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77318_15_non_const_target_epoch = (r + 1);
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank == 0)
+# 273 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77355_17_non_const_total;
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 274 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77322_13_non_const_cursor;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77323_19_non_const_base_per_consumer;
+# 275 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor = 0;
+# 276 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77323_19_non_const_base_per_consumer = (max(1, (avg_elems / (max(1, 7)))));
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 8; ++dst)
+# 278 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ unsigned __cuda_local_var_77326_20_non_const_seed;
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77329_21_non_const_remain_consumers;
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77330_15_non_const_remaining;
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77331_15_non_const_max_for_this;
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77334_15_non_const_cnt;
+# 279 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77326_20_non_const_seed = (_Z5mix32j((((((unsigned)(__cuda_local_var_77275_13_non_const_cluster_id + 1)) * 1315423911U) ^ (((unsigned)(r + 11)) * 2654435761U)) ^ (((unsigned)(dst + 7)) * 2246822519U))));
+# 282 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77329_21_non_const_remain_consumers = (8 - dst);
+# 283 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77330_15_non_const_remaining = (__cuda_local_var_77282_13_non_const_hotset_elems - __cuda_local_var_77322_13_non_const_cursor);
+# 284 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = ((__cuda_local_var_77329_21_non_const_remain_consumers > 0) ? (__cuda_local_var_77330_15_non_const_remaining / __cuda_local_var_77329_21_non_const_remain_consumers) : __cuda_local_var_77330_15_non_const_remaining);
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77331_15_non_const_max_for_this < 0) {
+# 285 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77331_15_non_const_max_for_this = 0; }
+# 287 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if ((__cuda_local_var_77326_20_non_const_seed & 7U) == 0U)
+# 288 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 289 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = 0;
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+else 
+# 290 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int __T54;
+ int __T55;
+ int __T56;
+ int __T57;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77338_17_non_const_small;
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77339_17_non_const_burst;
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ __nv_bool __cuda_local_var_77340_18_non_const_is_burst;
+# 291 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77338_17_non_const_small = (1 + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(__cuda_local_var_77323_19_non_const_base_per_consumer * 2)))));
+# 292 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77339_17_non_const_burst = (((__T54 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T55 = (max(1, ((__cuda_local_var_77323_19_non_const_base_per_consumer * 8) + ((int)(__cuda_local_var_77326_20_non_const_seed % ((unsigned)(max(1, (__cuda_local_var_77323_19_non_const_base_per_consumer * 2))))))))))) , (min(__T54, __T55)));
+# 293 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77340_18_non_const_is_burst = ((__nv_bool)((((r + __cuda_local_var_77275_13_non_const_cluster_id) + dst) % burst_period) == 0));
+# 294 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77334_15_non_const_cnt = ((__cuda_local_var_77340_18_non_const_is_burst) ? __cuda_local_var_77339_17_non_const_burst : (((__T56 = __cuda_local_var_77331_15_non_const_max_for_this) , (void)(__T57 = __cuda_local_var_77338_17_non_const_small)) , (min(__T56, __T57))));
+# 295 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + dst)) = __cuda_local_var_77322_13_non_const_cursor;
+# 297 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(((__cuda_local_var_77285_16_non_const_meta->counts)) + dst)) = __cuda_local_var_77334_15_non_const_cnt;
+# 298 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 299 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77322_13_non_const_cursor += __cuda_local_var_77334_15_non_const_cnt;
+# 300 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->total_elems) = __cuda_local_var_77322_13_non_const_cursor;
+# 302 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(__cuda_local_var_77285_16_non_const_meta->epoch) = __cuda_local_var_77318_15_non_const_target_epoch;
+# 303 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 304 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 306 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 308 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77355_17_non_const_total = (__cuda_local_var_77285_16_non_const_meta->total_elems);
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77355_17_non_const_total; i += (blockDim.x))
+# 309 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77357_15_non_const_v;
+# 310 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77357_15_non_const_v = (((float)(((i + 1) ^ (__cuda_local_var_77275_13_non_const_cluster_id << 4)) ^ (r << 1))) * (0.001F));
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(*(__cuda_local_var_77284_10_non_const_payload + i)) = __cuda_local_var_77357_15_non_const_v;
+# 311 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 312 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 314 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 316 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int dst;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+dst = 1;
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; dst < 8; ++dst)
+# 320 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+do
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{  int *__T58;
+ int __T59;
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+((__T58 = ((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + dst))) , (void)(__T59 = __cuda_local_var_77318_15_non_const_target_epoch)) , (void)(_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83710atomicExchEPii(__T58, __T59));
+# 321 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} while (0);
+# 322 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 323 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 324 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77273_13_non_const_rank != 0)
+# 326 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ float __cuda_local_var_77380_13_non_const_acc;
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 327 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+while ((_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b8379atomicAddEPii(((int *)(((__cuda_local_var_77285_16_non_const_meta->flags)) + __cuda_local_var_77273_13_non_const_rank)), 0)) < __cuda_local_var_77318_15_non_const_target_epoch)
+# 328 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 329 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 330 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 331 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__syncthreads();
+# 333 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc = (0.0F);
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int pass;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+pass = 0;
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; pass < reuse_passes; ++pass)
+# 334 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77382_19_non_const_count;
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int __cuda_local_var_77383_19_non_const_offset;
+# 335 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77382_19_non_const_count = (*(((__cuda_local_var_77285_16_non_const_meta->counts)) + __cuda_local_var_77273_13_non_const_rank));
+# 336 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77383_19_non_const_offset = (*(((__cuda_local_var_77285_16_non_const_meta->offsets)) + __cuda_local_var_77273_13_non_const_rank));
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+ int i;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+i = __cuda_local_var_77274_13_non_const_tid;
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+for (; i < __cuda_local_var_77382_19_non_const_count; i += (blockDim.x))
+# 337 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 338 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+__cuda_local_var_77380_13_non_const_acc += (*(__cuda_local_var_77284_10_non_const_payload + (__cuda_local_var_77383_19_non_const_offset + i)));
+# 339 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 340 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} }
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+if (__cuda_local_var_77274_13_non_const_tid == 0)
+# 342 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+{
+# 343 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+(out[((((size_t)__cuda_local_var_77275_13_non_const_cluster_id) * 8UL) + ((size_t)__cuda_local_var_77273_13_non_const_rank))]) = __cuda_local_var_77380_13_non_const_acc;
+# 344 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 345 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}
+# 349 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+_ZN18cooperative_groups4__v113cluster_group4syncEv();
+# 350 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+} } 
+# 352 "/legacy-research/owner/cudatest/ClusterSim/runtest/benchmark/realbenchmark/flash/occupancy_flash/dynamic/resc.cu"
+}}
+__asm__(".align 2");
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+___device__(static  __no_sc__) __inline__ void _ZN4dim3C1Ejjj( struct dim3 *const this, 
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+unsigned vx, 
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+unsigned vy, 
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+unsigned vz){
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+{
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+(this->x) = vx;
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+(this->y) = vy;
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+(this->z) = vz; 
+# 431 "/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h"
+}}
+__asm__(".align 2");
+___device__(static  __no_sc__) __inline__ void _ZN4dim3C2Ejjj( struct dim3 *const this,  unsigned __T60,  unsigned __T61,  unsigned __T62){ {  _ZN4dim3C1Ejjj(this, __T60, __T61, __T62);  }}
+__asm__(".align 2");
+# 134 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v112thread_groupC1Ej( struct _ZN18cooperative_groups4__v112thread_groupE *const this, 
+# 134 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+unsigned type){
+# 134 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 135 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+(((this->_data).group).type) = type;
+# 136 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+(((this->_data).group)._unused) = 0U; 
+# 137 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+__asm__(".align 2");
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v112thread_groupC2Ej( struct _ZN18cooperative_groups4__v112thread_groupE *const this,  unsigned __T63){ {  _ZN18cooperative_groups4__v112thread_groupC1Ej(this, __T63);  }}
+__asm__(".align 2");
+# 162 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v117thread_group_baseILj6EEC1Ev( struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE *const this){
+# 162 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 162 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+_ZN18cooperative_groups4__v112thread_groupC2Ej((&(this->__b_N18cooperative_groups4__v112thread_groupE)), 6U); 
+# 162 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+__asm__(".align 2");
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v117thread_group_baseILj6EEC2Ev( struct _ZN18cooperative_groups4__v117thread_group_baseILj6EEE *const this){ {  _ZN18cooperative_groups4__v117thread_group_baseILj6EEC1Ev(this);  }}
+__asm__(".align 2");
+# 452 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v113cluster_groupC1Ev( struct _ZN18cooperative_groups4__v113cluster_groupE *const this){
+# 453 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 453 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+_ZN18cooperative_groups4__v117thread_group_baseILj6EEC2Ev((&(this->__b_N18cooperative_groups4__v117thread_group_baseILj6EEE))); 
+# 454 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+__asm__(".align 2");
+___device__(static  __no_sc__) __inline__ void _ZN18cooperative_groups4__v113cluster_groupC2Ev( struct _ZN18cooperative_groups4__v113cluster_groupE *const this){ {  _ZN18cooperative_groups4__v113cluster_groupC1Ev(this);  }}
+# 462 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN18cooperative_groups4__v113cluster_group4syncEv(void){
+# 463 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 464 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 464 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster4syncEv();
+# 464 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+return; }
+# 465 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+# 499 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _ZN18cooperative_groups4__v113cluster_group10block_rankEv(void){
+# 500 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 501 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+return _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster10block_rankEv();
+# 502 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) float *_ZN18cooperative_groups4__v113cluster_group15map_shared_rankIfEEPT_S4_i(
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+float *addr, 
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+int rank){
+# 490 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{  float *__T64;
+ int __T65;
+# 491 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+return ((__T64 = addr) , (void)(__T65 = rank)) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankIfEEPT_S6_i(__T64, __T65));
+# 492 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct ClusterMeta *_ZN18cooperative_groups4__v113cluster_group15map_shared_rankI11ClusterMetaEEPT_S5_i(
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+struct ClusterMeta *addr, 
+# 489 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+int rank){
+# 490 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{  struct ClusterMeta *__T66;
+ int __T67;
+# 491 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+return ((__T66 = addr) , (void)(__T67 = rank)) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankI11ClusterMetaEEPT_S7_i(__T66, __T67));
+# 492 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
+# 569 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster14barrier_arriveEv(void){
+# 570 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{
+# 571 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83724__cluster_barrier_arriveEv(); 
+# 572 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 574 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster12barrier_waitEv(void){
+# 575 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{
+# 576 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83722__cluster_barrier_waitEv(); 
+# 577 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 579 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) void _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster4syncEv(void){
+# 580 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{
+# 581 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster14barrier_arriveEv();
+# 582 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster12barrier_waitEv(); 
+# 583 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 601 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) unsigned _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster10block_rankEv(void){
+# 602 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{
+# 603 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+return _ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83726__clusterRelativeBlockRankEv();
+# 604 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) float *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankIfEEPT_S6_i(
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+float *addr, 
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+int rank){
+# 592 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{  const void *__T68;
+ unsigned __T69;
+# 593 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+return (float *)(((__T68 = ((const void *)addr)) , (void)(__T69 = ((unsigned)rank))) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83725__cluster_map_shared_rankEPKvj(__T68, __T69)));
+# 594 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct ClusterMeta *_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83718cooperative_groups4__v17details7cluster15map_shared_rankI11ClusterMetaEEPT_S7_i(
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+struct ClusterMeta *addr, 
+# 591 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+int rank){
+# 592 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+{  const void *__T70;
+ unsigned __T71;
+# 593 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+return (struct ClusterMeta *)(((__T70 = ((const void *)addr)) , (void)(__T71 = ((unsigned)rank))) , (_ZN37_INTERNAL_77446d03_7_resc_cu_70b6b83725__cluster_map_shared_rankEPKvj(__T70, __T71)));
+# 594 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups/details/helpers.h"
+}}
+# 546 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+___device__(static  __no_sc__) __inline__ __attribute__((__always_inline__)) struct _ZN18cooperative_groups4__v113cluster_groupE _ZN18cooperative_groups4__v112this_clusterEv(void){
+# 547 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{  struct _ZN18cooperative_groups4__v113cluster_groupE __T72;
+# 548 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+ struct _ZN18cooperative_groups4__v113cluster_groupE __cuda_local_var_75885_19_non_const_cg;
+# 548 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+_ZN18cooperative_groups4__v113cluster_groupC1Ev((&__cuda_local_var_75885_19_non_const_cg));
+# 552 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+{
+# 552 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+__T72 = ((*(struct _ZN18cooperative_groups4__v113cluster_groupE *)&__cuda_local_var_75885_19_non_const_cg));
+# 552 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+return __T72; }
+# 553 "/usr/local/cuda/bin/../targets/x86_64-linux/include/cooperative_groups.h"
+}}
