@@ -622,6 +622,14 @@ bool was_read_sent(const std::list<cache_event> &events) {
   return false;
 }
 
+bool was_readshare_hit(const std::list<cache_event> &events) {
+  for (std::list<cache_event>::const_iterator e = events.begin();
+       e != events.end(); e++) {
+    if ((*e).m_cache_event_type == CLUSTER_READ_SHARE_HIT) return true;
+  }
+  return false;
+}
+
 bool was_writeallocate_sent(const std::list<cache_event> &events) {
   for (std::list<cache_event>::const_iterator e = events.begin();
        e != events.end(); e++) {
@@ -2272,7 +2280,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
-  (void)events;
+  // (void)events;  // now used: push CLUSTER_READ_SHARE_HIT
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) {
     return false;
@@ -2409,6 +2417,7 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     }
   }
 
+  events.push_back(cache_event(CLUSTER_READ_SHARE_HIT));
   // printf("\nFOUND SHARES.\n");
   return true;
 }
@@ -2863,6 +2872,7 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     local_line_block->set_cluster_state(CLUSTER_SHARED);
   }
 
+  events.push_back(cache_event(CLUSTER_READ_SHARE_HIT));
   // printf("\n[SPECIAL_READ_SHARE] FOUND SHARES and filled successfully.\n");
   return true;
 }

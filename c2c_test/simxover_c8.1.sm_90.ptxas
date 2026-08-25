@@ -1,0 +1,11 @@
+ptxas info    : 16384 bytes gmem
+ptxas info    : Compiling entry function '_Z13global_kernelPfii' for 'sm_90'
+ptxas info    : Function properties for _Z13global_kernelPfii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 15 registers, used 0 barriers
+ptxas info    : Compile time = 9.457 ms
+ptxas info    : Compiling entry function '_Z10dsm_kernelii' for 'sm_90'
+ptxas info    : Function properties for _Z10dsm_kernelii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 14 registers, used 0 barriers, 8192 bytes smem
+ptxas info    : Compile time = 7.205 ms

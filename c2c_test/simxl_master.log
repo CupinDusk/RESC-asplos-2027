@@ -1,0 +1,10 @@
+=== IN-SIM latency-isolated microbench crossover (frozen lat=195) START 2026年 08月 25日 星期二 12:26:48 CST ===
+c2 nf=64 : nfloats=64 bytes=256 cluster=2 | DSM=542.0±0.0 cyc/read  GLOBAL=711.0±0.0 cyc/read  ratio(dsm/glob)=0.762  N=2
+c2 nf=256 : nfloats=256 bytes=1024 cluster=2 | DSM=2048.0±0.0 cyc/read  GLOBAL=2721.0±0.0 cyc/read  ratio(dsm/glob)=0.753  N=2
+c2 nf=512 : nfloats=512 bytes=2048 cluster=2 | DSM=4056.0±0.0 cyc/read  GLOBAL=5401.0±0.0 cyc/read  ratio(dsm/glob)=0.751  N=2
+c2 nf=1024 : nfloats=1024 bytes=4096 cluster=2 | DSM=8072.0±0.0 cyc/read  GLOBAL=10761.0±0.0 cyc/read  ratio(dsm/glob)=0.750  N=2
+c8 nf=64 : nfloats=64 bytes=256 cluster=8 | DSM=694.0±0.0 cyc/read  GLOBAL=750.0±0.0 cyc/read  ratio(dsm/glob)=0.925  N=2
+c8 nf=256 : nfloats=256 bytes=1024 cluster=8 | DSM=2656.0±0.0 cyc/read  GLOBAL=2868.0±0.0 cyc/read  ratio(dsm/glob)=0.926  N=2
+c8 nf=512 : nfloats=512 bytes=2048 cluster=8 | DSM=5272.0±0.0 cyc/read  GLOBAL=5692.0±0.0 cyc/read  ratio(dsm/glob)=0.926  N=2
+c8 nf=1024 : nfloats=1024 bytes=4096 cluster=8 | DSM=10504.0±0.0 cyc/read  GLOBAL=11340.0±0.0 cyc/read  ratio(dsm/glob)=0.926  N=2
+SIMXL_DONE

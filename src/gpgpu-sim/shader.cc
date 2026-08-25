@@ -50,6 +50,9 @@
 #include "traffic_breakdown.h"
 #include "visualizer.h"
 
+extern int sm2sm_latency;  // RESC C2C charge (defined in sm_2_sm_network.cc)
+bool was_readshare_hit(const std::list<cache_event> &events);
+
 #define PRIORITIZE_MSHR_OVER_WB 1
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -2038,7 +2041,43 @@ mem_stage_stall_type ldst_unit::process_memory_access_queue_l1cache(
   }
 }
 
+void ldst_unit::resc_complete_load(mem_fetch *mf_next) {
+  // Completes a RESC read-share load AFTER its C2C latency has elapsed.
+  if (mf_next->get_inst().is_load()) {
+    for (unsigned r = 0; r < MAX_OUTPUT_VALUES; r++)
+      if (mf_next->get_inst().out[r] > 0) {
+        assert(m_pending_writes[mf_next->get_inst().warp_id()]
+                               [mf_next->get_inst().out[r]] > 0);
+        unsigned still_pending =
+            --m_pending_writes[mf_next->get_inst().warp_id()]
+                              [mf_next->get_inst().out[r]];
+        if (!still_pending) {
+          m_pending_writes[mf_next->get_inst().warp_id()].erase(
+              mf_next->get_inst().out[r]);
+          m_scoreboard->releaseRegister(mf_next->get_inst().warp_id(),
+                                        mf_next->get_inst().out[r]);
+          m_core->warp_inst_complete(mf_next->get_inst());
+        }
+      }
+  }
+  delete mf_next;
+}
+
 void ldst_unit::L1_latency_queue_cycle() {
+  // Drain RESC read-share loads whose C2C latency has elapsed.
+  {
+    unsigned long long now = m_core->get_gpu()->gpu_sim_cycle +
+                             m_core->get_gpu()->gpu_tot_sim_cycle;
+    for (size_t i = 0; i < m_resc_c2c_pending.size();) {
+      if (m_resc_c2c_pending[i].second <= now) {
+        resc_complete_load(m_resc_c2c_pending[i].first);
+        m_resc_c2c_pending[i] = m_resc_c2c_pending.back();
+        m_resc_c2c_pending.pop_back();
+      } else {
+        ++i;
+      }
+    }
+  }
   for (int j = 0; j < m_config->m_L1D_config.l1_banks; j++) {
     if ((l1_latency_queue[j][0]) != NULL) {
       mem_fetch *mf_next = l1_latency_queue[j][0];
@@ -2055,7 +2094,23 @@ void ldst_unit::L1_latency_queue_cycle() {
       if (status == HIT) {
         assert(!read_sent);
         l1_latency_queue[j][0] = NULL;
-        if (mf_next->get_inst().is_load()) {
+        bool resc_deferred = false;
+        if (was_readshare_hit(events)) {
+          // RESC: peer-L1 read-share. It rode the SM-to-SM fabric, so charge the
+          // C2C latency (= sm2sm_latency) instead of finishing at the local L1
+          // hit latency. It still AVOIDS the global/L2 round-trip. Defer completion
+          // by the extra (sm2sm_latency - l1_latency) cycles; drained at loop top.
+          // NOTE: do not 'continue' here -- the per-bank pipeline shift below must
+          // still run (the queue head was already consumed above).
+          unsigned long long now = m_core->get_gpu()->gpu_sim_cycle +
+                                   m_core->get_gpu()->gpu_tot_sim_cycle;
+          int extra = sm2sm_latency - (int)m_config->m_L1D_config.l1_latency;
+          if (extra < 0) extra = 0;
+          m_resc_c2c_pending.push_back(
+              std::make_pair(mf_next, now + (unsigned long long)extra));
+          resc_deferred = true;
+        }
+        if (!resc_deferred && mf_next->get_inst().is_load()) {
           for (unsigned r = 0; r < MAX_OUTPUT_VALUES; r++)
             if (mf_next->get_inst().out[r] > 0) {
               assert(m_pending_writes[mf_next->get_inst().warp_id()]
@@ -2074,7 +2129,7 @@ void ldst_unit::L1_latency_queue_cycle() {
         }
 
         // For write hit in WB policy
-        if (mf_next->get_inst().is_store() && !write_sent) {
+        if (!resc_deferred && mf_next->get_inst().is_store() && !write_sent) {
           unsigned dec_ack =
               (m_config->m_L1D_config.get_mshr_type() == SECTOR_ASSOC)
                   ? (mf_next->get_data_size() / SECTOR_SIZE)
@@ -2085,7 +2140,7 @@ void ldst_unit::L1_latency_queue_cycle() {
           for (unsigned i = 0; i < dec_ack; ++i) m_core->store_ack(mf_next);
         }
 
-        if (!write_sent) delete mf_next;
+        if (!resc_deferred && !write_sent) delete mf_next;
 
       } else if (status == RESERVATION_FAIL) {
         assert(!read_sent);

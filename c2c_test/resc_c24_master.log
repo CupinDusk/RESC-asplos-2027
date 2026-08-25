@@ -1,0 +1,6 @@
+===== resc cs=2 START 2026年 08月 25日 星期二 04:20:40 CST =====
+resc cs=2 EXIT=0 cycles=11320
+===== resc cs=4 START 2026年 08月 25日 星期二 04:21:29 CST =====
+resc cs=4 EXIT=0 cycles=12028
+resc cs=8 cycles=20445 (from sens run)
+RESC_C24_DONE

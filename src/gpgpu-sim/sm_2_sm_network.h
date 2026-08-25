@@ -1,6 +1,8 @@
 #ifndef SM_2_SM_NETWORK_H
 #define SM_2_SM_NETWORK_H
 
+extern int sm2sm_latency;  // SM-to-SM (C2C) network latency, shared with RESC read-share charge
+
 #include "../abstract_hardware_model.h"
 #include "../intersim2/interconnect_interface.hpp"
 #include "array"

@@ -1,0 +1,15 @@
+=== HELD-OUT PREDICT: c8, reuse_passes=1 (one-shot matched), frozen lat=195 START 2026年 08月 25日 星期二 10:55:32 CST ===
+global nf=128 cyc=12842
+dsm nf=128 cyc=22919
+global nf=192 cyc=12937
+dsm nf=192 cyc=22751
+global nf=256 cyc=13093
+./run_predict.sh: line 11: 858196 Killed                  ./${arm}10240 cluster_size=8 repeat=1 num_clusters=100 avg_elems=$nf burst_period=16 reuse_passes=1 > "$f" 2>&1
+dsm nf=256 cyc=
+global nf=384 cyc=13524
+dsm nf=384 cyc=24184
+global nf=512 cyc=13515
+dsm nf=512 cyc=25263
+global nf=768 cyc=14632
+dsm nf=768 cyc=25793
+PREDICT_DONE

@@ -1,0 +1,9 @@
+===== C2C BUILD START 2026年 08月 25日 星期二 04:00:09 CST =====
+CMAKE_EXIT=0
+MAKE_EXIT=0
+[ 99%] Built target scheduler
+[100%] Linking CUDA executable ../bin/network
+[100%] Built target network
+lrwxrwxrwx 1 hyren hyren      15  8月 25 04:00 lib/libcudart.so -> libcudart.so.12
+-rwxrwxr-x 1 hyren hyren 2906184  8月 25 04:00 lib/libcudart.so.12
+===== C2C BUILD DONE 2026年 08月 25日 星期二 04:00:56 CST =====

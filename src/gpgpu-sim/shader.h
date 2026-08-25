@@ -1491,6 +1491,10 @@ class ldst_unit : public pipelined_simd_unit {
 
   // Latency for local shmem when a dsmem request came in
   int m_dsmem_latency = 0;
+  // RESC: peer-L1 read-share hits charged the SM-to-SM C2C latency (fair vs DSM).
+  // Entries wait until their ready cycle before the load completes (MLP preserved).
+  std::vector<std::pair<class mem_fetch*, unsigned long long>> m_resc_c2c_pending;
+  void resc_complete_load(class mem_fetch *mf_next);
 
   std::vector<std::deque<mem_fetch *>> l1_latency_queue;
   void L1_latency_queue_cycle();

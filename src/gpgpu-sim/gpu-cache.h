@@ -73,6 +73,7 @@ enum cache_reservation_fail_reason {
 enum cache_event_type {
   WRITE_BACK_REQUEST_SENT,
   READ_REQUEST_SENT,
+  CLUSTER_READ_SHARE_HIT,  // RESC: peer-L1 read-share; charge SM-to-SM C2C latency
   WRITE_REQUEST_SENT,
   WRITE_ALLOCATE_SENT
 };
@@ -1286,6 +1287,7 @@ class cache_t {
 
 bool was_write_sent(const std::list<cache_event> &events);
 bool was_read_sent(const std::list<cache_event> &events);
+bool was_readshare_hit(const std::list<cache_event> &events);
 bool was_writeallocate_sent(const std::list<cache_event> &events);
 
 /// Baseline cache
