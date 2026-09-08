@@ -1,0 +1,70 @@
+# D-PATH reducible epoch combining sweep 2026-08-30T10:22:11Z
+# HOST:  18:22:11 up 25 days, 23:33, 19 users,  load average: 54.58, 55.43, 55.33
+# cfg_h20 n_cores_per_cluster=1 sm_2_sm_network_latency=195; nclust=8 block=32
+# arms: global=atomic-shared-bins  funnel=owner-serial(N-1)  tree=reduction-tree(log2 N)
+# metric: gpu_tot_sim_cycle (wall-clock) per arm; rank0_comb = critical-path combine cyc
+# COLS: N T K LOCAL | tot_global tot_funnel tot_tree | comb_g comb_f comb_t | tree/funnel tree/global | dram_t | bit | round_cyc
+N=4 T=1 K=1 LOCAL=16 | tot g=7956 f=8381 t=9007 | comb g=1343 f=1644 t=2220 | tree/f=1.075 tree/g=1.132 | dram_t=0 | bit=1/1/1 | round_cyc=[1076,0]
+N=4 T=1 K=1 LOCAL=64 | tot g=9012 f=9437 t=10063 | comb g=1343 f=1644 t=2220 | tree/f=1.066 tree/g=1.117 | dram_t=0 | bit=1/1/1 | round_cyc=[1076,0]
+N=4 T=1 K=1 LOCAL=256 | tot g=13236 f=13661 t=14287 | comb g=1343 f=1644 t=2220 | tree/f=1.046 tree/g=1.079 | dram_t=0 | bit=1/1/1 | round_cyc=[1076,0]
+N=4 T=1 K=32 LOCAL=16 | tot g=7978 f=8534 t=9109 | comb g=1366 f=1797 t=2322 | tree/f=1.067 tree/g=1.142 | dram_t=0 | bit=1/1/1 | round_cyc=[1127,0]
+N=4 T=1 K=32 LOCAL=64 | tot g=9034 f=9590 t=10165 | comb g=1366 f=1797 t=2322 | tree/f=1.060 tree/g=1.125 | dram_t=0 | bit=1/1/1 | round_cyc=[1127,0]
+N=4 T=1 K=32 LOCAL=256 | tot g=13258 f=13814 t=14389 | comb g=1366 f=1797 t=2322 | tree/f=1.042 tree/g=1.085 | dram_t=0 | bit=1/1/1 | round_cyc=[1127,0]
+N=4 T=1 K=256 LOCAL=16 | tot g=15586 f=17934 t=17506 | comb g=5894 f=7899 t=7421 | tree/f=0.976 tree/g=1.123 | dram_t=0 | bit=0/1/1 | round_cyc=[3680,0]
+N=4 T=1 K=256 LOCAL=64 | tot g=24439 f=26382 t=25954 | comb g=6293 f=7899 t=7421 | tree/f=0.984 tree/g=1.062 | dram_t=0 | bit=0/1/1 | round_cyc=[3680,0]
+N=4 T=1 K=256 LOCAL=256 | tot g=57980 f=60174 t=59746 | comb g=6029 f=7899 t=7421 | tree/f=0.993 tree/g=1.030 | dram_t=0 | bit=0/1/1 | round_cyc=[3680,0]
+N=4 T=0 K=1 LOCAL=16 | tot g=7761 f=8120 t=8741 | comb g=1344 f=1577 t=2148 | tree/f=1.076 tree/g=1.126 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=1 LOCAL=64 | tot g=8817 f=9176 t=9797 | comb g=1344 f=1577 t=2148 | tree/f=1.068 tree/g=1.111 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=1 LOCAL=256 | tot g=13041 f=13400 t=14021 | comb g=1344 f=1577 t=2148 | tree/f=1.046 tree/g=1.075 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=32 LOCAL=16 | tot g=7784 f=8120 t=8741 | comb g=1367 f=1577 t=2148 | tree/f=1.076 tree/g=1.123 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=32 LOCAL=64 | tot g=8840 f=9176 t=9797 | comb g=1367 f=1577 t=2148 | tree/f=1.068 tree/g=1.108 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=32 LOCAL=256 | tot g=13064 f=13400 t=14021 | comb g=1367 f=1577 t=2148 | tree/f=1.046 tree/g=1.073 | dram_t=0 | bit=1/1/1 | round_cyc=[1040,0]
+N=4 T=0 K=256 LOCAL=16 | tot g=15428 f=16165 t=15615 | comb g=6116 f=6499 t=5899 | tree/f=0.966 tree/g=1.012 | dram_t=0 | bit=0/1/1 | round_cyc=[2912,0]
+N=4 T=0 K=256 LOCAL=64 | tot g=24307 f=24613 t=24063 | comb g=6530 f=6499 t=5899 | tree/f=0.978 tree/g=0.990 | dram_t=0 | bit=0/1/1 | round_cyc=[2912,0]
+N=4 T=0 K=256 LOCAL=256 | tot g=57832 f=58405 t=57855 | comb g=6233 f=6499 t=5899 | tree/f=0.991 tree/g=1.000 | dram_t=0 | bit=0/1/1 | round_cyc=[2912,0]
+N=8 T=1 K=1 LOCAL=16 | tot g=8225 f=9627 t=10191 | comb g=1618 f=2898 t=3349 | tree/f=1.059 tree/g=1.239 | dram_t=0 | bit=1/1/1 | round_cyc=[1055,1055,1055]
+N=8 T=1 K=1 LOCAL=64 | tot g=9269 f=10671 t=11235 | comb g=1618 f=2898 t=3349 | tree/f=1.053 tree/g=1.212 | dram_t=0 | bit=1/1/1 | round_cyc=[1055,1055,1055]
+N=8 T=1 K=1 LOCAL=256 | tot g=13445 f=14847 t=15411 | comb g=1618 f=2898 t=3349 | tree/f=1.038 tree/g=1.146 | dram_t=0 | bit=1/1/1 | round_cyc=[1055,1055,1055]
+N=8 T=1 K=32 LOCAL=16 | tot g=9718 f=9984 t=10344 | comb g=3111 f=3255 t=3502 | tree/f=1.036 tree/g=1.064 | dram_t=0 | bit=1/1/1 | round_cyc=[1106,1106,1106]
+N=8 T=1 K=32 LOCAL=64 | tot g=10760 f=11028 t=11388 | comb g=3109 f=3255 t=3502 | tree/f=1.033 tree/g=1.058 | dram_t=0 | bit=1/1/1 | round_cyc=[1106,1106,1106]
+N=8 T=1 K=32 LOCAL=256 | tot g=14938 f=15204 t=15564 | comb g=3111 f=3255 t=3502 | tree/f=1.024 tree/g=1.042 | dram_t=0 | bit=1/1/1 | round_cyc=[1106,1106,1106]
+N=8 T=1 K=256 LOCAL=16 | tot g=17539 f=28899 t=20817 | comb g=7912 f=18921 t=10726 | tree/f=0.720 tree/g=1.187 | dram_t=0 | bit=1/1/1 | round_cyc=[3514,3514,3514]
+N=8 T=1 K=256 LOCAL=64 | tot g=25891 f=37251 t=29169 | comb g=7912 f=18921 t=10726 | tree/f=0.783 tree/g=1.127 | dram_t=0 | bit=1/1/1 | round_cyc=[3514,3514,3514]
+N=8 T=1 K=256 LOCAL=256 | tot g=59300 f=70659 t=62577 | comb g=7912 f=18921 t=10726 | tree/f=0.886 tree/g=1.055 | dram_t=0 | bit=1/1/1 | round_cyc=[3514,3514,3514]
+N=8 T=0 K=1 LOCAL=16 | tot g=8026 f=9293 t=9913 | comb g=1612 f=2756 t=3263 | tree/f=1.067 tree/g=1.235 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=1 LOCAL=64 | tot g=9070 f=10337 t=10957 | comb g=1612 f=2756 t=3263 | tree/f=1.060 tree/g=1.208 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=1 LOCAL=256 | tot g=13246 f=14513 t=15133 | comb g=1612 f=2756 t=3263 | tree/f=1.043 tree/g=1.142 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=32 LOCAL=16 | tot g=9520 f=9293 t=9913 | comb g=3104 f=2756 t=3263 | tree/f=1.067 tree/g=1.041 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=32 LOCAL=64 | tot g=10564 f=10337 t=10957 | comb g=3106 f=2756 t=3263 | tree/f=1.060 tree/g=1.037 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=32 LOCAL=256 | tot g=14740 f=14513 t=15133 | comb g=3105 f=2756 t=3263 | tree/f=1.043 tree/g=1.027 | dram_t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+N=8 T=0 K=256 LOCAL=16 | tot g=17165 f=23924 t=18714 | comb g=7906 f=14313 t=8990 | tree/f=0.782 tree/g=1.090 | dram_t=0 | bit=1/1/1 | round_cyc=[2944,2944,2944]
+N=8 T=0 K=256 LOCAL=64 | tot g=25518 f=32276 t=27066 | comb g=7907 f=14313 t=8990 | tree/f=0.839 tree/g=1.061 | dram_t=0 | bit=1/1/1 | round_cyc=[2944,2944,2944]
+N=8 T=0 K=256 LOCAL=256 | tot g=58925 f=65684 t=60474 | comb g=7907 f=14313 t=8990 | tree/f=0.921 tree/g=1.026 | dram_t=0 | bit=1/1/1 | round_cyc=[2944,2944,2944]
+DCOMB_SWEEP_DONE 2026-08-30T11:36:32Z
+
+# ============================================================================
+# VERDICT: NULL (per locked pre-registration decision rule)
+# ============================================================================
+# MAKE-OR-BREAK = POSITIVE: the endpoint log-tree merges PARALLELIZE.
+#   round_cyc is FLAT across rounds in every N=8 cell (e.g. [3514,3514,3514])
+#   even though round0 has N/2=4 concurrent peer reads and the last round has 1.
+#   => tree depth is genuinely ceil(log2 N), NOT the funnels N-1. The mechanism
+#   is NOT broken and does NOT recur the combiner-Gate2 serialization.
+#
+# BUT NULL because CORRECT-GLOBAL ATOMICS (arm0) beats the tree in EVERY N=8 cell:
+#   arm-tree/arm0 = 1.026 .. 1.239 (>1.0 everywhere), INCLUDING the K=1
+#   max-convergence scalar accumulator (tree/g=1.24). The locked rule requires
+#   beating the BETTER of {global,funnel} by >=1.3x; global is always better.
+#
+# The tree DOES beat the FAIR batched single-owner DSM funnel by up to 1.39x
+#   (tree/funnel=0.720 @ N=8 K=256), growing with payload+N as log-vs-linear
+#   depth predicts -- but funnel is the wrong opponent for reducible ops.
+#
+# Not HBM-bound: arm-tree dram reads = 0 in all cells. BITIDENTICAL=1 for
+#   funnel+tree in all cells; arm0 bit=0 only at N=4/K=256 (pre-existing sim
+#   atomic-coalescer artifact, below the N>=8 defensible bar, unused for verdict).
+# ============================================================================
+# SANITY GATE before: DSM=2656.0 GLOBAL=2868.0 ratio=0.926 (matches recipe)
+# SANITY GATE after : nfloats=256 bytes=1024 cluster=8 | DSM=2656.0±0.0 cyc/read  GLOBAL=2868.0±0.0 cyc/read  ratio(dsm/glob)=0.926  N=2
+# SRC MTIMES after  : gpu-cache.cc + instructions.cc both 2026-08-29 17:56:13 (UNCHANGED, no src edit)
+# BENCHMARK SOURCE  : dcomb.cu (new file, this experiment). RUNNERS: run_dcomb.sh (36-cell full sweep), run_n8.sh (N=8 decisive). Raw N=8: DPATH_N8_DECISIVE.txt

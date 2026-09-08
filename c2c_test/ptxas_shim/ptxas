@@ -1,0 +1,12 @@
+#!/bin/bash
+# Shim: GPGPU-Sim mismatched build emits --gpu-name=sm_0 for cluster-instruction
+# kernels (DSM arm). Rewrite sm_0 -> sm_90 so the PTXInfo pass assembles.
+# All other invocations pass through unchanged. Purely a toolchain workaround;
+# does not alter simulated behavior (PTXInfo pass only extracts register usage).
+args=()
+for a in "$@"; do
+  a="${a//--gpu-name=sm_0/--gpu-name=sm_90}"
+  a="${a//-arch=sm_0/-arch=sm_90}"
+  args+=("$a")
+done
+exec "/legacy-research/owner/miniconda3/envs/clustersim-py311/bin/ptxas" "${args[@]}"

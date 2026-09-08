@@ -1374,6 +1374,9 @@ class ldst_unit : public pipelined_simd_unit {
   void fill(mem_fetch *mf);
   void flush();
   void invalidate();
+  // SELECTIVE-INVALIDATE (2026-09-03)
+  void selective_invalidate(bool have_key, unsigned long long key,
+                            bool owner_retaining);
   void writeback();
 
   // accessors
@@ -2109,6 +2112,10 @@ class shader_core_ctx : public core_t {
 
   void cache_flush();
   void cache_invalidate();
+  // FIDELITY FIX D2 (2026-09-03): cluster-barrier acquire invalidate (CCTL.IVALL)
+  void cluster_acquire_invalidate_l1();
+  // SELECTIVE-INVALIDATE (2026-09-03): RESC marked-line-only acquire (mode 2/3)
+  void cluster_acquire_selective_invalidate_l1(unsigned warp_id, int mode);
   void accept_fetch_response(mem_fetch *mf);
   void accept_ldst_unit_response(class mem_fetch *mf);
   void broadcast_barrier_reduction(unsigned cta_id, unsigned bar_id,

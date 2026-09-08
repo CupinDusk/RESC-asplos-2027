@@ -48,7 +48,14 @@ class simt_core_cluster;
 
 enum cache_block_state { INVALID = 0, RESERVED, VALID, MODIFIED };
 
-enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_EXCLUSIVE, CLUSTER_FORWARD, CLUSTER_SHARED, CLUSTER_EM, CLUSTER_SM };
+// RESC multi-writer coherence (ASPLOS): CLUSTER_MW_MERGE labels a line/sector
+// co-written by >=2 same-cluster (same-GPC) SMs in one epoch on DISJOINT
+// sectors (false sharing). It is a label only -- the functional value always
+// comes from L2 by the write-through invariant; MW_MERGE just forbids a
+// single-owner whole-line forward on the serve path (see the serve-path
+// invariant in gpu-cache.cc). Ordered AFTER the existing states so all prior
+// switch/if comparisons are unaffected.
+enum cluster_line_state { CLUSTER_INVALID = 0, CLUSTER_EXCLUSIVE, CLUSTER_FORWARD, CLUSTER_SHARED, CLUSTER_EM, CLUSTER_SM, CLUSTER_MW_MERGE };
 
 enum cache_request_status {
   HIT = 0,
@@ -316,6 +323,7 @@ struct sector_cache_block : public cache_block_t {
     m_line_last_access_time = 0;
     m_line_fill_time = 0;
     m_dirty_byte_mask.reset();
+    m_mw_written_mask.reset();
   }
 
   virtual void allocate(new_addr_type tag, new_addr_type block_addr,
@@ -444,6 +452,16 @@ struct sector_cache_block : public cache_block_t {
     return m_sector_cluster_state[sidx];
   }
 
+  // RESC multi-writer: OR-in the sectors this L1 copy has locally written in the
+  // current epoch (false-sharing merge bookkeeping). One bit per 32B sector.
+  void mw_or_written_mask(mem_access_sector_mask_t sector_mask) {
+    m_mw_written_mask |= sector_mask;
+  }
+  mem_access_sector_mask_t mw_get_written_mask() const {
+    return m_mw_written_mask;
+  }
+  void mw_clear_written_mask() { m_mw_written_mask.reset(); }
+
   virtual void set_byte_mask(mem_fetch *mf) {
     m_dirty_byte_mask = m_dirty_byte_mask | mf->get_access_byte_mask();
   }
@@ -533,6 +551,8 @@ struct sector_cache_block : public cache_block_t {
   bool m_readable[SECTOR_CHUNCK_SIZE];
   mem_access_byte_mask_t m_dirty_byte_mask;
   cluster_line_state m_sector_cluster_state[SECTOR_CHUNCK_SIZE];
+  // RESC multi-writer: sectors this copy has written this epoch (false-sharing).
+  mem_access_sector_mask_t m_mw_written_mask;
 
   unsigned get_sector_index(mem_access_sector_mask_t sector_mask) const {
     assert(sector_mask.count() == 1);
@@ -997,6 +1017,12 @@ class tag_array {
 
   void flush();       // flush all written entries
   void invalidate();  // invalidate all entries
+  // SELECTIVE-INVALIDATE (2026-09-03): invalidate ONLY lines in the RESC
+  // marked-line registry, preserving unmarked lines.  owner_retaining also
+  // preserves marked lines held in an owner cluster-state (DeNovo/hLRC
+  // self-invalidation rule).  See gpu-cache.cc.
+  void selective_invalidate(bool have_key, unsigned long long key,
+                            bool owner_retaining);
   void new_window();
 
   void print(FILE *stream, unsigned &total_access,
@@ -1340,6 +1366,11 @@ class baseline_cache : public cache_t {
   // flash invalidate all entries in cache
   void flush() { m_tag_array->flush(); }
   void invalidate() { m_tag_array->invalidate(); }
+  // SELECTIVE-INVALIDATE (2026-09-03)
+  void selective_invalidate(bool have_key, unsigned long long key,
+                            bool owner_retaining) {
+    m_tag_array->selective_invalidate(have_key, key, owner_retaining);
+  }
   void print(FILE *fp, unsigned &accesses, unsigned &misses) const;
   void display_state(FILE *fp) const;
 
@@ -1742,6 +1773,24 @@ class l1_cache : public data_cache {
                                       std::list<cache_event> &events);
   bool special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf, unsigned time,
                                       std::list<cache_event> &events);
+  // RESC cross-cluster (inter-GPC) single-writer fast path (NEW mechanism).
+  bool try_cross_cluster_read(new_addr_type addr, mem_fetch *mf, unsigned time,
+                              std::list<cache_event> &events);
+  // RESC MULTI-WRITER (ASPLOS):
+  //   (A) false sharing -- a same-cluster (same-GPC) 2nd writer of DISJOINT
+  //       sectors merges into CLUSTER_MW_MERGE + per-sector written mask,
+  //       riding the existing write-through (ZERO new fabric messages).
+  bool try_cluster_multiwriter_merge(new_addr_type addr, mem_fetch *mf,
+                                     unsigned time,
+                                     std::list<cache_event> &events);
+  //   (B) cluster-scoped atomic -- one migrating owner token. A peer atomic
+  //       sends one UpgradeReq over the SM-to-SM fabric to the current owner,
+  //       which downgrades EM->INVALID transiting through FORWARD (makes the
+  //       dead F-state + invalidate edge LIVE); requester installs EM. Gated by
+  //       g_xcwl_gen (stale gen -> NACK).
+  bool try_cluster_atomic_token(new_addr_type addr, mem_fetch *mf,
+                                unsigned time,
+                                std::list<cache_event> &events);
   // cluster_line_state get_line_cluster_state(new_addr_type block_addr,
   //                                           unsigned &index);
   // void set_line_cluster_state(unsigned index, cluster_line_state state);

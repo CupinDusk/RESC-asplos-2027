@@ -1,0 +1,120 @@
+================================================================================
+EXPERIMENT B — SYMMETRIC PER-SUPPLIER INJECTION-PORT CONTENTION ON RESC READ-SHARE
+Pre-registered 2026-08-29. All numbers are real runs. Host legacy-user@legacy-host.invalid,
+tree /legacy-research/owner/cudatest/RESC-c2c-wt (branch contention-collapse), H20 legacy-user@legacy-host.invalid.
+================================================================================
+
+## (a) HOW THE SIM CHARGES DSM INJECTION (the model I mirror)
+DSM requests route through the SM-to-SM crossbar. src/gpgpu-sim/sm_2_sm_network.cc:
+  - shader.cc:2911  m_sm_2_sm_network->Push(m_sid, target_shader_id, request, 256, REQ_NET)
+    every DSM shared-memory request to a remote rank is pushed to the crossbar,
+    keyed by TARGET SM (the producer/owner rank0). size in bits.
+  - Crossbar::Advance() (sm_2_sm_network.cc ~118-210): per OUTPUT PORT (= target SM),
+    build the list of input requesters targeting it; stock round-robin arbitration
+    (sm2sm_collapse==0, the mode BOTH cfg_h20 and cfg_cal195 use) serves ONE
+    requester per cycle at m_bandwidth = sm2sm_bandwidth = 88 bits/cycle
+    (sm_2_sm_network.cc:9). So k DSM requests converging on ONE target SM SERIALIZE
+    at that port: aggregate drain to a single owner is capped at 88 bit/cyc.
+    THIS is the N->1 injection convergence cliff the sim already charges DSM.
+  (There is also an explicit calibrated collapse model, sm2sm_collapse={1,2},
+   pinned to Dissecting-Hopper aggregate 3948/2332/1960 GB/s for cluster 2/4/8,
+   sm_2_sm_network.cc:16-27 — but the DEFAULT configs use the stock crossbar,
+   whose per-output-port round-robin IS the serialization.)
+
+## RESC read-share path BEFORE B (the asymmetry = round-10 weakness #8)
+  - try_cluster_read_share (gpu-cache.cc:2605) / special_try_cluster_read_share
+    (gpu-cache.cc:3049): find a same-cluster supplier SM whose L1 holds the marked
+    line (E/F/Em/Sm), fill locally, set cluster state. NO crossbar Push, NO port.
+  - shader.cc:2100-2118 (L1_latency_queue_cycle): a read-share HIT is deferred by a
+    FLAT sm2sm_latency (195) - l1_latency (41). NO per-supplier port serialization:
+    k consumers reading one supplier all pay the same flat 195, in parallel.
+
+## (g) THE B CHANGE — file:line
+  src/gpgpu-sim/gpu-cache.cc:143-214   injection-port model: globals
+      g_resc_inject_charge (env RESC_INJECT_CHARGE, default ON),
+      g_resc_inject_bw_bits (SILICON-FROZEN, env RESC_INJECT_BW for sensitivity only),
+      g_resc_port_free_at[supplier_sid] timeline, init_resc_inject(),
+      resc_injection_extra_cycles(supplier_sid, payload_bits, now):
+        service   = ceil(payload_bits / g_resc_inject_bw_bits)      (>=1)
+        start     = max(now, port_free_at[supplier_sid])
+        queue_wait= start - now
+        port_free_at[supplier_sid] = start + service
+        return queue_wait + service      (extra cycles ON TOP of frozen 195 transport)
+      -- mirrors the DSM crossbar output port: one server, fixed bit-rate, queueing.
+  src/gpgpu-sim/gpu-cache.cc:2825-2835  wire into try_cluster_read_share:
+        supplier_sid = source_cache->m_owner->get_sid();
+        payload_bits = mf->get_data_size()*8;
+        g_c2c_defer_extra_cycles = sm2sm_latency + resc_injection_extra_cycles(...)
+  src/gpgpu-sim/gpu-cache.cc:3303-3312  same wiring in special_try_cluster_read_share.
+  src/gpgpu-sim/gpu-sim.cc:1455-1470    [RESC_INJECT_STATS] end-of-run print.
+  Handoff: shader.cc:2113-2115 already consumes g_c2c_defer_extra_cycles as the
+  deferral base (DSM pays port-drain THEN the 195 transport; RESC now identical).
+  ONLY the RESC read-share timing path is touched. global/DSM arms never call these
+  functions. The tag-only fill / cluster-state / checksum path is UNCHANGED.
+
+## (d) SANITY GATE — PASS (post-rebuild build_c2c.sh, MAKE_EXIT=0)
+  cp cfg_cal195.config gpgpusim.config; ./simxl_c8 256
+  => DSM=2656.0 GLOBAL=2868.0 ratio(dsm/glob)=0.926 N=2  -- EXACT match to brief.
+  (simxl uses only DSM map_shared_rank + global arms; it exercises NO read-share
+   path, so it verifies baselines/build are undrifted. Correctness of the
+   read-share path is checked by bit-identical checksums in the sweep, below.)
+
+## MECHANISM INTEGRITY CHECK — the charge is REAL and gates warps (not a no-op)
+  resc_ext/resc10240 cluster=8 (N=7) avg_elems=2048 num_clusters=100 reuse=4, cfg_h20,
+  same binary, varying only RESC_INJECT_BW (env), charge ON vs OFF:
+  | RESC_INJECT_BW | gpu_tot_cyc | inject events | avg_queue | avg_serve | max_queue |
+  | OFF (charge=0) |   28169     |      0        |    0.0    |    0.0    |    0      |
+  | 88  bit/cyc    |   27751     |    3413       |    2.3    |    3.0    |   54      |
+  | 15.34 bit/cyc  |   29415     |    3506       |   48.3    |   17.0    |  487      |
+  | 4   bit/cyc    |   29264     |    3504       |  400.5    |   64.0    | 3472      |
+  => events fire (~3500), queueing grows monotonically as BW drops, and total
+     cycles move (proof the deferral reaches the critical path). As in G2, most of
+     the added latency is HIDDEN by MLP/occupancy (even avg_queue=400 -> only ~+4%
+     cycles), so the headline magnitude depends on the SILICON-frozen BW.
+
+## EXTENDED BENCHMARK (N=2,4 support) — resc_ext.cu (adds cluster 3,5 template insts)
+  Cross-check charge OFF, cfg_h20, cluster=4, num_clusters=100 avg_elems=128 reuse=4:
+  | arm    | resc_ext | resc10240 | global_ext | global10240 | dsm_ext | dsm10240 |
+  | cycles |  10905   |   10905   |   12799    |    12799    |  14657  |  14657   |
+  => BYTE-EXACT reproduction. Adding cluster 3/5 instantiations did not perturb the
+     frozen 2/4/8 paths. resc_ext is a valid equivalent covering N in {1,2,3,4,7}.
+
+## (b) SILICON INJECTION-PORT BW  — PENDING (all 8 H20 GPUs at 99% util, 85-97GB used
+##     by olmoe_torch23 serving process; must not kill. GPU-free monitor armed.)
+## (c) ANALYTICAL INJECTION BOUND — PENDING (derive from silicon route_inj + anchors)
+## (e) PER-FAN-IN benefit(N) WITH CHARGE — PENDING (needs frozen silicon param first)
+## (f) PRE-REGISTERED GATE (G1/G2/G3) — PENDING
+================================================================================
+
+## (c) ANALYTICAL INJECTION-PORT BOUND (from PUBLISHED silicon anchors; sim used only to corroborate)
+Sources:
+ [DH-TIV]  Benchmarking & Dissecting Hopper, Table IV: DSM (SM-to-SM) per-access latency = 180 cyc (H800).
+ [DH-BW]   Dissecting-Hopper: aggregate SM-to-SM (DSMEM) BW = 3948 / 2332 / 1960 GB/s for cluster 2/4/8.
+ [H20cfg]  cfg_h20 -gpgpu_clock_domains 1980:... => 1.98 GHz core; 78 SMs (H20).
+
+Derivation. The per-supplier INJECTION-PORT BW (the cap when k readers pull from ONE owner SM) is the
+aggregate DSMEM BW divided by the number of simultaneously-injecting SM ports in that measurement:
+ | anchor           | aggregate      | /ports | per-port BW              |
+ | cluster2 (2 SM)  | 3948 GB/s=1994 B/cyc | /2 | 997 B/cyc = 7976 bit/cyc |
+ | cluster4 (4 SM)  | 2332 GB/s=1178 B/cyc | /4 | 294 B/cyc = 2356 bit/cyc |
+ | cluster8 (8 SM)  | 1960 GB/s= 990 B/cyc | /8 | 124 B/cyc =  990 bit/cyc |  <- high-fan-in convergence anchor
+Taking the cluster-8 convergence point (the genuine high-fan-in case) as the injection-limited
+per-port rate: ~124 B/cyc (~990 bit/cyc) at 1.98 GHz.
+
+Consequence for a 128B RESC line: service ~= 128/124 ~= 1.03 cyc per reader; k readers serialize from
+one owner in ~k cycles:
+  k=1:1.0  k=2:2.1  k=3:3.1  k=4:4.1  k=7:7.2 cyc.
+=> The injection-port serialization term is O(k) SMALL CYCLES, one-to-two orders of magnitude below
+   the 180-195 cyc SM-to-SM transport latency and far below the reuse-workload critical path. The
+   ANALYTICAL prediction is therefore that the RESC transport win SURVIVES the symmetric charge:
+   the port is fast enough that per-supplier queueing rarely reaches the critical path (an M/D/1 queue
+   with service ~1 cyc/line saturates only above ~1 line/cyc arrival to a single owner).
+CAVEAT: the aggregate->per-port division is an assumption (spread 990..7976 bit/cyc across anchors);
+the H20 route_inj microbench (pending free GPU) MEASURES the per-supplier rate directly and freezes it,
+resolving the spread. The sim is used ONLY to corroborate the magnitude, never to source it.
+
+NOTE on the sim's DSM crossbar rate: the stock crossbar drains at sm2sm_bandwidth=88 bit/cyc per
+output port -- LOWER (more pessimistic) than the ~990 bit/cyc silicon per-port anchor. So DSM in the
+sim is if anything charged MORE injection cost than silicon; mirroring the SAME 88 bit/cyc onto RESC
+(the integrity sweep uses 88 as one point) is a CONSERVATIVE (RESC-unfavourable) symmetric choice, and
+even there the win moved <2%. The silicon-frozen RESC BW (route_inj) will be used for the headline.

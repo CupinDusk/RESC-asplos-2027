@@ -2,6 +2,8 @@
 #define SM_2_SM_NETWORK_H
 
 extern int sm2sm_latency;  // SM-to-SM (C2C) network latency, shared with RESC read-share charge
+extern int sm2sm_collapse;
+extern int sm2sm_service_slots;  // DSM fan-in calibration; 1 = stock
 
 #include "../abstract_hardware_model.h"
 #include "../intersim2/interconnect_interface.hpp"

@@ -51,6 +51,10 @@
 #include "visualizer.h"
 
 extern int sm2sm_latency;  // RESC C2C charge (defined in sm_2_sm_network.cc)
+extern int g_c2c_defer_extra_cycles;  // RESC cross-cluster probe cost (gpu-cache.cc)
+// RESC MULTI-WRITER (B): keep a marked cluster-scoped atomic on the L1 path
+// (defined in gpu-cache.cc). extern "C" -> unmangled to match the definition.
+extern "C" bool resc_mw_atomic_wants_l1(new_addr_type block_addr);
 bool was_readshare_hit(const std::list<cache_event> &events);
 
 #define PRIORITIZE_MSHR_OVER_WB 1
@@ -2104,7 +2108,13 @@ void ldst_unit::L1_latency_queue_cycle() {
           // still run (the queue head was already consumed above).
           unsigned long long now = m_core->get_gpu()->gpu_sim_cycle +
                                    m_core->get_gpu()->gpu_tot_sim_cycle;
-          int extra = sm2sm_latency - (int)m_config->m_L1D_config.l1_latency;
+          // RESC cross-cluster: if a cross-cluster probe just resolved it set
+          // g_c2c_defer_extra_cycles (>=0) to the probe+transfer cost; use it.
+          // Otherwise fall back to the intra-cluster fixed C2C charge.
+          int base = (g_c2c_defer_extra_cycles >= 0)
+                         ? g_c2c_defer_extra_cycles : sm2sm_latency;
+          g_c2c_defer_extra_cycles = -1;  // consume
+          int extra = base - (int)m_config->m_L1D_config.l1_latency;
           if (extra < 0) extra = 0;
           m_resc_c2c_pending.push_back(
               std::make_pair(mf_next, now + (unsigned long long)extra));
@@ -2240,6 +2250,24 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
       bypassL1D = true;
   }
 
+  // RESC MULTI-WRITER (B) -- HYBRID FIX (Fix 3): request AND response BOTH off-L1.
+  // Detect a MARKED cluster-scoped atomic here, but DO NOT pull it onto the L1
+  // path (leave bypassL1D unchanged). RESC_DL2 instrumentation confirmed that
+  // forcing bypassL1D=false reserved an L1 MSHR whose CACHE_GLOBAL reply bypasses
+  // L1 (m_next_global) so m_L1D->fill() never runs -> the MSHR is orphaned ->
+  // the round-2 same-line atomic RESERVATION_FAILs forever (2064 MERGE_FAIL) =
+  // deadlock at the round1->round2 boundary. Prior fixes (incl. response-side
+  // MSHR symmetry) kept this gate = false and still froze at the same cycle.
+  // Instead we fire the owner-token hand-off for its COHERENCE SIDE-EFFECT only
+  // (below, inside the bypass block, once the real mem_fetch exists) and let the
+  // atomic complete on the STOCK bypass-L1 path (symmetric request+response =
+  // deadlock-free m_next_global ack, no L1 MSHR to orphan or collide on).
+  bool resc_mw_marked_atomic = false;
+  if (m_L1D != NULL && inst.isatomic() && inst.space.is_global()) {
+    new_addr_type batomic = m_config->m_L1D_config.block_addr(access.get_addr());
+    if (resc_mw_atomic_wants_l1(batomic)) resc_mw_marked_atomic = true;
+  }
+
 
 
   if (bypassL1D) {
@@ -2255,6 +2283,22 @@ bool ldst_unit::memory_cycle(warp_inst_t &inst,
           m_mf_allocator->alloc(inst, access,
                                 m_core->get_gpu()->gpu_sim_cycle +
                                     m_core->get_gpu()->gpu_tot_sim_cycle);
+      // RESC MULTI-WRITER (B) HYBRID: fire the cluster-atomic owner-token
+      // hand-off (UpgradeReq / EM->FORWARD->INVALID downgrade, g_mw_* counters)
+      // for its coherence side-effect. Returns false (pure bookkeeping); we
+      // IGNORE it and keep the atomic on this stock bypass path. Because a marked
+      // atomic never becomes L1-resident, the owner-downgrade probes a
+      // non-resident peer line == harmless no-op, but the transition counters
+      // still increment (they live outside the residency guard) so the
+      // multi-writer mechanism genuinely fires. Functional RMW unchanged (L2).
+      if (resc_mw_marked_atomic) {
+        std::list<cache_event> resc_tok_events;
+        (void)m_L1D->try_cluster_atomic_token(
+            access.get_addr(), mf,
+            m_core->get_gpu()->gpu_sim_cycle +
+                m_core->get_gpu()->gpu_tot_sim_cycle,
+            resc_tok_events);
+      }
       m_icnt->push(mf);
       inst.accessq_pop_back();
       // inst.clear_active( access.get_warp_mask() );
@@ -2306,6 +2350,12 @@ void ldst_unit::flush() {
 void ldst_unit::invalidate() {
   // Flush L1D cache
   m_L1D->invalidate();
+}
+
+// SELECTIVE-INVALIDATE (2026-09-03): marked-line-only L1 invalidate.
+void ldst_unit::selective_invalidate(bool have_key, unsigned long long key,
+                                     bool owner_retaining) {
+  if (m_L1D) m_L1D->selective_invalidate(have_key, key, owner_retaining);
 }
 
 simd_function_unit::simd_function_unit(const shader_core_config *config) {
@@ -3672,6 +3722,36 @@ void shader_core_ctx::cache_flush() { m_ldst_unit->flush(); }
 
 void shader_core_ctx::cache_invalidate() { m_ldst_unit->invalidate(); }
 
+// FIDELITY FIX D2 (2026-09-03): whole-L1 invalidate charged at a cluster-barrier
+// acquire, modelling sm_90's CCTL.IVALL.  Separate entry point from
+// cache_invalidate() purely so the event can be counted independently.
+unsigned long long g_cluster_acquire_invalidates = 0;
+void shader_core_ctx::cluster_acquire_invalidate_l1() {
+  g_cluster_acquire_invalidates++;
+  m_ldst_unit->invalidate();
+}
+
+// SELECTIVE-INVALIDATE (2026-09-03): the RESC form of the cluster-acquire.
+// mode 2 = marked-line selective; mode 3 = selective + owner-retaining.
+// The (gpc,slot) key identifies WHICH cluster's marked set applies -- the same
+// key the read-share path uses (gpu-cache.cc resc_cluster_key_for_mf).
+unsigned long long g_cluster_acquire_selective_invalidates = 0;
+void shader_core_ctx::cluster_acquire_selective_invalidate_l1(
+    unsigned warp_id, int mode) {
+  g_cluster_acquire_selective_invalidates++;
+  bool have_key = false;
+  unsigned long long key = 0;
+  simt_core_cluster *scc = get_simt_core_cluster();
+  if (scc && scc->m_gpc) {
+    unsigned gpc_id = scc->m_gpc->get_gpc_id();
+    unsigned slot = get_warp_cluster_slot(warp_id);
+    key = (static_cast<unsigned long long>(gpc_id) << 32) |
+          static_cast<unsigned long long>(slot);
+    have_key = true;
+  }
+  m_ldst_unit->selective_invalidate(have_key, key, /*owner_retaining=*/mode == 3);
+}
+
 // modifiers
 std::list<opndcoll_rfu_t::op_t> opndcoll_rfu_t::arbiter_t::allocate_reads() {
   std::list<op_t>
@@ -3906,6 +3986,41 @@ void barrier_set_t::warp_reaches_barrier(unsigned cluster_slot, unsigned cta_id,
             m_shader->get_config()->cluster_wait_latency;
         m_ptx_cluster_info.at(warp_id) =
             m_shader->get_thread_info().at(warp_id * 32)->m_cluster_info;
+        // ---- FIDELITY FIX D2 (2026-09-03) ------------------------------
+        // barrier.cluster.wait carries an implicit .acquire (PTX ISA 9.3
+        // s9.7.14.3: "If the optional .acquire qualifier is absent for
+        // barrier.cluster.wait, .acquire is assumed by default"), and on
+        // shipping sm_90 that acquire lowers to UCGABAR_WAIT; CCTL.IVALL --
+        // a whole-L1 invalidate (SASS-verified on real H20).  ClusterSim
+        // previously modelled the cluster barrier as latency + rendezvous
+        // only, so no simulated arm ever paid this cost.  Charge it here,
+        // reusing the identical whole-tag-array invalidate that membar.gl
+        // already uses (shader.cc:4069-4080 -> gpu-cache.cc:934-945).
+        //
+        // Gated OFF to model fence.acquire.sync_restrict::shared::cluster
+        // .cluster (PTX ISA 9.3 s9.7.14.4), which restricts the acquire to
+        // .shared::cluster state space and provably costs the global L1
+        // nothing (measured: single NOP on sm_90a).  Both forms are legal
+        // ISA, so both must be modelled; charging the escape would charge
+        // software a cost the ISA lets it avoid.
+        // SELECTIVE-INVALIDATE (2026-09-03): 0 = none (sync_restrict escape),
+        // 1 = whole-L1 (CCTL.IVALL, silicon), 2 = RESC marked-line selective,
+        // 3 = selective + owner-retaining.  2/3 model RESC HARDWARE and are
+        // barred from baseline arms by the experiment's fairness rule; the
+        // simulator itself does not police that (a config knob cannot know
+        // which arm is running) -- it is enforced by the runner and recorded
+        // in the pre-registration.
+        {
+          const int __inv_mode =
+              m_shader->get_config()->cluster_barrier_invalidate_l1;
+          if (__inv_mode == 1) {
+            m_shader->cluster_acquire_invalidate_l1();
+          } else if (__inv_mode == 2 || __inv_mode == 3) {
+            m_shader->cluster_acquire_selective_invalidate_l1(warp_id,
+                                                              __inv_mode);
+          }
+        }
+        // ---------------------------------------------------------------
         break;
       }
       case ARRIVE:

@@ -1,0 +1,7 @@
+# CCOP preregistered arms  (nreg=32 rfloats=512 reuse=16 ncons=2; strip=64KB > L1 32KB)
+# built 2026年 08月 28日 星期五 23:44:43 CST; sm2sm=195 l2_rt=242; per-hit ceiling=47/242=19.4%
+# arm cycles checksum ccop_probes fresh_hits mispredict cold_learn probe_bytes l2_saved crossfrac
+A 926658 8260419664 0 0 0 0 0 0 0.0000
+S1 879516 8260419664 3720 3720 0 120 119040 0 1.0000
+S2 879516 8260419664 3720 3720 0 120 119040 3720 1.0000
+C 926658 8260419664 0 0 0 3840 0 0 1.0000

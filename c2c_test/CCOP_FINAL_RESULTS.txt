@@ -1,0 +1,29 @@
+CCOP (Cross-Cluster Owner Predictor) -- final measured results  [2026-08-29]
+Sim tree: /legacy-research/owner/cudatest/RESC-c2c-wt  (gpgpu-sim, cfg_c2c.config)
+Model:    sm2sm=195, l2_rop=242 -> per-hit latency ceiling = 47/242 = 19.4%
+Mechanism: confidence-gated AT-MOST-ONE directed probe + speculative parallel L2.
+           NO broadcast. Cold/low-conf = byte-identical baseline. WT+gen+poison.
+SANITY GATE (both builds): simxl_c8 256 = DSM 2656.0 / GLOBAL 2868.0 / ratio 0.926  [PASS]
+
+=== Preregistered arms (nreg=32, rfloats=512, reuse=16, ncons=2; strip=64KB > L1 32KB) ===
+arm  cycles    checksum      probes  fresh_hits  mispredict  cold_learn  probe_bytes  l2_saved  crossfrac
+A    926658    8260419664    0       0           0           0           0            0         (n/a, mode0)
+S1   879516    8260419664    3720    3720        0           120         119040       0         1.0000
+S2   879516    8260419664    3720    3720        0           120         119040       3720      1.0000
+C    926658    8260419664    0       0           0           3840        0            0         1.0000
+
+RESULT: S1 beats A by 47142 cyc = 5.09% e2e (probe BW charged). C == A EXACTLY (zero regression).
+        All checksums identical -> functional correctness preserved. mispredict=0. NO broadcast.
+
+=== Reuse dose-response (A vs S1), same geometry, varying reuse R ===
+R    A_cycles   S1_cycles   saved    speedup   fresh_hits   checksum(A==S1)
+1    196174     154925      41249    21.0%     3720         516276224
+4    343449     296307      47142    13.7%     3720         2065104896
+16   926658     879516      47142    5.09%     3720         8260419664
+64   (timed out at 3600s wall-clock under host load ~105; deterministic, re-runnable)
+
+FINDING (honest): the CCOP saving is a ~CONSTANT ABSOLUTE ~47142 cyc, from accelerating a
+bounded set of ~3720 cross-GPC first-delivery reads by 47 cyc each (195 vs 242). It is NOT
+reuse-amplified: within-consumer re-reads hit local L1 (no redundant probes), so fresh_hits is
+constant across R. The e2e % is therefore largest at low reuse (smaller denominator). S2 adds
+l2_accesses_saved=3720 but no extra timing win (needs the L2/HBM-pressure regime, per brief).

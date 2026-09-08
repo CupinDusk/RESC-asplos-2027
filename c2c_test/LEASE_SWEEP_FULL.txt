@@ -1,0 +1,169 @@
+# RESC EPOCH/VERSION LEASE full sweep 2026-08-31T17:10:29Z host ubuntu
+# arms: OFF=perfect-keep arm0=always-global arm2=self-inval-all-each-sync lease=keep-if-version-dominates leaseNK=ablation(==arm2)
+# WIN cell (pre-reg): S>=2,f<=0.5 -> (ev+l1m+dram) cut>=15% AND cyc cut>=10% vs arm2, ablation==arm2, bit=1
+===== REGIME=L1-RESIDENT dir=/legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/lease_wd_l1 cfg=cfg_h20.config TL=4 (0KB/consumer) NE=8 =====
+# cols per arm: cyc ev(fabric-GET) l1m(L1D-miss) dram bit rf(myrefetch) kp(mykept)
+--- S=1 f_permille=0 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=1 f_permille=100 ---
+  OFF    : cyc=24483 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31822 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=28441 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=24504 ev=161 l1m=1 dram=1 bit=1 rf=49 kp=819
+  leaseNK: cyc=28441 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.862 traffic=0.526 (a2_trf=310 le_trf=163)
+--- S=1 f_permille=500 ---
+  OFF    : cyc=27154 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=36070 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=32305 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=28943 ev=210 l1m=1 dram=1 bit=1 rf=98 kp=770
+  leaseNK: cyc=32305 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.896 traffic=0.684 (a2_trf=310 le_trf=212)
+--- S=1 f_permille=1000 ---
+  OFF    : cyc=32048 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=41209 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=37082 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=37082 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  leaseNK: cyc=37082 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=1.000 traffic=1.000 (a2_trf=310 le_trf=310)
+--- S=2 f_permille=0 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=2 f_permille=100 ---
+  OFF    : cyc=22804 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31595 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27591 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=23248 ev=133 l1m=1 dram=1 bit=1 rf=21 kp=847
+  leaseNK: cyc=27591 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.843 traffic=0.435 (a2_trf=310 le_trf=135)
+--- S=2 f_permille=500 ---
+  OFF    : cyc=23901 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=32841 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=29433 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=25506 ev=154 l1m=1 dram=1 bit=1 rf=42 kp=826
+  leaseNK: cyc=29433 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.867 traffic=0.503 (a2_trf=310 le_trf=156)
+--- S=2 f_permille=1000 ---
+  OFF    : cyc=26535 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=35305 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=31514 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=28710 ev=196 l1m=1 dram=1 bit=1 rf=84 kp=784
+  leaseNK: cyc=31514 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.911 traffic=0.639 (a2_trf=310 le_trf=198)
+--- S=4 f_permille=0 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=4 f_permille=100 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31659 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27634 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22940 ev=119 l1m=1 dram=1 bit=1 rf=7 kp=861
+  leaseNK: cyc=27634 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.830 traffic=0.390 (a2_trf=310 le_trf=121)
+--- S=4 f_permille=500 ---
+  OFF    : cyc=22939 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=32382 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=28178 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=23281 ev=126 l1m=1 dram=1 bit=1 rf=14 kp=854
+  leaseNK: cyc=28178 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.413 (a2_trf=310 le_trf=128)
+--- S=4 f_permille=1000 ---
+  OFF    : cyc=23873 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=32934 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=28730 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=24557 ev=140 l1m=1 dram=1 bit=1 rf=28 kp=840
+  leaseNK: cyc=28730 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.855 traffic=0.458 (a2_trf=310 le_trf=142)
+--- S=8 f_permille=0 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=8 f_permille=100 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=8 f_permille=500 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+--- S=8 f_permille=1000 ---
+  OFF    : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=0
+  arm0   : cyc=31391 ev=896 l1m=1 dram=1 bit=1 rf=868 kp=0
+  arm2   : cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  lease  : cyc=22769 ev=112 l1m=1 dram=1 bit=1 rf=0 kp=868
+  leaseNK: cyc=27557 ev=308 l1m=1 dram=1 bit=1 rf=196 kp=672
+  RATIO lease/arm2: cyc=0.826 traffic=0.368 (a2_trf=310 le_trf=114)
+===== REGIME=L2-RESIDENT-smallL1-16KB dir=/legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/lease_wd_l2 cfg=cfg_h20_smallL1.config TL=256 (32KB/consumer) NE=3 =====
+# cols per arm: cyc ev(fabric-GET) l1m(L1D-miss) dram bit rf(myrefetch) kp(mykept)
+--- S=1 f_permille=0 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=1 f_permille=100 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=1 f_permille=500 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=1 f_permille=1000 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=2 f_permille=0 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=2 f_permille=100 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=2 f_permille=500 ---
+  OFF    : cyc= ev= l1m= dram= bit= rf= kp=
+  arm0   : cyc= ev= l1m= dram= bit= rf= kp=
+  arm2   : cyc= ev= l1m= dram= bit= rf= kp=
+  lease  : cyc= ev= l1m= dram= bit= rf= kp=
+  leaseNK: cyc= ev= l1m= dram= bit= rf= kp=
+  RATIO lease/arm2: cyc= traffic=NA (a2_trf=0 le_trf=0)
+--- S=2 f_permille=1000 ---

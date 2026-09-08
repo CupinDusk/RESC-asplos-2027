@@ -1,0 +1,224 @@
+=== ARM1 CORRECT-GLOBAL (no RESC) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GP70f2e9c3bc8a3ee54bca95cf0c9e3316  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base
+Extracting PTX file and ptxas options    1: mw_stencil_base.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil_base
+Extracting specific PTX file named mw_stencil_base.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_stencil_base.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_stencil_base.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_stencil_base.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x090 (mw_stencil_base.1.sm_90.ptx:46) @%p2 bra $L__BB0_2;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x0c0 (mw_stencil_base.1.sm_90.ptx:57) barrier.cluster.arrive;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0d8 (mw_stencil_base.1.sm_90.ptx:60) @%p3 bra $L__BB0_29;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x468 (mw_stencil_base.1.sm_90.ptx:236) ret;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x150 (mw_stencil_base.1.sm_90.ptx:76) @%p6 bra $L__BB0_22;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3a8 (mw_stencil_base.1.sm_90.ptx:196) and.b32 %r157, %r75, 3;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x178 (mw_stencil_base.1.sm_90.ptx:84) @%p7 bra $L__BB0_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x188 (mw_stencil_base.1.sm_90.ptx:91) barrier.cluster.arrive;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x198 (mw_stencil_base.1.sm_90.ptx:93) @%p2 bra $L__BB0_9;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x1e8 (mw_stencil_base.1.sm_90.ptx:108) mov.u32 %r134, 0;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x200 (mw_stencil_base.1.sm_90.ptx:111) @%p7 bra $L__BB0_11;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil_base.1.sm_90.ptx:118) barrier.cluster.arrive;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x220 (mw_stencil_base.1.sm_90.ptx:120) @%p2 bra $L__BB0_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x270 (mw_stencil_base.1.sm_90.ptx:135) mov.u32 %r139, 0;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x288 (mw_stencil_base.1.sm_90.ptx:138) @%p7 bra $L__BB0_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x298 (mw_stencil_base.1.sm_90.ptx:145) barrier.cluster.arrive;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x2a8 (mw_stencil_base.1.sm_90.ptx:147) @%p2 bra $L__BB0_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x2f8 (mw_stencil_base.1.sm_90.ptx:162) mov.u32 %r144, 0;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x310 (mw_stencil_base.1.sm_90.ptx:165) @%p7 bra $L__BB0_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x320 (mw_stencil_base.1.sm_90.ptx:172) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x330 (mw_stencil_base.1.sm_90.ptx:174) @%p2 bra $L__BB0_21;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x380 (mw_stencil_base.1.sm_90.ptx:189) barrier.cluster.arrive;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x3a0 (mw_stencil_base.1.sm_90.ptx:193) @%p15 bra $L__BB0_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3a8 (mw_stencil_base.1.sm_90.ptx:196) and.b32 %r157, %r75, 3;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x3b8 (mw_stencil_base.1.sm_90.ptx:198) @%p16 bra $L__BB0_29;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x468 (mw_stencil_base.1.sm_90.ptx:236) ret;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x3d0 (mw_stencil_base.1.sm_90.ptx:205) @%p17 bra $L__BB0_26;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3e0 (mw_stencil_base.1.sm_90.ptx:212) barrier.cluster.arrive;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x3f0 (mw_stencil_base.1.sm_90.ptx:214) @%p2 bra $L__BB0_28;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_stencil_base.1.sm_90.ptx:229) barrier.cluster.arrive;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x460 (mw_stencil_base.1.sm_90.ptx:233) @%p19 bra $L__BB0_24;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x468 (mw_stencil_base.1.sm_90.ptx:236) ret;
+gpu_tot_sim_cycle = 19335
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_STENCIL cluster=8 num_clusters=8 iters=10 SEG=4 OUT_CHECKSUM=3958744 REF_CHECKSUM=3958744 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM2 RESC-MULTI-WRITER (RESC_MW=1) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GPb9271afa3eca9efadbcf3c0d5ddfa9df  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting PTX file and ptxas options    1: mw_stencil.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting specific PTX file named mw_stencil.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x070 (mw_stencil.1.sm_90.ptx:53) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_stencil.1.sm_90.ptx:62) @%p5 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_stencil.1.sm_90.ptx:70) @%p6 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_stencil.1.sm_90.ptx:141) @%p11 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_stencil.1.sm_90.ptx:145) @%p12 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_stencil.1.sm_90.ptx:168) @%p14 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2d0 (mw_stencil.1.sm_90.ptx:182) @%p15 bra $L__BB1_10;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x2f0 (mw_stencil.1.sm_90.ptx:191) barrier.cluster.arrive;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x308 (mw_stencil.1.sm_90.ptx:194) @%p16 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x360 (mw_stencil.1.sm_90.ptx:206) @%p19 bra $L__BB1_30;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x388 (mw_stencil.1.sm_90.ptx:214) @%p20 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x398 (mw_stencil.1.sm_90.ptx:221) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x3a8 (mw_stencil.1.sm_90.ptx:223) @%p15 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3f8 (mw_stencil.1.sm_90.ptx:238) mov.u32 %r171, 0;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x410 (mw_stencil.1.sm_90.ptx:241) @%p20 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x420 (mw_stencil.1.sm_90.ptx:248) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x430 (mw_stencil.1.sm_90.ptx:250) @%p15 bra $L__BB1_21;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x480 (mw_stencil.1.sm_90.ptx:265) mov.u32 %r176, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x498 (mw_stencil.1.sm_90.ptx:268) @%p20 bra $L__BB1_23;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a8 (mw_stencil.1.sm_90.ptx:275) barrier.cluster.arrive;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x4b8 (mw_stencil.1.sm_90.ptx:277) @%p15 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x508 (mw_stencil.1.sm_90.ptx:292) mov.u32 %r181, 0;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x520 (mw_stencil.1.sm_90.ptx:295) @%p20 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x530 (mw_stencil.1.sm_90.ptx:302) barrier.cluster.arrive;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x540 (mw_stencil.1.sm_90.ptx:304) @%p15 bra $L__BB1_29;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x590 (mw_stencil.1.sm_90.ptx:319) barrier.cluster.arrive;
+GPGPU-Sim PTX: 18 (potential) branch divergence @  PC=0x5b0 (mw_stencil.1.sm_90.ptx:323) @%p28 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 19 (potential) branch divergence @  PC=0x5c8 (mw_stencil.1.sm_90.ptx:328) @%p29 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX: 20 (potential) branch divergence @  PC=0x5e0 (mw_stencil.1.sm_90.ptx:335) @%p30 bra $L__BB1_34;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5f0 (mw_stencil.1.sm_90.ptx:342) barrier.cluster.arrive;
+GPGPU-Sim PTX: 21 (potential) branch divergence @  PC=0x600 (mw_stencil.1.sm_90.ptx:344) @%p15 bra $L__BB1_36;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x650 (mw_stencil.1.sm_90.ptx:359) barrier.cluster.arrive;
+GPGPU-Sim PTX: 22 (potential) branch divergence @  PC=0x670 (mw_stencil.1.sm_90.ptx:363) @%p32 bra $L__BB1_32;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+gpu_tot_sim_cycle = 19464
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_STENCIL cluster=8 num_clusters=8 iters=10 SEG=4 OUT_CHECKSUM=3958744 REF_CHECKSUM=3958744 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM3 RESC-OLD-ESCAPE (RESC_MW=0) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GPb9271afa3eca9efadbcf3c0d5ddfa9df  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting PTX file and ptxas options    1: mw_stencil.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting specific PTX file named mw_stencil.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x070 (mw_stencil.1.sm_90.ptx:53) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_stencil.1.sm_90.ptx:62) @%p5 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_stencil.1.sm_90.ptx:70) @%p6 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_stencil.1.sm_90.ptx:141) @%p11 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_stencil.1.sm_90.ptx:145) @%p12 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_stencil.1.sm_90.ptx:168) @%p14 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2d0 (mw_stencil.1.sm_90.ptx:182) @%p15 bra $L__BB1_10;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x2f0 (mw_stencil.1.sm_90.ptx:191) barrier.cluster.arrive;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x308 (mw_stencil.1.sm_90.ptx:194) @%p16 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x360 (mw_stencil.1.sm_90.ptx:206) @%p19 bra $L__BB1_30;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x388 (mw_stencil.1.sm_90.ptx:214) @%p20 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x398 (mw_stencil.1.sm_90.ptx:221) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x3a8 (mw_stencil.1.sm_90.ptx:223) @%p15 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3f8 (mw_stencil.1.sm_90.ptx:238) mov.u32 %r171, 0;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x410 (mw_stencil.1.sm_90.ptx:241) @%p20 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x420 (mw_stencil.1.sm_90.ptx:248) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x430 (mw_stencil.1.sm_90.ptx:250) @%p15 bra $L__BB1_21;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x480 (mw_stencil.1.sm_90.ptx:265) mov.u32 %r176, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x498 (mw_stencil.1.sm_90.ptx:268) @%p20 bra $L__BB1_23;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a8 (mw_stencil.1.sm_90.ptx:275) barrier.cluster.arrive;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x4b8 (mw_stencil.1.sm_90.ptx:277) @%p15 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x508 (mw_stencil.1.sm_90.ptx:292) mov.u32 %r181, 0;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x520 (mw_stencil.1.sm_90.ptx:295) @%p20 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x530 (mw_stencil.1.sm_90.ptx:302) barrier.cluster.arrive;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x540 (mw_stencil.1.sm_90.ptx:304) @%p15 bra $L__BB1_29;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x590 (mw_stencil.1.sm_90.ptx:319) barrier.cluster.arrive;
+GPGPU-Sim PTX: 18 (potential) branch divergence @  PC=0x5b0 (mw_stencil.1.sm_90.ptx:323) @%p28 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 19 (potential) branch divergence @  PC=0x5c8 (mw_stencil.1.sm_90.ptx:328) @%p29 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX: 20 (potential) branch divergence @  PC=0x5e0 (mw_stencil.1.sm_90.ptx:335) @%p30 bra $L__BB1_34;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5f0 (mw_stencil.1.sm_90.ptx:342) barrier.cluster.arrive;
+GPGPU-Sim PTX: 21 (potential) branch divergence @  PC=0x600 (mw_stencil.1.sm_90.ptx:344) @%p15 bra $L__BB1_36;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x650 (mw_stencil.1.sm_90.ptx:359) barrier.cluster.arrive;
+GPGPU-Sim PTX: 22 (potential) branch divergence @  PC=0x670 (mw_stencil.1.sm_90.ptx:363) @%p32 bra $L__BB1_32;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+gpu_tot_sim_cycle = 19464
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_STENCIL cluster=8 num_clusters=8 iters=10 SEG=4 OUT_CHECKSUM=3958744 REF_CHECKSUM=3958744 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM4 RESC-WHOLE-LINE-LWW (RESC_MW=1 LWW=1) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GPb9271afa3eca9efadbcf3c0d5ddfa9df  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting PTX file and ptxas options    1: mw_stencil.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_stencil
+Extracting specific PTX file named mw_stencil.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_stencil.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x070 (mw_stencil.1.sm_90.ptx:53) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_stencil.1.sm_90.ptx:62) @%p5 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_stencil.1.sm_90.ptx:70) @%p6 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_stencil.1.sm_90.ptx:141) @%p11 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_stencil.1.sm_90.ptx:144) setp.eq.s32 %p12, %r160, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_stencil.1.sm_90.ptx:145) @%p12 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_stencil.1.sm_90.ptx:168) @%p14 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_stencil.1.sm_90.ptx:171) mul.lo.s32 %r109, %r1, 12;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2d0 (mw_stencil.1.sm_90.ptx:182) @%p15 bra $L__BB1_10;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x2f0 (mw_stencil.1.sm_90.ptx:191) barrier.cluster.arrive;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x308 (mw_stencil.1.sm_90.ptx:194) @%p16 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x360 (mw_stencil.1.sm_90.ptx:206) @%p19 bra $L__BB1_30;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x388 (mw_stencil.1.sm_90.ptx:214) @%p20 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x398 (mw_stencil.1.sm_90.ptx:221) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x3a8 (mw_stencil.1.sm_90.ptx:223) @%p15 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3f8 (mw_stencil.1.sm_90.ptx:238) mov.u32 %r171, 0;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x410 (mw_stencil.1.sm_90.ptx:241) @%p20 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x420 (mw_stencil.1.sm_90.ptx:248) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x430 (mw_stencil.1.sm_90.ptx:250) @%p15 bra $L__BB1_21;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x480 (mw_stencil.1.sm_90.ptx:265) mov.u32 %r176, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x498 (mw_stencil.1.sm_90.ptx:268) @%p20 bra $L__BB1_23;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a8 (mw_stencil.1.sm_90.ptx:275) barrier.cluster.arrive;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x4b8 (mw_stencil.1.sm_90.ptx:277) @%p15 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x508 (mw_stencil.1.sm_90.ptx:292) mov.u32 %r181, 0;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x520 (mw_stencil.1.sm_90.ptx:295) @%p20 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x530 (mw_stencil.1.sm_90.ptx:302) barrier.cluster.arrive;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x540 (mw_stencil.1.sm_90.ptx:304) @%p15 bra $L__BB1_29;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x590 (mw_stencil.1.sm_90.ptx:319) barrier.cluster.arrive;
+GPGPU-Sim PTX: 18 (potential) branch divergence @  PC=0x5b0 (mw_stencil.1.sm_90.ptx:323) @%p28 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5b8 (mw_stencil.1.sm_90.ptx:326) and.b32 %r194, %r94, 3;
+GPGPU-Sim PTX: 19 (potential) branch divergence @  PC=0x5c8 (mw_stencil.1.sm_90.ptx:328) @%p29 bra $L__BB1_37;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+GPGPU-Sim PTX: 20 (potential) branch divergence @  PC=0x5e0 (mw_stencil.1.sm_90.ptx:335) @%p30 bra $L__BB1_34;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x5f0 (mw_stencil.1.sm_90.ptx:342) barrier.cluster.arrive;
+GPGPU-Sim PTX: 21 (potential) branch divergence @  PC=0x600 (mw_stencil.1.sm_90.ptx:344) @%p15 bra $L__BB1_36;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x650 (mw_stencil.1.sm_90.ptx:359) barrier.cluster.arrive;
+GPGPU-Sim PTX: 22 (potential) branch divergence @  PC=0x670 (mw_stencil.1.sm_90.ptx:363) @%p32 bra $L__BB1_32;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x678 (mw_stencil.1.sm_90.ptx:366) ret;
+gpu_tot_sim_cycle = 19464
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_STENCIL cluster=8 num_clusters=8 iters=10 SEG=4 OUT_CHECKSUM=3958744 REF_CHECKSUM=3958744 BITIDENTICAL=1 mismatches=0 first_mis=-1

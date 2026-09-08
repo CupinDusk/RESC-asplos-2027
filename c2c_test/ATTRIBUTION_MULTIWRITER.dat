@@ -1,0 +1,13 @@
+# ATTRIBUTION multi-writer make-or-break 2026-08-29T14:45:53Z
+# cfg_h20 cluster=8 (8 concurrent writers). SIM IS TAG-ONLY => in-sim bit
+# always identical; correctness of concurrent MW is established OFF-SIM
+# (correctness/modelcheck_output.txt, resc_mw_harness). Here: timing only.
+# path arm cycles bit arm3_over_arm2
+A arm0_correct_global 10956 1 -
+A arm2_RESC_noMW(old-escape) 10740 1 -
+A arm3_RESC_MW(per-sector-merge) 10740 1 1.000
+A arm4_wholeLine_LWW_ablation 10740 1 -
+B arm0_correct_global 7049 1 -
+B arm2_RESC_noMW(old-escape) 7061 1 -
+B arm3_RESC_MW(owner-token) 7102 1 1.006
+MW_ATTRIB_DONE

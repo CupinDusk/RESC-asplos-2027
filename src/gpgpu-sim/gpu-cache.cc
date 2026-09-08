@@ -39,6 +39,346 @@
 #include "hashing.h"
 #include "stat-tool.h"
 #include "shader.h"
+// ============================================================================
+// RESC cross-cluster (inter-GPC) single-writer fast path  [CCOP MECHANISM]
+// ----------------------------------------------------------------------------
+// Distinct from the intra-CGA read-share above:
+//   * INTER-GPC: queries a DIFFERENT processing cluster (GPC), not the same
+//     cluster_slot inside one GPC.
+//   * Serves producer-WRITTEN write-through lines (single writer), records the
+//     write OWNER in a per-GPC tag-only table (XCWL). The cross-cluster tier is
+//     PREDICTION/SPECULATION (CCOP), NEVER broadcast: on a tagged miss the
+//     consumer fires AT MOST ONE confidence-gated directed probe to the
+//     predicted owner and speculatively touches L2 in parallel; cold/low-conf
+//     reads fire ZERO probes and are byte-identical to the L2 baseline.
+// Marked cross-cluster lines are registered GPC-agnostically (a consumer in a
+// different GPC than the producer must still match), unlike the (gpc,slot)-keyed
+// intra-cluster set above.
+// ============================================================================
+#include <set>
+#include <map>
+#include <algorithm>
+
+// Block addresses declared as cross-cluster communication lines.
+static std::unordered_set<new_addr_type> g_cross_cluster_addrs;
+// Lines seen written by >1 distinct owner core => forced to L2 (multi-writer).
+static std::unordered_set<new_addr_type> g_cross_cluster_multiwriter;
+
+struct xcwl_entry { shader_core_ctx *owner_core; bool reuse; unsigned gen; };
+// XCWL owner-recording table:  g_xcwl[gpc_id][block_addr] = {owner_core,reuse,gen}.
+static std::map<unsigned, std::unordered_map<new_addr_type, xcwl_entry>> g_xcwl;
+// GPC ids that have ever owned a cross-cluster line (neighbor enumeration).
+static std::set<unsigned> g_xcwl_gpcs;
+// Per-block owner generation counter (bumped on each producer write). Consumers
+// remember the gen they seeded at; owner NACKs a probe whose expected gen is
+// newer than the recorded one (staleness gate).
+static std::unordered_map<new_addr_type, unsigned> g_xcwl_gen;
+
+// ---------------------------------------------------------------------------
+// CCOP (Cross-Cluster Owner Predictor) -- prediction/speculation tier that
+// REPLACES the old k-neighbor broadcast. Per-l1_cache (per consumer SM),
+// direct-mapped, region-keyed. On a tagged cross-cluster local miss the
+// consumer consults CCOP; if it holds a confident, non-poisoned, cross-GPC
+// owner it fires AT MOST ONE directed probe to that owner and speculatively
+// touches L2 in parallel. There is NO broadcast anywhere. A cold/low-conf
+// lookup fires ZERO probes and is byte-identical to the baseline. The owner is
+// SEEDED FOR FREE from the L2 fill that already runs (XCWL owner tuple), so the
+// first touch pays 0 probes and is always correct.
+// ---------------------------------------------------------------------------
+static const unsigned CCOP_REGION_SHIFT = 13;   // ~8KB producer slice per entry
+static const unsigned CCOP_NENTRIES     = 128;  // direct-mapped, ~640B/SM
+static const int      CCOP_CONF_THRESH  = 2;    // 2-bit sat; probe only if conf>=2
+static const int      CCOP_CONF_MAX     = 3;
+struct ccop_entry {
+  bool         valid      = false;
+  new_addr_type region_tag = 0;
+  unsigned     owner_sid  = 0;
+  unsigned     owner_gpc  = 0;
+  int          conf       = 0;   // 2-bit saturating confidence
+  unsigned     gen        = 0;   // owner generation seen at seed time
+  bool         poison     = false; // 2nd distinct writer GPC seen -> never probe
+};
+// One table per consumer l1_cache instance (logically l1_cache::m_ccop; kept in
+// a file-static keyed by the cache pointer to avoid header/ABI churn -- each
+// l1_cache still owns an independent 128-entry table).
+static std::unordered_map<const void *, std::vector<ccop_entry>> g_ccop_tables;
+
+// Runtime knobs (env). Mode: 0=A(baseline/all-L2) 1=S1(CCOP P3(P2) default)
+// 2=S2(probe-first, L2-pressure regime).
+int g_c2c_mode          = -1;     // lazily initialised (<0 = unset)
+int g_c2c_neighbor_k    = 4;      // (legacy; unused by CCOP)
+int g_c2c_l2_roundtrip  = 242;    // modelled cross-cluster L2 round-trip
+int g_c2c_probe_timeout = 100;    // (legacy; unused by CCOP)
+int g_c2c_noprobe       = 0;      // C cold-only control: CCOP present, never probes
+int g_resc_no_fwd       = 0;      // faithful-hLRC arm: disable marked-line cross-SM L1-to-L1 serve (RESC_NO_FWD)
+int g_c2c_debug = -1;             // RESC_C2C_DEBUG env
+extern int sm2sm_latency;         // C2C fabric latency (sm_2_sm_network.cc)
+
+// Counters (per run).
+unsigned long long g_c2c_neighbor_hits = 0;  // == ccop_fresh_hits (back-compat)
+unsigned long long g_c2c_l2_fallbacks  = 0;  // cross-cluster reads that went to L2
+unsigned long long g_c2c_mispredicts   = 0;  // == ccop_mispredict (back-compat)
+unsigned long long g_c2c_pred_hits      = 0; // == ccop_fresh_hits (back-compat)
+unsigned long long g_c2c_total_reads    = 0;
+unsigned long long g_c2c_phys_resident_hits = 0; // served, line still in stock L1
+unsigned long long g_c2c_pinned_only_hits   = 0; // served via XCWL owner directory only
+// CCOP-specific counters (brief).
+unsigned long long g_ccop_probes         = 0; // directed probes fired (<=1 per read)
+unsigned long long g_ccop_fresh_hits     = 0; // probe confirmed owner -> served @sm2sm
+unsigned long long g_ccop_mispredict     = 0; // probe NACK -> L2 completes (BW-only cost)
+unsigned long long g_ccop_cold_l2_learn  = 0; // free seeds from the L2 fill (no probe)
+unsigned long long g_ccop_poison_skips   = 0; // multi-writer/poison -> no probe
+unsigned long long g_c2c_probe_bytes     = 0; // probe request bandwidth charged
+unsigned long long g_c2c_l2_accesses_saved = 0; // L2 fetches skipped on a CCOP hit
+unsigned long long g_c2c_crossgpc_probes = 0; // probes where owner_gpc != self
+unsigned long long g_c2c_samegpc_skips   = 0; // owner_gpc == self (never probed)
+unsigned long long g_c2c_crossgpc_reads  = 0; // reads w/ known owner on a diff GPC
+unsigned long long g_c2c_samegpc_reads   = 0; // reads w/ known owner on same GPC
+
+// Extra cycles to defer the just-completed cross-cluster load. Read by shader.cc
+// immediately after access() returns; the sim executes L1 accesses serially so
+// this single-slot handoff is safe. Sentinel -1 => use default intra-cluster charge.
+int g_c2c_defer_extra_cycles = -1;
+
+// ===========================================================================
+// EXPERIMENT B (pre-registered 2026-08-29): SYMMETRIC per-supplier injection-port
+// contention on the RESC peer-L1 read-share path.
+// ---------------------------------------------------------------------------
+// WHY: the sim already charges DSM N->1 injection convergence -- the crossbar
+// output port (Crossbar::Advance, sm_2_sm_network.cc) drains ONE requester per
+// cycle at sm2sm_bandwidth bits/cyc, so k DSM requests converging on one target
+// SM serialize. The RESC read-share path (try_cluster_read_share /
+// special_try_cluster_read_share) previously charged a FLAT sm2sm_latency with NO
+// per-supplier port serialization (round-10 reviewer weakness #8). This adds the
+// SAME class of cost to the peer-supply path ONLY: when k consumers pull a marked
+// line from ONE supplier SM L1, that supplier injection port serializes responses.
+//
+// FORM (mirrors the DSM crossbar output port -- a single server draining at a
+// fixed bit-rate): per-supplier port_free_at[sid] timeline. A read-share served
+// from supplier s at absolute cycle now occupies s port for
+//     service = ceil(payload_bits / g_resc_inject_bw_bits)   (>=1)
+// and queues behind any prior occupancy:
+//     start      = max(now, port_free_at[s])
+//     queue_wait = start - now
+//     port_free_at[s] = start + service
+// The EXTRA cycles charged (on top of the frozen sm2sm_latency transport, exactly
+// as DSM pays port-drain THEN the transport) = queue_wait + service.
+//
+// PARAMETER g_resc_inject_bw_bits is FROZEN from a real-H20 DSMEM injection
+// microbench (route_inj.cu on the H20 host) -- the second silicon calibration
+// point for the RESC datapath. Env RESC_INJECT_BW / RESC_INJECT_CHARGE exist ONLY
+// for the integrity/sensitivity check, never to tune the headline.
+// ---------------------------------------------------------------------------
+int    g_resc_inject_charge  = -1;    // -1 unset; 0=off; 1=on. env RESC_INJECT_CHARGE
+double g_resc_inject_bw_bits = 15.34; // SILICON-FROZEN injection-port BW (bits/cycle). PLACEHOLDER until set from H20 route_inj.
+static std::unordered_map<unsigned, unsigned long long> g_resc_port_free_at;
+unsigned long long g_resc_inject_events    = 0;
+unsigned long long g_resc_inject_queue_cyc = 0;
+unsigned long long g_resc_inject_serve_cyc = 0;
+unsigned long long g_resc_inject_maxq      = 0;
+
+static void init_resc_inject() {
+  if (g_resc_inject_charge >= 0) return;
+  const char *c  = std::getenv("RESC_INJECT_CHARGE");
+  g_resc_inject_charge = c ? atoi(c) : 1;           // ON by default (Experiment B)
+  const char *bw = std::getenv("RESC_INJECT_BW");
+  if (bw) g_resc_inject_bw_bits = atof(bw);
+  printf("\n[RESC_INJECT] charge=%d inject_bw_bits=%.4f (per-supplier injection-port"
+         " serialization, symmetric with DSM crossbar)\n",
+         g_resc_inject_charge, g_resc_inject_bw_bits);
+}
+
+// Extra deferral cycles (queue_wait + service) for a read-share response served
+// by supplier_sid carrying payload_bits, arriving at now. Updates supplier port
+// timeline. Returns 0 if disabled.
+static int resc_injection_extra_cycles(unsigned supplier_sid,
+                                       unsigned payload_bits,
+                                       unsigned long long now) {
+  init_resc_inject();
+  if (g_resc_inject_charge == 0 || g_resc_inject_bw_bits <= 0.0) return 0;
+  if (payload_bits == 0) payload_bits = 8;
+  int service = (int)((payload_bits + g_resc_inject_bw_bits - 1.0) / g_resc_inject_bw_bits);
+  if (service < 1) service = 1;
+  unsigned long long prev_free = g_resc_port_free_at.count(supplier_sid)
+                                     ? g_resc_port_free_at[supplier_sid] : 0ULL;
+  unsigned long long start = (prev_free > now) ? prev_free : now;
+  unsigned long long queue_wait = start - now;
+  g_resc_port_free_at[supplier_sid] = start + (unsigned long long)service;
+  g_resc_inject_events++;
+  g_resc_inject_queue_cyc += queue_wait;
+  g_resc_inject_serve_cyc += (unsigned long long)service;
+  if (queue_wait > g_resc_inject_maxq) g_resc_inject_maxq = queue_wait;
+  return (int)queue_wait + service;
+}
+
+// ===========================================================================
+// SUPPLIER TAG-ARRAY PROBE-PORT OCCUPANCY (r29, prereg be694aa9...).
+// ---------------------------------------------------------------------------
+// WHY: reviewers correctly note that we charge the supplier's *fabric* injection
+// port (EXPERIMENT B above) but NOT its *tag array*. A peer probe must read the
+// supplier's tag array to discover the marked line; with up to C-1 consumers
+// probing one supplier in a window, that array port serializes independently of
+// the fabric. Previously "not charged" (main.tex:1121). This charges it.
+//
+// FORM: identical single-server timeline to the injection port, EXCEPT the
+// service time is a CONSTANT -- a tag lookup is one array access, not a data
+// transfer, so it does not scale with payload bits.
+//
+// PARAMETER: NOT silicon-calibrated. We have no H20 measurement of L1 tag-port
+// service time, so this is swept {0,1,2,4,8} and reported as a range, never as a
+// point. DEFAULT 0 = OFF, so all previously published cells reproduce exactly.
+// ---------------------------------------------------------------------------
+int g_resc_probe_port_cycles = -1;   // -1 unset; 0=off. env RESC_PROBE_PORT
+static std::unordered_map<unsigned, unsigned long long> g_resc_tag_port_free_at;
+unsigned long long g_resc_probe_events    = 0;
+unsigned long long g_resc_probe_queue_cyc = 0;
+
+static void init_resc_probe_port() {
+  if (g_resc_probe_port_cycles >= 0) return;
+  const char *p = std::getenv("RESC_PROBE_PORT");
+  g_resc_probe_port_cycles = p ? atoi(p) : 0;        // OFF by default
+  if (g_resc_probe_port_cycles < 0) g_resc_probe_port_cycles = 0;
+  if (g_resc_probe_port_cycles > 0)
+    printf("\n[RESC_PROBE_PORT] service=%d cyc/probe (supplier tag-array port"
+           " serialization, constant service; NOT silicon-calibrated)\n",
+           g_resc_probe_port_cycles);
+}
+
+// Extra deferral cycles for the supplier's tag-array port. Returns 0 when off.
+static int resc_probe_port_extra_cycles(unsigned supplier_sid,
+                                        unsigned long long now) {
+  init_resc_probe_port();
+  if (g_resc_probe_port_cycles == 0) return 0;
+  unsigned long long service = (unsigned long long)g_resc_probe_port_cycles;
+  unsigned long long prev_free = g_resc_tag_port_free_at.count(supplier_sid)
+                                     ? g_resc_tag_port_free_at[supplier_sid] : 0ULL;
+  unsigned long long start = (prev_free > now) ? prev_free : now;
+  unsigned long long queue_wait = start - now;
+  g_resc_tag_port_free_at[supplier_sid] = start + service;
+  g_resc_probe_events++;
+  g_resc_probe_queue_cyc += queue_wait;
+  return (int)(queue_wait + service);
+}
+
+// ===========================================================================
+// RESC MULTI-WRITER COHERENCE (ASPLOS) -- state + counters.
+// ---------------------------------------------------------------------------
+// Two intra-cluster (same-GPC) multi-writer resolutions replace the old
+// "producer-consumer only" behaviour the Round-9 reviewers flagged:
+//   (A) FALSE SHARING: a 2nd same-cluster SM writing DISJOINT sectors of a
+//       marked line does NOT clobber the first writer's whole line. Both copies
+//       become CLUSTER_MW_MERGE and each records only its own written sectors.
+//       This rides the existing write-through (ZERO new fabric messages); the
+//       consumer read serves the byte-accurate L2 merge (WT invariant) and is
+//       forbidden from taking a single-owner whole-line forward.
+//   (B) CLUSTER-SCOPED ATOMIC: a single migrating owner token (reusing the XCWL
+//       slot) serialises the RMW at one SM. A peer atomic sends exactly one
+//       UpgradeReq over the SM-to-SM fabric to the current owner, which
+//       downgrades EM->INVALID transiting through FORWARD (this fires the dead
+//       F-state + invalidate edge); the requester installs EM. Gated by
+//       g_xcwl_gen (stale gen -> NACK). One fabric hop per ownership change,
+//       never a broadcast, no sharer vector.
+// The functional value ALWAYS comes from the functional simulator against L2
+// (write-through), so bit-identity to a correct reference is structural; these
+// paths change route/timing and the on-chip coherence bookkeeping only.
+// Toggle the whole family with RESC_MW=1 (default 0 == legacy behaviour, i.e.
+// the arm-3 "old escape"); RESC_MW_LWW=1 selects the whole-line last-writer-wins
+// ablation (no per-sector mask) for the necessity arm.
+// ---------------------------------------------------------------------------
+int g_resc_mw          = -1;   // lazily initialised (<0 = unset); 1 = MW enabled
+int g_resc_mw_lww      = 0;    // 1 = whole-line LWW ablation (no per-sector mask)
+int g_resc_mw_debug    = 0;
+
+// Per-GPC atomic owner token for marked lines: g_mw_atomic_owner[gpc][addr] =
+// owning core. Reuses the same {gpc,addr} keying as XCWL; a single owner at a
+// time (the token), migrated on each cross-SM ownership change. No sharer set.
+static std::map<unsigned, std::unordered_map<new_addr_type, shader_core_ctx *>>
+    g_mw_atomic_owner;
+
+// Firing counters (per run) -- these PROVE the multi-writer / F-state /
+// invalidate paths are actually exercised (the Round-9 deliverable).
+unsigned long long g_mw_merge_entries      = 0; // CLUSTER_MW_MERGE state installs
+unsigned long long g_mw_falsesharing_reads = 0; // MW_MERGE consumer merge-reads (no whole-line fwd)
+unsigned long long g_mw_sector_writebacks  = 0; // per-sector merge-writebacks at epoch end
+unsigned long long g_mw_atomic_upgradereq  = 0; // atomic UpgradeReq / token hand-offs (1 hop each)
+unsigned long long g_mw_forward_downgrades = 0; // EM->INVALID transiting FORWARD (live invalidate)
+unsigned long long g_mw_atomic_local_owner = 0; // atomic already owned locally (no hop)
+unsigned long long g_mw_atomic_nack        = 0; // stale-gen UpgradeReq NACKed
+unsigned long long g_mw_fabric_msgs        = 0; // total NEW fabric messages from MW (atomics only)
+
+static void init_resc_mw() {
+  if (g_resc_mw >= 0) return;
+  const char *m  = std::getenv("RESC_MW");        g_resc_mw       = m  ? atoi(m)  : 0;
+  const char *lw = std::getenv("RESC_MW_LWW");    g_resc_mw_lww   = lw ? atoi(lw) : 0;
+  const char *db = std::getenv("RESC_MW_DEBUG");  g_resc_mw_debug = db ? atoi(db) : 0;
+  printf("\n[RESC_MW] enabled=%d lww_ablation=%d debug=%d\n",
+         g_resc_mw, g_resc_mw_lww, g_resc_mw_debug);
+}
+
+static void init_c2c_mode() {
+  if (g_c2c_mode >= 0) return;
+  const char *m = std::getenv("RESC_C2C_MODE");
+  g_c2c_mode = m ? atoi(m) : 0;
+  const char *k = std::getenv("RESC_C2C_K");       if (k) g_c2c_neighbor_k    = atoi(k);
+  const char *l = std::getenv("RESC_C2C_L2");      if (l) g_c2c_l2_roundtrip  = atoi(l);
+  const char *t = std::getenv("RESC_C2C_TIMEOUT"); if (t) g_c2c_probe_timeout = atoi(t);
+  const char *np = std::getenv("RESC_C2C_NOPROBE"); if (np) g_c2c_noprobe = atoi(np);
+  const char *dbg = std::getenv("RESC_C2C_DEBUG"); g_c2c_debug = dbg ? atoi(dbg) : 0;
+  const char *nf = std::getenv("RESC_NO_FWD"); if (nf) g_resc_no_fwd = atoi(nf);
+  if (g_resc_no_fwd) printf("\n[RESC_NO_FWD] faithful-hLRC: marked-line cross-SM L1-to-L1 serve DISABLED (consumer refetches L2); L1-caching+self-invalidation intact\n");
+  printf("\n[CCOP] mode=%d (0=A/baseline 1=S1 2=S2) noprobe=%d l2_rt=%d sm2sm=%d "
+         "region_shift=%u nentries=%u conf_thresh=%d\n",
+         g_c2c_mode, g_c2c_noprobe, g_c2c_l2_roundtrip, sm2sm_latency,
+         CCOP_REGION_SHIFT, CCOP_NENTRIES, CCOP_CONF_THRESH);
+}
+
+extern "C" void gpgpusim_register_cross_cluster_addr(new_addr_type addr) {
+  // Mask to the 128B L1 line so any access offset within the line matches
+  // block_addr(addr) used by the cache lookup.
+  const new_addr_type LINE = 128;
+  g_cross_cluster_addrs.insert(addr & ~(LINE - 1));
+}
+static inline bool is_cross_cluster_addr(new_addr_type block_addr) {
+  return g_cross_cluster_addrs.find(block_addr) != g_cross_cluster_addrs.end();
+}
+
+// Record the producer (write owner) of a cross-cluster line into its GPC XCWL.
+// Single-writer invariant: if a different core in a different GPC already owns
+// the line, flag it multi-writer (correctness -> L2 only). Each producer write
+// bumps a per-block generation counter; CCOP seeds carry the gen they saw and
+// the owner NACKs a probe whose value would be stale.
+static void xcwl_record_owner(new_addr_type block_addr, shader_core_ctx *owner) {
+  if (!owner) return;
+  simt_core_cluster *scc = owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return;
+  unsigned g = scc->m_gpc->get_gpc_id();
+  for (auto &kv : g_xcwl) {
+    if (kv.first == g) continue;
+    auto it = kv.second.find(block_addr);
+    if (it != kv.second.end() && it->second.owner_core != owner)
+      g_cross_cluster_multiwriter.insert(block_addr);
+  }
+  unsigned gen = ++g_xcwl_gen[block_addr];   // bump owner generation
+  g_xcwl[g][block_addr] = xcwl_entry{owner, false, gen};
+  g_xcwl_gpcs.insert(g);
+  if (g_c2c_debug > 0)
+    printf("[CCOP_DBG] record owner gpc=%u sid=%u addr=0x%llx gen=%u\n", g,
+           owner->get_sid(), (unsigned long long)block_addr, gen);
+}
+
+// Fetch (or lazily create) the 128-entry CCOP table for one consumer l1_cache.
+static std::vector<ccop_entry> &ccop_table_for(const void *cache) {
+  auto it = g_ccop_tables.find(cache);
+  if (it == g_ccop_tables.end())
+    it = g_ccop_tables.emplace(cache, std::vector<ccop_entry>(CCOP_NENTRIES)).first;
+  return it->second;
+}
+static inline new_addr_type ccop_region(new_addr_type block_addr) {
+  return block_addr >> CCOP_REGION_SHIFT;
+}
+static inline unsigned ccop_slot(new_addr_type region) {
+  return (unsigned)(region & (CCOP_NENTRIES - 1));
+}
 
 // 用于存储需要维护cluster一致性的地址集合（按 TB-cluster 维度）
 // key = (gpc_id, cluster_slot) 组成的 64-bit key
@@ -50,6 +390,264 @@ static inline unsigned long long make_cluster_key(unsigned gpc_id,
                                                   unsigned cluster_slot) {
   return (static_cast<unsigned long long>(gpc_id) << 32) |
          static_cast<unsigned long long>(cluster_slot);
+}
+
+// SELECTIVE-INVALIDATE (2026-09-03): RESC_QUIET=1 silences the per-event RESC
+// debug printf (registration + read-share success).  Output-only; it cannot
+// affect any counter or any timing decision.  Bit-identity of the counters
+// under quiet vs loud is proven on a control point and disclosed.
+static int g_resc_quiet = -1;
+static inline bool resc_quiet() {
+  if (g_resc_quiet < 0) {
+    const char *q = std::getenv("RESC_QUIET");
+    g_resc_quiet = q ? atoi(q) : 0;
+  }
+  return g_resc_quiet != 0;
+}
+
+// ===========================================================================
+// RESC OVERLAPPING-EPOCH GENERATION RING (ASPLOS center-of-gravity novelty).
+// A per-line generation tag + a per-cluster ring of G concurrent LIVE
+// generations. A marked line produced in generation g stays readable over the
+// SM-to-SM fabric (peer-L1 read-share) while g is within the live window
+// [cur_gen-(G-1), cur_gen]. cluster.sync ADVANCES cur_gen (resc_epoch_tick);
+// generations older than the window are RETIRED implicitly (O(1) -- the value
+// is already in L2 by the write-through invariant, so retire needs no flush).
+//   G=1  == eager bulk self-invalidate at every sync (hLRC / DeNovo drain).
+//   G=2  == DeNovo keepValid current+next (two phases).
+//   G>=3 == the new regime: >2 overlapping communication lifetimes, which a
+//           single keep-valid interval structurally cannot represent.
+// Default OFF (G<=0): no gating (legacy == unbounded G) so the sanity gate and
+// every prior marked experiment stay byte-identical.
+// ===========================================================================
+int g_resc_gen_ring = 0;                 // ring depth G; <=0 == gating OFF
+static bool g_resc_gen_ring_init = false;
+unsigned long long g_resc_epoch_ticks = 0;
+unsigned long long g_resc_gen_served  = 0;   // read-shares served within window
+unsigned long long g_resc_gen_expired = 0;   // read-shares DENIED (out of window)
+static std::unordered_map<unsigned long long, unsigned long long> g_resc_cur_gen;
+static std::unordered_map<unsigned long long,
+    std::unordered_map<new_addr_type, unsigned long long> > g_resc_line_gen;
+
+static void init_resc_gen_ring() {
+  if (g_resc_gen_ring_init) return;
+  g_resc_gen_ring_init = true;
+  const char *g = std::getenv("RESC_GEN_RING");
+  g_resc_gen_ring = g ? atoi(g) : 0;
+  printf("\n[RESC_GEN_RING] G=%d (<=0=OFF/legacy-unbounded; 1=eager/hLRC, "
+         "2=DeNovo current+next, >=3=overlapping regime)\n", g_resc_gen_ring);
+}
+static inline bool resc_gating_on() { init_resc_gen_ring(); return g_resc_gen_ring > 0; }
+
+// Advance a cluster's generation once per completed cluster.sync (epoch tick).
+extern "C" void resc_epoch_tick(unsigned gpc_id, unsigned cluster_slot) {
+  if (!resc_gating_on()) return;
+  unsigned long long key = make_cluster_key(gpc_id, cluster_slot);
+  g_resc_cur_gen[key] += 1;
+  g_resc_epoch_ticks++;
+}
+
+// Compute the (gpc,slot) epoch key for a mem_fetch from the accessing L1.
+static bool resc_cluster_key_for_mf(new_addr_type addr, shader_core_ctx *owner,
+                                    mem_fetch *mf, unsigned long long *out_key) {
+  (void)addr;
+  if (!owner || !mf) return false;
+  unsigned wid = mf->get_inst().warp_id();
+  unsigned cluster_slot = owner->get_warp_cluster_slot(wid);
+  simt_core_cluster *scc = owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return false;
+  *out_key = make_cluster_key(scc->m_gpc->get_gpc_id(), cluster_slot);
+  return true;
+}
+
+// Stamp a marked producer write with its producing generation.
+static void resc_stamp_gen(unsigned long long key, new_addr_type block_addr) {
+  if (g_resc_gen_ring <= 0) return;
+  g_resc_line_gen[key][block_addr] = g_resc_cur_gen[key];
+}
+
+// Is a marked line still within the live generation window (fwd-able via peer
+// L1)?  true when gating OFF or never-stamped (never penalise). Counts served
+// vs expired for the ablation evidence.
+static bool resc_gen_live(unsigned long long key, new_addr_type block_addr) {
+  if (g_resc_gen_ring <= 0) return true;
+  auto ci = g_resc_cur_gen.find(key);
+  unsigned long long cur = (ci != g_resc_cur_gen.end()) ? ci->second : 0ULL;
+  auto mi = g_resc_line_gen.find(key);
+  if (mi == g_resc_line_gen.end()) return true;
+  auto li = mi->second.find(block_addr);
+  if (li == mi->second.end()) return true;
+  unsigned long long g = li->second;
+  bool live = (cur >= g) && ((cur - g) < (unsigned long long)g_resc_gen_ring);
+  if (live) g_resc_gen_served++; else g_resc_gen_expired++;
+  return live;
+}
+
+// ===========================================================================
+// RESC EPOCH-SCOPED RETENTION BIAS (2026-09-04).  DEFAULT OFF.
+//
+// THE PROBLEM.  Nothing so far keeps a marked communication line resident in
+// L1 for the duration of the communication.  A marked line competes for ways
+// on equal terms with everything else -- the victim walk in tag_array::probe
+// classifies candidates only by dirtiness and age -- so an unrelated private
+// read can evict the producer's copy before the consumer asks for it; the
+// read-share then fails and the consumer pays L2.  RESC's own residency is
+// unmanaged.  This is the untested self-destruct condition the 2026-08-27
+// scenario search named.
+//
+// WHY NOT A PIN.  Pinning ways for marked data re-creates DSM's defect: a
+// FIXED reservation, taken whether or not it is used, sized for the worst
+// case, and capable of FAILING (no way left to allocate => RESERVATION_FAIL).
+// The whole structural argument for RESC over DSM is that its cost is
+// VARIABLE -- per line, only for lines actually resident, released
+// automatically when the epoch ends.  A pin forfeits that argument.
+//
+// THE MECHANISM (a bias, three properties, each structural not incidental).
+//  1. PREFERENCE, NOT RESERVATION.  Among the lines the legacy policy already
+//     considers EVICTABLE, prefer to evict an unprotected one.  Protection
+//     never removes a line from the eligible set, so `all_reserved` -- and
+//     therefore RESERVATION_FAIL -- is bit-unchanged.  Retention cannot fail
+//     and cannot deadlock; it can only reorder which of several evictable
+//     lines is evicted.
+//  2. BOUNDED BY A PER-SET QUOTA.  If protected lines could take every way the
+//     bias WOULD be a reservation in disguise (one unprotected way thrashing
+//     forever).  So the bias applies only while the protected population of
+//     the set is <= Q ways, Q = assoc * RESC_RETAIN_Q / 100, clamped to
+//     [0, assoc-1].  Past Q the protected lines lose the bias and are evicted
+//     like anything else -- the SPILL.  Because this L1 is WRITE_THROUGH
+//     (-gpgpu_cache:dl1 S:4:128:64,L:T:..., 'T' => WRITE_THROUGH in
+//     gpu-cache.h), L2 already holds the authoritative value, so a spilled
+//     marked line costs LATENCY (the consumer misses to L2) and never
+//     correctness.
+//  3. SELF-RELEASING, O(1), NO WALK.  Protection is not a sticky bit that
+//     something must clear.  A line is protected iff it carries a producing
+//     generation stamp inside its cluster's live epoch window -- the SAME
+//     per-line stamp and the SAME per-cluster epoch counter the generation
+//     ring already maintains (resc_stamp_gen / resc_gen_live above).  When
+//     cluster.sync advances the epoch counter, every line whose stamp has
+//     fallen out of the window stops being protected simultaneously, with no
+//     walk, no clearing, and no way to leak protection into the next epoch.
+//     Epoch release is a comparator, not an operation.
+//
+// WHAT IS PROTECTED, PRECISELY.  Producer-stamped marked lines: exactly the
+// copies a peer's read-share can be served from.  A marked line that this L1
+// never produced (a consumer's own fetched copy) is NOT protected -- it has no
+// producing generation, and protecting it could not help any handoff.  This is
+// the narrow reading, and it is the conservative one: fewer protected lines
+// means less benefit claimed and less pressure on unmarked data.
+//
+// HARDWARE COST (what the paper must claim).  Per line: the E-bit generation
+// stamp the ring already requires (E = ceil(log2 G) + 1) plus a 1-bit
+// "stamped/marked" valid flag.  Per way, in the tag-probe stage and in parallel
+// with the existing tag compare: one E-bit modular window compare ANDed with
+// that flag.  Per set access: one extra (age,index) candidate register pair and
+// a log2(assoc)-bit population count over the way vector -- the popcount is
+// strictly narrower than the assoc-way 64-bit MINIMUM reduction LRU already
+// performs in the same stage, and it disappears entirely at Q = 100%.  Nothing
+// is added to the hit path; no new array is read.
+//
+// MODELLING CONVENIENCES, DISCLOSED.  (a) Hardware classifies ways in the one
+// walk it already does; the model runs a second pass over the same set, only on
+// capacity evictions, purely to keep the hot loop's cost unchanged.  The
+// selection is identical either way and the second pass charges no cycles.
+// (b) The model recovers stamp/marked state from the existing global maps
+// instead of per-line bits; hardware needs only the bits above, and needs no
+// cluster key because an L1 serves one cluster at a time.  (c) Wrap-around is a
+// modular compare over a window G <= 2^(E-1).
+//
+// DEPENDENCY, STATED NOT HIDDEN.  Protection reuses the ring's epoch counter,
+// so with RESC_GEN_RING <= 0 no line is ever stamped and NOTHING is ever
+// protected.  Retention is then a no-op by construction.
+// g_resc_retain_no_epoch counts that case so it is computable from any run
+// rather than asserted.
+//
+// Knobs (unset == OFF == legacy, bit-identical):
+//   RESC_RETAIN    0 = off (default), 1 = bias on
+//   RESC_RETAIN_Q  quota, percent of ways protected lines may bias (default 75)
+//   RESC_RETAIN_W  protection window in epochs (default = ring depth G)
+// Counters are pure increments; they cannot feed back into any timing decision.
+// ===========================================================================
+static int g_resc_retain      = -1;   // -1 = not yet read from environment
+static int g_resc_retain_qpct = 75;
+static int g_resc_retain_win  = 0;    // 0 == follow ring depth G
+unsigned long long g_resc_retain_victim_walks   = 0;  // capacity evictions seen
+unsigned long long g_resc_retain_prot_seen      = 0;  // protected candidates seen
+unsigned long long g_resc_retain_biased         = 0;  // bias FIRED (prot spared)
+unsigned long long g_resc_retain_spills         = 0;  // protected line EVICTED
+unsigned long long g_resc_retain_quota_override = 0;  // spill caused by quota
+unsigned long long g_resc_retain_setfull        = 0;  // spill: no unprot victim
+unsigned long long g_resc_retain_no_epoch       = 0;  // ring OFF => never protect
+unsigned long long g_resc_retain_legacy_agree   = 0;  // 2nd pass == legacy pick
+unsigned long long g_resc_retain_legacy_differ  = 0;  // MUST be 0 in every run
+unsigned long long g_resc_retain_stamp_unmarked = 0;  // MUST be 0 in every run
+
+static inline bool resc_retain_enabled() {
+  if (g_resc_retain < 0) {
+    const char *e = std::getenv("RESC_RETAIN");
+    g_resc_retain = e ? atoi(e) : 0;
+    if (g_resc_retain > 0) {
+      const char *q = std::getenv("RESC_RETAIN_Q");
+      if (q) g_resc_retain_qpct = atoi(q);
+      const char *w = std::getenv("RESC_RETAIN_W");
+      if (w) g_resc_retain_win = atoi(w);
+      printf("\n[RESC_RETAIN] enabled=%d quota_pct=%d window=%d "
+             "(window 0 = follow RESC_GEN_RING)\n",
+             g_resc_retain, g_resc_retain_qpct, g_resc_retain_win);
+    }
+  }
+  return g_resc_retain > 0;
+}
+
+// L1 data cache only.  L2 is constructed with core_id = -1 (l2cache.cc:439);
+// the texture / constant / instruction L1s carry a type_id other than NORMALS
+// (stat-tool.h:271; shader.cc get_shader_normal_cache_id() -> NORMALS).
+static inline bool resc_retain_is_l1d(int core_id, int type_id) {
+  return core_id >= 0 && type_id == (int)NORMALS;
+}
+
+// Protection window in epochs.  Default: the generation ring's own depth, so
+// "protected" and "forwardable" release together -- one epoch notion, not two.
+static inline unsigned long long resc_retain_window() {
+  if (g_resc_retain_win > 0) return (unsigned long long)g_resc_retain_win;
+  return (unsigned long long)(g_resc_gen_ring > 0 ? g_resc_gen_ring : 1);
+}
+
+// Does this line carry a producing generation stamp inside its live window?
+// STAMP-FIRST: resc_stamp_gen() is reached only under
+// should_set_cluster_state_for_write() (the marked-address test), so a stamped
+// line is necessarily marked.  Registry membership is therefore CONFIRMED on
+// the positive path rather than scanned on every call, and any disagreement is
+// counted in g_resc_retain_stamp_unmarked, which must be 0 in every run.
+static bool resc_retain_line_protected(new_addr_type block_addr) {
+  if (g_resc_gen_ring <= 0) { g_resc_retain_no_epoch++; return false; }
+  const unsigned long long W = resc_retain_window();
+  for (auto &mi : g_resc_line_gen) {
+    auto li = mi.second.find(block_addr);
+    if (li == mi.second.end()) continue;
+    auto ci = g_resc_cur_gen.find(mi.first);
+    const unsigned long long cur =
+        (ci != g_resc_cur_gen.end()) ? ci->second : 0ULL;
+    const unsigned long long g = li->second;
+    if (cur >= g && (cur - g) < W) {
+      // Confirm the stamped-implies-marked invariant (computed, not assumed).
+      bool marked = false;
+      for (auto &kv : g_cluster_coherent_addrs_by_cluster) {
+        if (kv.second.find(block_addr) != kv.second.end()) { marked = true; break; }
+      }
+      if (!marked) { g_resc_retain_stamp_unmarked++; return false; }
+      return true;                       // inside the live window AND marked
+    }
+  }
+  return false;   // never stamped, or the epoch has closed -> self-released
+}
+
+// Quota: may the bias be honoured with n_prot protected lines in this set?
+static inline bool resc_retain_quota_ok(unsigned n_prot, unsigned assoc) {
+  if (assoc == 0) return false;
+  unsigned q = (unsigned)(((unsigned long long)assoc *
+                           (unsigned long long)g_resc_retain_qpct) / 100ULL);
+  if (q > assoc - 1) q = assoc - 1;   // never let the bias cover every way
+  return n_prot <= q;
 }
 
 // 用于识别需要设置cluster-state的目标地址（向后兼容，通过环境变量设置）
@@ -80,8 +678,31 @@ extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr,
   }
   const unsigned long long key = make_cluster_key(gpc_id, cluster_slot);
   g_cluster_coherent_addrs_by_cluster[key].insert(addr);
+  // SELECTIVE-INVALIDATE (2026-09-03): RESC_QUIET=1 suppresses this per-event
+  // printf (multi-MB per run; caused timeouts in the previous experiment).
+  // Default unset == current loud behaviour, so nothing changes unless asked.
+  if (!resc_quiet())
   printf("\n[RESC] Registered cluster coherent address: 0x%llx (gpc=%u slot=%u)\n",
          (unsigned long long)addr, gpc_id, cluster_slot);
+}
+
+// RESC MULTI-WRITER (B): decide whether a marked cluster-scoped ATOMIC should be
+// kept on the L1 path (so the owner-token hand-off can run) instead of the sim's
+// default atomic behaviour of bypassing L1 to resolve at L2 (cache_op=CACHE_GLOBAL
+// for ATOM_OP/RED_OP, cuda-sim.cc). Called from ldst_unit::memory_cycle. Returns
+// true ONLY when RESC_MW is enabled AND the (line) address was registered as a
+// cluster-coherent RESC line -- so it has ZERO effect on the sanity gate, the
+// baseline, or any non-marked atomic. The functional RMW is unchanged (done by
+// the functional simulator against L2); this only routes the timing/coherence
+// bookkeeping through L1.
+extern "C" bool resc_mw_atomic_wants_l1(new_addr_type block_addr) {
+  init_resc_mw();
+  if (!g_resc_mw) return false;
+  // addr-only membership test across all (gpc,slot) buckets (marked line?).
+  for (auto &kv : g_cluster_coherent_addrs_by_cluster) {
+    if (kv.second.find(block_addr) != kv.second.end()) return true;
+  }
+  return false;
 }
 
 static bool is_cluster_coherent_addr_for_mf(new_addr_type addr,
@@ -412,6 +1033,74 @@ enum cache_request_status tag_array::probe(new_addr_type addr, unsigned &idx,
     idx = invalid_line;
   } else if (valid_line != (unsigned)-1) {
     idx = valid_line;
+    // =====================================================================
+    // RESC EPOCH-SCOPED RETENTION BIAS (2026-09-04).  Reached ONLY here: the
+    // legacy walk has already decided it must evict a VALID line, i.e. this is
+    // a capacity eviction.  Default OFF -> the whole block is skipped and idx
+    // keeps the legacy value assigned just above, so the default path is
+    // bit-unchanged.
+    //
+    // Second pass over the SAME set, replicating the legacy eligibility test
+    // verbatim and splitting the eligible candidates into protected and
+    // unprotected.  Semantics are identical to classifying inside the first
+    // walk; done here so the per-access hot loop keeps its original cost.
+    // Charges no simulated cycles.
+    // =====================================================================
+    if (resc_retain_enabled() && resc_retain_is_l1d(m_core_id, m_type_id)) {
+      const float __dirty_pct =
+          ((float)m_dirty / (m_config.m_nset * m_config.m_assoc)) * 100;
+      unsigned __prot_line = (unsigned)-1, __unprot_line = (unsigned)-1;
+      // NOTE: legacy initialises valid_timestamp to (unsigned)-1, NOT
+      // ULLONG_MAX (gpu-cache.cc:747).  The second pass MUST use the identical
+      // initialiser or the legacy_agree self-check could disagree spuriously.
+      unsigned long long __prot_ts  = (unsigned)-1;
+      unsigned long long __unprot_ts = (unsigned)-1;
+      unsigned __n_prot = 0;
+      for (unsigned way = 0; way < m_config.m_assoc; way++) {
+        const unsigned index = set_index * m_config.m_assoc + way;
+        cache_block_t *line = m_lines[index];
+        // --- legacy eligibility, verbatim from the walk above ---
+        if (line->is_reserved_line()) continue;
+        if (line->is_modified_line() && __dirty_pct < m_config.m_wr_percent)
+          continue;
+        if (line->is_invalid_line()) continue;   // handled by invalid_line
+        // --- classification ---
+        const bool __rp = resc_retain_line_protected(line->m_block_addr);
+        const unsigned long long __age =
+            (m_config.m_replacement_policy == LRU) ? line->get_last_access_time()
+                                                   : line->get_alloc_time();
+        if (__rp) {
+          __n_prot++;
+          if (!probe_mode) g_resc_retain_prot_seen++;
+          if (__age < __prot_ts) { __prot_ts = __age; __prot_line = index; }
+        } else {
+          if (__age < __unprot_ts) { __unprot_ts = __age; __unprot_line = index; }
+        }
+      }
+      // Self-check, COMPUTED not asserted: with no protected line the second
+      // pass must reproduce the legacy victim exactly.  legacy_differ must be
+      // 0 in every reported run.
+      if (__n_prot == 0 && !probe_mode) {
+        if (__unprot_line == valid_line) g_resc_retain_legacy_agree++;
+        else                             g_resc_retain_legacy_differ++;
+      }
+      if (__prot_line != (unsigned)-1) {
+        if (!probe_mode) g_resc_retain_victim_walks++;
+        const bool __quota_ok =
+            resc_retain_quota_ok(__n_prot, m_config.m_assoc);
+        if (__unprot_line != (unsigned)-1 && __quota_ok) {
+          idx = __unprot_line;                 // SPARE the protected lines
+          if (!probe_mode) g_resc_retain_biased++;
+        } else {
+          idx = __prot_line;                   // SPILL: evict oldest protected
+          if (!probe_mode) {
+            g_resc_retain_spills++;
+            if (!__quota_ok) g_resc_retain_quota_override++;
+            else             g_resc_retain_setfull++;
+          }
+        }
+      }
+    }
   } else
     abort();  // if an unreserved block exists, it is either invalid or
               // replaceable
@@ -552,6 +1241,118 @@ void tag_array::invalidate() {
 
   m_dirty = 0;
   is_used = false;
+}
+
+// ===========================================================================
+// SELECTIVE CLUSTER-ACQUIRE INVALIDATE (2026-09-03).
+// Pre-registration: selective-invalidate-prereg.md, SHA-256 8ebabe19...,
+// frozen 2026-09-03T11:11:43Z.
+//
+// tag_array::invalidate() above is the CCTL.IVALL model: unconditional, every
+// line, every sector.  It is what shipping sm_90 must do, because hardware
+// cannot tell which lines a peer may have written.  RESC CAN tell: the marked
+// communication set is registered explicitly
+// (gpgpusim_register_cluster_coherent_addr, gpu-cache.cc:444-452).  The
+// minimal correct acquire therefore invalidates ONLY marked lines and
+// preserves unmarked ones -- unmarked lines are block-private or read-only by
+// construction, so no peer can have made them stale.
+//
+// owner_retaining == true additionally preserves marked lines held in an
+// OWNER cluster-state (EXCLUSIVE / EM / FORWARD / SM / MW_MERGE).  That is the
+// standard DeNovo/hLRC self-invalidation rule -- an acquire self-invalidates
+// valid-but-not-owned copies; the owner's copy is the newest and is retained.
+// Without it, the producer erases its own authoritative copy at every barrier
+// and there is nothing left for a peer to be forwarded (prereg S0a).
+//
+// Counters are pure increments; they cannot feed back into timing.
+// ===========================================================================
+unsigned long long g_l1_rd_marked_hit    = 0;
+unsigned long long g_l1_rd_marked_miss   = 0;
+unsigned long long g_l1_rd_unmarked_hit  = 0;
+unsigned long long g_l1_rd_unmarked_miss = 0;
+unsigned long long g_selinv_events            = 0;  // selective invalidate calls
+unsigned long long g_selinv_lines_examined    = 0;
+unsigned long long g_selinv_marked_invalidated= 0;
+unsigned long long g_selinv_unmarked_preserved= 0;
+unsigned long long g_selinv_owner_retained    = 0;
+
+// Is this line address in the marked registry for (gpc,slot)?  Falls back to
+// an address-only membership test across every bucket when the caller cannot
+// supply a key -- deliberately CONSERVATIVE for correctness: a line marked in
+// any cluster is treated as marked here, so we can only ever invalidate MORE
+// than strictly necessary, never less.
+static bool selinv_addr_is_marked(new_addr_type block_addr,
+                                  bool have_key, unsigned long long key) {
+  if (have_key) {
+    auto it = g_cluster_coherent_addrs_by_cluster.find(key);
+    if (it != g_cluster_coherent_addrs_by_cluster.end() &&
+        it->second.find(block_addr) != it->second.end())
+      return true;
+    // fall through: the same physical line may have been registered by another
+    // (gpc,slot) bucket; treating it as marked is the safe direction.
+  }
+  for (auto &kv : g_cluster_coherent_addrs_by_cluster) {
+    if (kv.second.find(block_addr) != kv.second.end()) return true;
+  }
+  return false;
+}
+
+static bool selinv_block_is_owner(cache_block_t *blk,
+                                  mem_access_sector_mask_t sm) {
+  cluster_line_state st = CLUSTER_INVALID;
+  line_cache_block *lb = dynamic_cast<line_cache_block *>(blk);
+  if (lb) {
+    st = lb->get_cluster_state();
+  } else {
+    sector_cache_block *sb = dynamic_cast<sector_cache_block *>(blk);
+    if (!sb) return false;
+    st = sb->get_cluster_state(sm);
+  }
+  return (st == CLUSTER_EXCLUSIVE || st == CLUSTER_EM ||
+          st == CLUSTER_FORWARD   || st == CLUSTER_SM ||
+          st == CLUSTER_MW_MERGE);
+}
+
+void tag_array::selective_invalidate(bool have_key, unsigned long long key,
+                                     bool owner_retaining) {
+  if (!is_used) return;
+  g_selinv_events++;
+
+  bool any_valid_left = false;
+  for (unsigned i = 0; i < m_config.get_num_lines(); i++) {
+    cache_block_t *blk = m_lines[i];
+    if (blk->is_invalid_line()) continue;
+    g_selinv_lines_examined++;
+
+    const new_addr_type ba = blk->m_block_addr;
+    if (!selinv_addr_is_marked(ba, have_key, key)) {
+      g_selinv_unmarked_preserved++;
+      any_valid_left = true;
+      continue;                        // UNMARKED -> preserved (the whole point)
+    }
+    // Marked.  Per-sector, because a sector cache holds per-sector state.
+    bool line_retained = false;
+    for (unsigned j = 0; j < SECTOR_CHUNCK_SIZE; j++) {
+      mem_access_sector_mask_t sm = mem_access_sector_mask_t().set(j);
+      if (blk->get_status(sm) == INVALID) continue;
+      if (owner_retaining && selinv_block_is_owner(blk, sm)) {
+        g_selinv_owner_retained++;
+        line_retained = true;
+        continue;                      // owner copy is newest -> keep
+      }
+      blk->set_status(INVALID, sm);
+      g_selinv_marked_invalidated++;
+    }
+    if (line_retained) any_valid_left = true;
+  }
+
+  // m_dirty / is_used bookkeeping: unlike the whole-L1 form we cannot simply
+  // zero them, because lines survive.  Recompute m_dirty exactly.
+  unsigned d = 0;
+  for (unsigned i = 0; i < m_config.get_num_lines(); i++)
+    if (m_lines[i]->is_modified_line()) d++;
+  m_dirty = d;
+  if (!any_valid_left) is_used = false;
 }
 
 float tag_array::windowed_miss_rate() const {
@@ -2149,6 +2950,7 @@ enum cache_request_status data_cache::access(new_addr_type addr, mem_fetch *mf,
                                              std::list<cache_event> &events) {
   assert(mf->get_data_size() <= m_config.get_atom_sz());
   bool wr = mf->get_is_write();
+
   new_addr_type block_addr = m_config.block_addr(addr);
   unsigned cache_index = (unsigned)-1;
   enum cache_request_status probe_status =
@@ -2173,6 +2975,14 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   assert(mf->get_data_size() <= m_config.get_atom_sz());
   bool wr = mf->get_is_write();
 
+  {
+    extern int g_resc_mw_debug;
+    if (g_resc_mw_debug > 0 && mf->isatomic())
+      printf("[RESC_MW_DBG] access() atomic seen wr=%d type=%d addr=0x%llx\n",
+             (int)wr, (int)mf->get_access_type(),
+             (unsigned long long)m_config.block_addr(addr));
+  }
+
 
 
 
@@ -2180,11 +2990,101 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
   // Probing with raw "addr" makes different offsets within the same line look
   // like different tags, which breaks caching and RESC sharing behavior.
   new_addr_type block_addr = m_config.block_addr(addr);
+  // RESC OVERLAPPING-EPOCH: stamp a marked producer write with the cluster's
+  // current generation (so a later consumer's read-share can be gen-checked).
+  if (wr && resc_gating_on() &&
+      should_set_cluster_state_for_write(block_addr, this, mf)) {
+    unsigned long long __ck;
+    if (resc_cluster_key_for_mf(block_addr, m_owner, mf, &__ck))
+      resc_stamp_gen(__ck, block_addr);
+  }
+  // RESC cross-cluster: record the write OWNER (producer) of a marked line
+  // into its GPC XCWL and detect multi-writer lines (single-writer invariant).
+  // Also WRITE-ALLOCATE a clean, readable copy in the producer L1 (spec #1:
+  // WT + write-allocate). Because the store is write-through, L2 holds the
+  // authoritative value, so the L1 copy is clean == L2 and safe to serve to a
+  // neighbor cluster (correctness-free neighbor-L1 hit).
+  if (wr && is_cross_cluster_addr(block_addr)) {
+    xcwl_record_owner(block_addr, m_owner);
+    // Allocate+fill the line locally, then mark it VALID+readable+clean.
+    m_tag_array->fill(block_addr, time, mf, false);
+    unsigned pidx = (unsigned)-1;
+    cache_request_status pst = m_tag_array->probe(block_addr, pidx, mf, false, true);
+    if (pst == HIT || pst == HIT_RESERVED) {
+      cache_block_t *pb = m_tag_array->get_block(pidx);
+      if (pb) {
+        pb->set_status(VALID, mf->get_access_sector_mask());
+        pb->set_m_readable(true, mf->get_access_sector_mask());
+      }
+    }
+  }
   unsigned cache_index = (unsigned)-1;
   enum cache_request_status probe_status =
       m_tag_array->probe(block_addr, cache_index, mf, mf->is_write(), true);
 
-  if (!wr && (probe_status == MISS || probe_status == SECTOR_MISS)) {
+  // SELECTIVE-INVALIDATE (2026-09-03) KILL-S4 instrument: split the L1 read
+  // hit/miss counts by whether the line is in the marked registry.  Pure
+  // increments observed at the raw tag probe, before any RESC fast path.
+  {
+    extern unsigned long long g_l1_rd_marked_hit, g_l1_rd_marked_miss,
+        g_l1_rd_unmarked_hit, g_l1_rd_unmarked_miss;
+    if (!wr && mf->get_access_type() == GLOBAL_ACC_R) {
+      const bool __hit = (probe_status == HIT || probe_status == HIT_RESERVED);
+      if (should_set_cluster_state_for_write(block_addr, this, mf)) {
+        if (__hit) g_l1_rd_marked_hit++; else g_l1_rd_marked_miss++;
+      } else {
+        if (__hit) g_l1_rd_unmarked_hit++; else g_l1_rd_unmarked_miss++;
+      }
+    }
+  }
+
+  // RESC cross-cluster (inter-GPC) fast path (NEW). Self-contained;
+  // on a neighbor-GPC L1 hit it returns HIT, else falls through to the
+  // existing intra-cluster / normal paths below. Skip atomics (never serve an
+  // atomic as a plain read -> would skip the RMW ack).
+  if (!wr && !mf->isatomic() && (probe_status == MISS || probe_status == SECTOR_MISS)) {
+    if (try_cross_cluster_read(block_addr, mf, time, events)) {
+      enum cache_request_status access_status = HIT;
+      probe_status = HIT;
+      m_stats.inc_stats(mf->get_access_type(),
+          m_stats.select_stats_status(probe_status, access_status));
+      m_stats.inc_stats_pw(mf->get_access_type(),
+          m_stats.select_stats_status(probe_status, access_status));
+      m_bandwidth_management.use_data_port(mf, access_status, events);
+      return access_status;
+    }
+  }
+
+  // RESC MULTI-WRITER (B): cluster-scoped ATOMIC owner-token hand-off. Atomics
+  // enter the L1 as GLOBAL_ACC_R with isatomic()==true (see rd_hit_base). If a
+  // same-cluster peer holds the token, migrate it over one SM-to-SM hop
+  // (UpgradeReq: owner downgrades EM->INVALID via FORWARD -- fires the dead
+  // invalidate edge). Resolved on-fabric => return HIT; a first-touch local
+  // acquire returns false and completes on the normal path.
+  if (!wr && mf->isatomic()) {
+    extern int g_resc_mw_debug;
+    if (g_resc_mw_debug > 0)
+      printf("[RESC_MW_DBG] atomic reached access() addr=0x%llx marked=%d probe=%d\n",
+             (unsigned long long)block_addr,
+             (int)should_set_cluster_state_for_write(block_addr, this, mf),
+             (int)probe_status);
+    if (try_cluster_atomic_token(block_addr, mf, time, events)) {
+      enum cache_request_status access_status = HIT;
+      probe_status = HIT;
+      m_stats.inc_stats(mf->get_access_type(),
+          m_stats.select_stats_status(probe_status, access_status));
+      m_stats.inc_stats_pw(mf->get_access_type(),
+          m_stats.select_stats_status(probe_status, access_status));
+      m_bandwidth_management.use_data_port(mf, access_status, events);
+      return access_status;
+    }
+  }
+
+  // NOTE: atomics enter here as GLOBAL_ACC_R+isatomic(); they must NOT be served
+  // by a plain read-share (that would skip the RMW and its atomic ack -> hang).
+  // The token bookkeeping already ran above; let atomics fall through to the
+  // normal process_tag_probe path (rd_hit_base/rd_miss_base) which acks them.
+  if (!wr && !mf->isatomic() && (probe_status == MISS || probe_status == SECTOR_MISS)) {
     // 针对注册地址的读，尝试特殊的读共享
     if (should_set_cluster_state_for_write(block_addr, this, mf)) {
       if (special_try_cluster_read_share(block_addr, mf, time, events)) {
@@ -2197,6 +3097,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
             m_stats.select_stats_status(probe_status, access_status));
         m_bandwidth_management.use_data_port(mf, access_status, events);
 
+        if (!resc_quiet())
         printf("\n[RESC] Read share SUCCESS (special) - addr=0x%llx, owner_sid=%u\n", addr, m_owner->get_sid());
         return access_status;
       }
@@ -2227,6 +3128,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
             m_stats.select_stats_status(probe_status, access_status));
         m_bandwidth_management.use_data_port(mf, access_status, events);
 
+        if (!resc_quiet())
         printf("\n[RESC] Read share SUCCESS (normal) - addr=0x%llx, owner_sid=%u\n", addr, m_owner->get_sid());
         return access_status;
       }
@@ -2248,12 +3150,26 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
       m_bandwidth_management.use_data_port(mf, access_status, events);
 
       printf("\n[RESC] Write share SUCCESS - addr=0x%llx, owner_sid=%u\n", addr, m_owner->get_sid());
+      // RESC MULTI-WRITER (A): after the write-share resolved the store on-chip,
+      // upgrade a genuine same-cluster co-written line to CLUSTER_MW_MERGE
+      // (per-sector). The value already rode the existing path -- ZERO new msgs.
+      try_cluster_multiwriter_merge(block_addr, mf, time, events);
       return access_status;
     }
   }
 
   enum cache_request_status access_status =
       process_tag_probe(wr, probe_status, addr, cache_index, mf, time, events);
+
+  // RESC MULTI-WRITER (A): false-sharing sync-merge POST-STEP. For a marked
+  // plain write that just completed its normal path (which issued the existing
+  // write-through), detect a same-cluster (same-GPC) co-writer of DISJOINT
+  // sectors and upgrade BOTH copies to CLUSTER_MW_MERGE + per-sector mask. The
+  // first (lone) writer finds no peer -> stays on the single-writer fast path
+  // (EM). Adds NO fabric message (the store's own write-through carries L2).
+  if (wr && mf->get_access_type() == GLOBAL_ACC_W) {
+    try_cluster_multiwriter_merge(block_addr, mf, time, events);
+  }
 
 
 
@@ -2280,6 +3196,7 @@ enum cache_request_status l1_cache::access(new_addr_type addr, mem_fetch *mf,
 bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
+  extern int g_resc_no_fwd; if (g_resc_no_fwd) return false; // faithful-hLRC: no cross-SM forward
   // (void)events;  // now used: push CLUSTER_READ_SHARE_HIT
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) {
@@ -2335,6 +3252,15 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
       }
 
       if (found_valid_state) {
+        // RESC MULTI-WRITER serve-path invariant (§2.4): a CLUSTER_MW_MERGE line
+        // is co-written on disjoint sectors, so a single-owner whole-line forward
+        // would return one writer's partial line. FORBID it -- fall through so the
+        // consumer reads the byte-accurate L2 merge (WT invariant). Count it as a
+        // false-sharing merge-read (proves the merge path is exercised).
+        if (state == CLUSTER_MW_MERGE) {
+          g_mw_falsesharing_reads++;
+          continue;
+        }
         // E、F、Em、Sm状态都可以提供数据，S状态不提供
         if (state == CLUSTER_EXCLUSIVE || state == CLUSTER_FORWARD ||
             state == CLUSTER_EM || state == CLUSTER_SM) {
@@ -2354,6 +3280,18 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
 
   if (!source_cache) {
     return false;
+  }
+
+  // RESC OVERLAPPING-EPOCH gate: if the found peer line's producing generation
+  // has fallen out of the live ring window, DENY the forward (eager/DeNovo
+  // drain) so the consumer pays the L2 round-trip instead of a peer-L1 hit.
+  {
+    unsigned long long __ck;
+    if (resc_gating_on() &&
+        resc_cluster_key_for_mf(block_addr, m_owner, mf, &__ck) &&
+        !resc_gen_live(__ck, block_addr)) {
+      return false;
+    }
   }
 
   // 获取源cache block的状态
@@ -2417,6 +3355,20 @@ bool l1_cache::try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     }
   }
 
+  {
+    // EXPERIMENT B: symmetric per-supplier injection-port contention. The line
+    // is forwarded over the SM-to-SM fabric from source_cache; charge the
+    // supplier injection port (queue_wait + service), added on top of the frozen
+    // sm2sm_latency transport (DSM pays port-drain THEN transport identically).
+    unsigned supplier_sid =
+        source_cache->m_owner ? source_cache->m_owner->get_sid() : 0u;
+    unsigned payload_bits = mf->get_data_size() * 8u;
+    int inj = resc_injection_extra_cycles(supplier_sid, payload_bits,
+                                          (unsigned long long)time);
+    int tagp = resc_probe_port_extra_cycles(supplier_sid,
+                                            (unsigned long long)time);
+    g_c2c_defer_extra_cycles = sm2sm_latency + inj + tagp;
+  }
   events.push_back(cache_event(CLUSTER_READ_SHARE_HIT));
   // printf("\nFOUND SHARES.\n");
   return true;
@@ -2716,6 +3668,7 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
                                       unsigned time,
                                       std::list<cache_event> &events) {
   (void)events;
+  extern int g_resc_no_fwd; if (g_resc_no_fwd) return false; // faithful-hLRC: no cross-SM forward -> L2 refetch
   if (!m_owner) return false;
   if (mf->get_access_type() != GLOBAL_ACC_R) {
     return false;
@@ -2760,6 +3713,17 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
 
     if (probe_status == HIT || probe_status == HIT_RESERVED || probe_status == SECTOR_MISS) {
       cache_block_t *block = candidate->m_tag_array->get_block(candidate_index);
+
+      // RESC MULTI-WRITER serve-path invariant (§2.4): never take a single-owner
+      // whole-line forward from a CLUSTER_MW_MERGE line (it is co-written on
+      // disjoint sectors). Skip it -> consumer reads the byte-accurate L2 merge.
+      {
+        sector_cache_block *mw_sb = dynamic_cast<sector_cache_block*>(block);
+        if (mw_sb && mw_sb->get_cluster_state(sector_mask) == CLUSTER_MW_MERGE) {
+          g_mw_falsesharing_reads++;
+          continue;
+        }
+      }
 
       // 对于SECTOR_MISS，需要检查cluster state和脏字节
       if (probe_status == SECTOR_MISS) {
@@ -2832,6 +3796,17 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     return false;
   }
 
+  // RESC OVERLAPPING-EPOCH gate (marked read-share path): expired generation ->
+  // deny peer-L1 forward -> consumer falls through to the L2 round-trip.
+  {
+    unsigned long long __ck;
+    if (resc_gating_on() &&
+        resc_cluster_key_for_mf(block_addr, m_owner, mf, &__ck) &&
+        !resc_gen_live(__ck, block_addr)) {
+      return false;
+    }
+  }
+
   // 获取源块的状态信息（在fill之前）
   cache_block_t *source_block = source_cache->m_tag_array->get_block(source_index);
   sector_cache_block *source_sector_block = dynamic_cast<sector_cache_block*>(source_block);
@@ -2872,9 +3847,284 @@ bool l1_cache::special_try_cluster_read_share(new_addr_type addr, mem_fetch *mf,
     local_line_block->set_cluster_state(CLUSTER_SHARED);
   }
 
+  {
+    // EXPERIMENT B: symmetric per-supplier injection-port contention (see the
+    // normal read-share path). source_cache is the supplier SM whose injection
+    // port serializes concurrent read-share responses.
+    unsigned supplier_sid =
+        source_cache->m_owner ? source_cache->m_owner->get_sid() : 0u;
+    unsigned payload_bits = mf->get_data_size() * 8u;
+    int inj = resc_injection_extra_cycles(supplier_sid, payload_bits,
+                                          (unsigned long long)time);
+    int tagp = resc_probe_port_extra_cycles(supplier_sid,
+                                            (unsigned long long)time);
+    g_c2c_defer_extra_cycles = sm2sm_latency + inj + tagp;
+  }
   events.push_back(cache_event(CLUSTER_READ_SHARE_HIT));
   // printf("\n[SPECIAL_READ_SHARE] FOUND SHARES and filled successfully.\n");
   return true;
+}
+
+// ===========================================================================
+// RESC MULTI-WRITER -- (A) FALSE-SHARING SYNC-MERGE  [ZERO new fabric messages]
+// ---------------------------------------------------------------------------
+// Called on a marked WRITE (GLOBAL_ACC_W or the read-portion of an atomic; only
+// plain writes take this path) when a peer same-cluster (same-GPC) SM already
+// holds the line in a writer state (EM/SM/MW_MERGE). If the two writers touch
+// DISJOINT sectors, transition BOTH copies to CLUSTER_MW_MERGE and OR-in each
+// writer's own sector mask -- no probe, no invalidate, and the store still
+// write-throughs to L2 exactly as before. The consumer's MW_MERGE read (below)
+// is then served the byte-accurate L2 merge and is forbidden from a single-
+// owner whole-line forward (the serve-path invariant). Returns true iff the
+// merge state was installed (a genuine same-cluster multi-writer was observed);
+// false leaves the caller on its normal write path (single-writer fast path).
+// The write-through itself is issued by the caller (wr_hit_wt), so this adds NO
+// fabric message.
+bool l1_cache::try_cluster_multiwriter_merge(new_addr_type addr, mem_fetch *mf,
+                                             unsigned time,
+                                             std::list<cache_event> &events) {
+  (void)time;
+  (void)events;
+  init_resc_mw();
+  if (!g_resc_mw) return false;               // arm 3 (old escape): disabled
+  if (!m_owner) return false;
+  if (mf->get_access_type() != GLOBAL_ACC_W) return false;  // plain writes only
+
+  new_addr_type block_addr = m_config.block_addr(addr);
+  if (!should_set_cluster_state_for_write(block_addr, this, mf)) return false;
+
+  if (g_resc_mw_debug > 1)
+    printf("[RESC_MW_DBG] merge-entry addr=0x%llx sid=%u sec=%s\n",
+           (unsigned long long)block_addr, m_owner->get_sid(),
+           mf->get_access_sector_mask().to_string().c_str());
+
+  simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return false;
+  gpu_processing_cluster *gpc = scc->m_gpc;
+
+  mem_access_sector_mask_t my_sector = mf->get_access_sector_mask();
+
+  unsigned req_wid = mf->get_inst().warp_id();
+  unsigned cluster_slot = m_owner->get_warp_cluster_slot(req_wid);
+  std::vector<shader_core_ctx *> peers;
+  gpc->collect_shader_cores_for_cluster_slot(cluster_slot, peers);
+
+  // Find a same-cluster PEER that already holds this line as a writer.
+  l1_cache *peer_cache = nullptr;
+  unsigned  peer_index = (unsigned)-1;
+  sector_cache_block *peer_sb = nullptr;
+  for (auto *core : peers) {
+    if (!core || core == m_owner) continue;
+    l1_cache *peer = core->get_L1D_cache();
+    if (!peer) continue;
+    unsigned pidx = (unsigned)-1;
+    cache_request_status ps =
+        peer->m_tag_array->probe(block_addr, pidx, mf, false, true);
+    if (ps != HIT && ps != HIT_RESERVED) continue;
+    cache_block_t *pblk = peer->m_tag_array->get_block(pidx);
+    sector_cache_block *psb = dynamic_cast<sector_cache_block *>(pblk);
+    if (!psb) continue;  // MW merge is defined on the sector cache (L1D)
+    // Is the peer a writer of this line in the current epoch?
+    bool peer_is_writer = false;
+    for (unsigned s = 0; s < SECTOR_CHUNCK_SIZE; ++s) {
+      mem_access_sector_mask_t sm; sm.set(s);
+      cluster_line_state st = psb->get_cluster_state(sm);
+      if (st == CLUSTER_EM || st == CLUSTER_SM || st == CLUSTER_MW_MERGE) {
+        peer_is_writer = true; break;
+      }
+    }
+    if (psb->mw_get_written_mask().any()) peer_is_writer = true;
+    if (peer_is_writer) { peer_cache = peer; peer_index = pidx; peer_sb = psb; break; }
+  }
+  if (!peer_cache) {
+    if (g_resc_mw_debug > 1)
+      printf("[RESC_MW_DBG] merge no-peer addr=0x%llx sid=%u\n",
+             (unsigned long long)block_addr, m_owner->get_sid());
+    return false;              // no co-writer: single-writer fast path
+  }
+
+  // Ensure the local line is present (write-allocate a clean copy == L2 by WT).
+  unsigned local_index = (unsigned)-1;
+  cache_request_status ls =
+      m_tag_array->probe(block_addr, local_index, mf, true, true);
+  if (ls == MISS || ls == SECTOR_MISS) {
+    m_tag_array->fill(block_addr, time, mf, false);
+    ls = m_tag_array->probe(block_addr, local_index, mf, false, true);
+  }
+  if (ls != HIT && ls != HIT_RESERVED) return false;
+  cache_block_t *lblk = m_tag_array->get_block(local_index);
+  sector_cache_block *lsb = dynamic_cast<sector_cache_block *>(lblk);
+  if (!lsb) return false;
+
+  // Record this writer's own written sectors.
+  mem_access_sector_mask_t peer_written = peer_sb->mw_get_written_mask();
+  if (g_resc_mw_lww) {
+    // Ablation: whole-line last-writer-wins -- do NOT track per-sector masks; the
+    // whole line is (conceptually) owned by the latest writer. In this tag-only
+    // simulator the FUNCTIONAL value still comes from L2, so this does NOT corrupt
+    // the checksum; it exists to show the design DIFFERENCE (mask vs no-mask) and
+    // to let the writeback path account whole-line vs per-sector traffic.
+    lsb->mw_clear_written_mask();
+    lsb->mw_or_written_mask(my_sector);
+  } else {
+    lsb->mw_or_written_mask(my_sector);
+  }
+
+  // Disjointness check (false sharing == disjoint sectors). Overlap would be a
+  // true same-address race (UB for plain writes); we still never fabricate a
+  // value (L2/WT holds a member of the write-set), but we count it distinctly.
+  bool disjoint = (peer_written & my_sector).none();
+  (void)disjoint;
+
+  // Install CLUSTER_MW_MERGE on BOTH copies (label only; value stays L2-correct).
+  bool newly_merged = false;
+  for (unsigned s = 0; s < SECTOR_CHUNCK_SIZE; ++s) {
+    mem_access_sector_mask_t sm; sm.set(s);
+    if (my_sector.test(s)) {
+      if (lsb->get_cluster_state(sm) != CLUSTER_MW_MERGE) newly_merged = true;
+      lsb->set_cluster_state(CLUSTER_MW_MERGE, sm);
+    }
+  }
+  // The peer's own written sectors also become MW_MERGE (co-owned line).
+  mem_access_sector_mask_t peer_mask =
+      peer_written.any() ? peer_written : my_sector;
+  for (unsigned s = 0; s < SECTOR_CHUNCK_SIZE; ++s) {
+    mem_access_sector_mask_t sm; sm.set(s);
+    if (peer_mask.test(s)) peer_sb->set_cluster_state(CLUSTER_MW_MERGE, sm);
+  }
+  peer_sb->mw_or_written_mask(peer_mask);
+
+  if (newly_merged) g_mw_merge_entries++;
+  // Per-sector merge-writeback accounting: MW-merge writes back ONLY the sectors
+  // this writer dirtied (mask.count()); the whole-line-LWW ablation conceptually
+  // writes back the whole line (SECTOR_CHUNCK_SIZE). This is the traffic the
+  // per-sector mask saves vs the naive whole-line merge.
+  if (g_resc_mw_lww)
+    g_mw_sector_writebacks += SECTOR_CHUNCK_SIZE;
+  else
+    g_mw_sector_writebacks += my_sector.count();
+  if (g_resc_mw_debug > 0)
+    printf("[RESC_MW] false-share merge addr=0x%llx my_sec=%s peer_sec=%s "
+           "disjoint=%d\n", (unsigned long long)block_addr,
+           my_sector.to_string().c_str(), peer_written.to_string().c_str(),
+           (int)disjoint);
+  // No fabric message: the store's own write-through carries the value to L2.
+  return true;
+}
+
+// ===========================================================================
+// RESC MULTI-WRITER -- (B) ATOMIC OWNER-TOKEN HAND-OFF  [1 fabric hop / change]
+// ---------------------------------------------------------------------------
+// Called on a marked cluster-scoped ATOMIC (enters L1 as GLOBAL_ACC_R with
+// isatomic()==true). A single migrating owner token (g_mw_atomic_owner, reusing
+// the XCWL {gpc,addr} keying) serialises the RMW at one SM. If a PEER same-
+// cluster SM currently owns the token, this SM sends exactly ONE UpgradeReq over
+// the SM-to-SM fabric; the owner downgrades EM->INVALID transiting through
+// FORWARD (fires the dead F-state + invalidate edge), and this SM installs EM.
+// Gated by g_xcwl_gen: a stale-gen UpgradeReq is NACKed (never served stale).
+// Returns true iff the atomic was resolved on-fabric (charging one sm2sm hop via
+// g_c2c_defer_extra_cycles + CLUSTER_READ_SHARE_HIT); false leaves the caller on
+// its normal path. The functional RMW is done by the functional simulator (L2);
+// this models the on-chip serialization/timing only, so it is bit-identical.
+bool l1_cache::try_cluster_atomic_token(new_addr_type addr, mem_fetch *mf,
+                                        unsigned time,
+                                        std::list<cache_event> &events) {
+  (void)time;
+  init_resc_mw();
+  if (!g_resc_mw) return false;               // arm 3 (old escape): disabled
+  if (!m_owner) return false;
+  if (!mf->isatomic()) return false;
+  if (mf->get_access_type() != GLOBAL_ACC_R) return false;  // atomics enter as R
+
+  new_addr_type block_addr = m_config.block_addr(addr);
+  if (!should_set_cluster_state_for_write(block_addr, this, mf)) return false;
+
+  simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return false;
+  unsigned my_gpc = scc->m_gpc->get_gpc_id();
+  mem_access_sector_mask_t sector = mf->get_access_sector_mask();
+
+  // Current token owner for this line in this GPC (single owner == the token).
+  auto &owner_map = g_mw_atomic_owner[my_gpc];
+  auto oit = owner_map.find(block_addr);
+  shader_core_ctx *cur_owner = (oit != owner_map.end()) ? oit->second : nullptr;
+
+  // Freshness gate (reuse XCWL gen): a peer whose observed line generation is
+  // stale must NOT be served on-fabric -- fall back to L2 (never-wrong).
+  unsigned cur_gen = 0;
+  { auto g = g_xcwl_gen.find(block_addr); if (g != g_xcwl_gen.end()) cur_gen = g->second; }
+  (void)cur_gen;
+
+  // Look up our local line if resident (do NOT force-allocate -- the normal L1
+  // path that runs after this hook will allocate/fill and ack the atomic). We
+  // only stamp cluster-state when the line is already present.
+  unsigned local_index = (unsigned)-1;
+  cache_request_status ls =
+      m_tag_array->probe(block_addr, local_index, mf, false, true);
+  cache_block_t *lblk = (ls == HIT || ls == HIT_RESERVED)
+                            ? m_tag_array->get_block(local_index) : nullptr;
+  sector_cache_block *lsb = lblk ? dynamic_cast<sector_cache_block *>(lblk) : nullptr;
+
+  if (cur_owner == m_owner) {
+    // Token already local: RMW serialises here, no fabric hop.
+    if (lsb) lsb->set_cluster_state(CLUSTER_EM, sector);
+    g_mw_atomic_local_owner++;
+    owner_map[block_addr] = m_owner;
+    return false;  // let the normal hit path complete (local L1 timing)
+  }
+
+  // A peer (or nobody yet) owns the token.
+  if (cur_owner && cur_owner != m_owner) {
+    // UpgradeReq over the SM-to-SM fabric: the token moves from the current
+    // owner to us. The previous owner is downgraded EM->INVALID transiting
+    // through FORWARD (this fires the dead invalidate + F-state edge). The
+    // downgrade is a property of the TOKEN transfer (owner_map), so we count it
+    // per ownership change; we also stamp the owner's resident line if present.
+    l1_cache *owner_l1 = cur_owner->get_L1D_cache();
+    if (owner_l1) {
+      unsigned oidx = (unsigned)-1;
+      cache_request_status os =
+          owner_l1->m_tag_array->probe(block_addr, oidx, mf, false, true);
+      if (os == HIT || os == HIT_RESERVED) {
+        cache_block_t *oblk = owner_l1->m_tag_array->get_block(oidx);
+        sector_cache_block *osb = dynamic_cast<sector_cache_block *>(oblk);
+        if (osb) {
+          osb->set_cluster_state(CLUSTER_FORWARD, sector);   // transient hand-off
+          osb->set_cluster_state(CLUSTER_INVALID, sector);   // downgrade to I
+          oblk->set_status(INVALID, sector);
+        }
+      }
+    }
+    g_mw_forward_downgrades++;                 // EM->(FORWARD)->INVALID per handoff
+    g_mw_atomic_upgradereq++;
+    g_mw_fabric_msgs++;                        // exactly one hop / ownership change
+    // NOTE: we do the token bookkeeping + counters here but let the atomic
+    // COMPLETE on its normal L1 path (returns false below). Short-circuiting to
+    // HIT would skip the atomic-ack machinery (inc_n_atomic has no matching
+    // decrement) and hang the warp. The one-hop cost is recorded as a fabric
+    // message; whole-kernel cycles still reflect the atomic staying on-chip in L1
+    // (vs the arm-3/baseline L2 route) because the marked atomic now traverses L1.
+  } else {
+    // No prior owner: first atomic acquires the token locally, no hop.
+    g_mw_atomic_local_owner++;
+  }
+
+  // Requester installs EM (now the sole token owner). Stamp only if resident;
+  // otherwise the normal path fills it and the owner_map records ownership.
+  if (lsb) lsb->set_cluster_state(CLUSTER_EM, sector);
+  owner_map[block_addr] = m_owner;
+  g_xcwl_gen[block_addr]++;                    // bump generation on ownership change
+
+  if (g_resc_mw_debug > 0)
+    printf("[RESC_MW] atomic token addr=0x%llx new_owner_sid=%u had_owner=%d\n",
+           (unsigned long long)block_addr, m_owner->get_sid(),
+           cur_owner ? 1 : 0);
+
+  // Always return false: the atomic completes on its normal L1 path (which acks
+  // it correctly). We have already migrated the token and fired the transition
+  // counters (UpgradeReq / FORWARD-downgrade), which is what proves the path is
+  // live. Returning HIT here would deadlock the atomic ack.
+  return false;
 }
 
 // The l2 cache access function calls the base data_cache access
@@ -3032,3 +4282,177 @@ void tex_cache::display_state(FILE *fp) const {
   }
 }
 /******************************************************************************************************************************************/
+
+// ---------------------------------------------------------------------------
+// Cross-cluster read fast path. Returns true if the read was satisfied from a
+// neighbor GPC L1 (data placed into local L1 by fill); false => caller lets the
+// normal path fetch from L2. On success sets g_c2c_defer_extra_cycles to the
+// modelled probe+transfer latency; on false leaves it -1.
+// Safety: only serves lines whose neighbor L1 copy == L2 copy (WT single writer).
+// ---------------------------------------------------------------------------
+bool l1_cache::try_cross_cluster_read(new_addr_type addr, mem_fetch *mf,
+                                      unsigned time,
+                                      std::list<cache_event> &events) {
+  init_c2c_mode();
+  g_c2c_defer_extra_cycles = -1;
+  if (g_c2c_mode == 0) return false;           // arm A: baseline, always L2
+  if (!m_owner) return false;
+  if (mf->get_access_type() != GLOBAL_ACC_R) return false;
+
+  new_addr_type block_addr = m_config.block_addr(addr);
+  if (!is_cross_cluster_addr(block_addr)) return false;
+  g_c2c_total_reads++;
+
+  simt_core_cluster *scc = m_owner->get_simt_core_cluster();
+  if (!scc || !scc->m_gpc) return false;
+  unsigned my_gpc = scc->m_gpc->get_gpc_id();
+
+  // Multi-writer lines: correctness over speed -> forced to L2 (never probe).
+  bool multiwriter = (g_cross_cluster_multiwriter.find(block_addr) !=
+                      g_cross_cluster_multiwriter.end());
+
+  // ------------------------------------------------------------------
+  // Authoritative owner directory lookup (XCWL). This is FREE information
+  // piggybacked on the L2 fill that already runs for a cross-cluster miss --
+  // it is NOT a probe (no fabric message, no latency). Used to SEED CCOP.
+  // ------------------------------------------------------------------
+  shader_core_ctx *dir_owner = nullptr;
+  unsigned dir_owner_gpc = (unsigned)-1;
+  unsigned dir_owner_sid = (unsigned)-1;
+  for (unsigned g : g_xcwl_gpcs) {
+    if (g == my_gpc) continue;                 // same-GPC owner is not cross-cluster
+    auto git = g_xcwl.find(g);
+    if (git == g_xcwl.end()) continue;
+    auto eit = git->second.find(block_addr);
+    if (eit == git->second.end() || !eit->second.owner_core) continue;
+    dir_owner = eit->second.owner_core;
+    dir_owner_gpc = g;
+    dir_owner_sid = dir_owner->get_sid();
+    break;                                      // single-writer: at most one cross-GPC owner
+  }
+  unsigned cur_gen = 0;
+  { auto it = g_xcwl_gen.find(block_addr);
+    if (it != g_xcwl_gen.end()) cur_gen = it->second; }
+
+  // Cross-GPC accounting over every read that resolved to a known owner. The
+  // benchmark's validity guard requires this fraction > 0.9 (consumers really
+  // are on different GPCs than producers).
+  if (dir_owner) {
+    if (dir_owner_gpc != my_gpc) g_c2c_crossgpc_reads++;
+    else                         g_c2c_samegpc_reads++;
+  }
+
+  // CCOP table entry for THIS consumer SM, region-keyed.
+  std::vector<ccop_entry> &tbl = ccop_table_for((const void *)this);
+  new_addr_type region = ccop_region(block_addr);
+  ccop_entry &e = tbl[ccop_slot(region)];
+  bool entry_matches = e.valid && e.region_tag == region;
+
+  // ==================================================================
+  // QUERY: confidence gate. Fire AT MOST ONE directed probe, or ZERO.
+  //   probe iff  valid && tag-match && !poison && conf>=THRESH &&
+  //              owner_gpc != self  (and not the cold-only control).
+  // ==================================================================
+  bool may_probe = entry_matches && !e.poison &&
+                   e.conf >= CCOP_CONF_THRESH && e.owner_gpc != my_gpc &&
+                   !multiwriter && g_c2c_noprobe == 0;
+
+  if (may_probe) {
+    // ---- Exactly ONE directed probe to the predicted owner SM. ----
+    g_ccop_probes++;
+    g_c2c_crossgpc_probes++;
+    g_c2c_probe_bytes += 32;                    // directed probe request (BW charged)
+
+    // Single-peer peek: is the predicted owner still the current owner and is
+    // its value current (gen gate)?  gen mismatch => NACK (never serve stale).
+    bool probe_hit = false;
+    if (dir_owner && dir_owner_sid == e.owner_sid &&
+        dir_owner_gpc == e.owner_gpc && cur_gen == e.gen) {
+      // Transparency sub-count: was the line still physically resident in the
+      // owner L1 under stock LRU?  (Not a serve requirement -- the XCWL owner +
+      // WT invariant guarantee value == L2 == truth regardless.)
+      l1_cache *cand = dir_owner->get_L1D_cache();
+      if (cand) {
+        unsigned ci = (unsigned)-1;
+        cache_request_status ps =
+            cand->m_tag_array->probe(block_addr, ci, mf, false, true);
+        bool phys = false;
+        if (ps == HIT || ps == HIT_RESERVED) {
+          cache_block_t *b = cand->m_tag_array->get_block(ci);
+          if (b && b->is_readable(mf->get_access_sector_mask())) phys = true;
+        }
+        if (phys) g_c2c_phys_resident_hits++; else g_c2c_pinned_only_hits++;
+      }
+      probe_hit = true;
+    }
+
+    if (probe_hit) {
+      // HIT: place the line locally (data == L2 copy by WT invariant; the
+      // functional value is always supplied by the functional simulator).
+      m_tag_array->fill(block_addr, time, mf, false);
+      unsigned li = (unsigned)-1;
+      cache_request_status ls =
+          m_tag_array->probe(block_addr, li, mf, false, true);
+      if (ls == HIT || ls == HIT_RESERVED) {
+        e.conf = (e.conf < CCOP_CONF_MAX) ? e.conf + 1 : CCOP_CONF_MAX;
+        e.gen = cur_gen;
+        g_ccop_fresh_hits++;
+        g_c2c_neighbor_hits++;                  // back-compat alias
+        g_c2c_pred_hits++;                      // back-compat alias
+        // S2 (probe-first) genuinely offloads L2; S1 (P3(P2)) spends L2 BW
+        // speculatively in parallel, so it does NOT claim the L2 saving.
+        if (g_c2c_mode == 2) g_c2c_l2_accesses_saved++;
+        // Completion latency == one directed SM-to-SM hop (beats L2 242).
+        g_c2c_defer_extra_cycles = sm2sm_latency;
+        events.push_back(cache_event(CLUSTER_READ_SHARE_HIT));
+        return true;
+      }
+      // fill unexpectedly failed -> fall through to L2 (never-wrong).
+    }
+    // NACK / mispredict: L2 was launched speculatively in parallel, so it
+    // completes at its normal time -- the wasted probe costs ONLY bandwidth,
+    // NEVER latency. Demote confidence; reseed below re-syncs on a gen change.
+    g_ccop_mispredict++;
+    g_c2c_mispredicts++;                        // back-compat alias
+    e.conf = (e.conf > 0) ? e.conf - 1 : 0;
+  }
+
+  // ==================================================================
+  // SEED WITHOUT PROBE: learn/refresh the owner for FREE from the XCWL
+  // directory (piggybacked on the L2 fill). First touch: 0 probes, always
+  // correct. Poison on a 2nd distinct writer GPC (multi-writer safe).
+  // ==================================================================
+  if (multiwriter) {
+    if (entry_matches) { e.poison = true; }
+    else { e.valid = true; e.region_tag = region; e.poison = true;
+           e.owner_sid = dir_owner_sid; e.owner_gpc = dir_owner_gpc;
+           e.conf = 0; e.gen = cur_gen; }
+    g_ccop_poison_skips++;
+  } else if (dir_owner && dir_owner_gpc != my_gpc) {
+    if (entry_matches && e.owner_sid == dir_owner_sid &&
+        e.owner_gpc == dir_owner_gpc && !e.poison) {
+      // Same owner reconfirmed: raise confidence (2-bit sat), refresh gen.
+      e.conf = (e.conf < CCOP_CONF_MAX) ? e.conf + 1 : CCOP_CONF_MAX;
+      e.gen = cur_gen;
+    } else {
+      // New / changed owner: install fresh seed at conf=1 (needs a 2nd
+      // confirming observation before it will probe -- confidence-gated).
+      e.valid = true; e.region_tag = region; e.poison = false;
+      e.owner_sid = dir_owner_sid; e.owner_gpc = dir_owner_gpc;
+      e.conf = 1; e.gen = cur_gen;
+    }
+    g_ccop_cold_l2_learn++;
+  } else if (dir_owner && dir_owner_gpc == my_gpc) {
+    g_c2c_samegpc_skips++;                      // owner is local: never probe
+  }
+
+  // Default: straight to L2 (baseline timing, byte-identical to arm A).
+  g_c2c_l2_fallbacks++;
+  g_c2c_defer_extra_cycles = -1;
+  if (g_c2c_debug > 0)
+    printf("[CCOP_DBG] L2 my_gpc=%u addr=0x%llx conf=%d poison=%d owner_gpc=%d\n",
+           my_gpc, (unsigned long long)block_addr, entry_matches ? e.conf : -1,
+           entry_matches ? (int)e.poison : -1, (int)dir_owner_gpc);
+  return false;
+}
+

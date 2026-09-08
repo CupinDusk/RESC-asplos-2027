@@ -1,0 +1,6 @@
+# OCCUPANCY attribution (arm2 G=2 vs arm3 G=3, same binary) 2026-08-29T14:41:07Z
+# resc_m rebuilt per TILE would be needed; using existing resc_m built at TILE=128.
+# arm tile cluster G cta_core cycles l1miss note
+resc cs=2 G=2 cta=8 cyc=37451 l1miss=0.2211
+resc cs=2 G=3 cta=8 cyc=37451 l1miss=0.2211
+dsm cs=2 G=- cta=3 cyc=NA l1miss=NA

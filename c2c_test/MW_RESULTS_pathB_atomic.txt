@@ -1,0 +1,184 @@
+=== ARM1 CORRECT-GLOBAL (no RESC) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GPd284bfc57fe6ef2212a2c4949bb0e6bf  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base
+Extracting PTX file and ptxas options    1: mw_reduce_atomic_base.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic_base
+Extracting specific PTX file named mw_reduce_atomic_base.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_reduce_atomic_base.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_reduce_atomic_base.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_reduce_atomic_base.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x070 (mw_reduce_atomic_base.1.sm_90.ptx:42) @%p1 bra $L__BB0_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x290 (mw_reduce_atomic_base.1.sm_90.ptx:137) setp.ne.s32 %p11, %r2, 0;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0a0 (mw_reduce_atomic_base.1.sm_90.ptx:49) @%p2 bra $L__BB0_12;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x200 (mw_reduce_atomic_base.1.sm_90.ptx:110) setp.eq.s32 %p8, %r45, 0;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e0 (mw_reduce_atomic_base.1.sm_90.ptx:60) @%p3 bra $L__BB0_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x110 (mw_reduce_atomic_base.1.sm_90.ptx:69) barrier.cluster.arrive;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x120 (mw_reduce_atomic_base.1.sm_90.ptx:71) @%p3 bra $L__BB0_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x148 (mw_reduce_atomic_base.1.sm_90.ptx:79) barrier.cluster.arrive;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x158 (mw_reduce_atomic_base.1.sm_90.ptx:81) @%p3 bra $L__BB0_9;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x188 (mw_reduce_atomic_base.1.sm_90.ptx:90) barrier.cluster.arrive;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x198 (mw_reduce_atomic_base.1.sm_90.ptx:92) @%p3 bra $L__BB0_11;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x1c8 (mw_reduce_atomic_base.1.sm_90.ptx:101) barrier.cluster.arrive;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x1f8 (mw_reduce_atomic_base.1.sm_90.ptx:107) @%p7 bra $L__BB0_3;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x200 (mw_reduce_atomic_base.1.sm_90.ptx:110) setp.eq.s32 %p8, %r45, 0;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x208 (mw_reduce_atomic_base.1.sm_90.ptx:111) @%p8 bra $L__BB0_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x290 (mw_reduce_atomic_base.1.sm_90.ptx:137) setp.ne.s32 %p11, %r2, 0;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x238 (mw_reduce_atomic_base.1.sm_90.ptx:121) @%p9 bra $L__BB0_16;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x260 (mw_reduce_atomic_base.1.sm_90.ptx:129) barrier.cluster.arrive;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x288 (mw_reduce_atomic_base.1.sm_90.ptx:134) @%p10 bra $L__BB0_14;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x290 (mw_reduce_atomic_base.1.sm_90.ptx:137) setp.ne.s32 %p11, %r2, 0;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x298 (mw_reduce_atomic_base.1.sm_90.ptx:138) @%p11 bra $L__BB0_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x2a8 (mw_reduce_atomic_base.1.sm_90.ptx:143) ret;
+gpu_tot_sim_cycle = 7049
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=0 cluster=8 num_clusters=8 rounds=1 OUT_CHECKSUM=33216 REF_CHECKSUM=33216 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM2 RESC-MULTI-WRITER (RESC_MW=1) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GP3f9d24aba11a57fbb0bf0381202bb0cb  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting PTX file and ptxas options    1: mw_reduce_atomic.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting specific PTX file named mw_reduce_atomic.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x060 (mw_reduce_atomic.1.sm_90.ptx:51) @%p3 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_reduce_atomic.1.sm_90.ptx:62) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_reduce_atomic.1.sm_90.ptx:70) @%p5 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_reduce_atomic.1.sm_90.ptx:141) @%p10 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_reduce_atomic.1.sm_90.ptx:145) @%p11 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_reduce_atomic.1.sm_90.ptx:168) @%p13 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2b0 (mw_reduce_atomic.1.sm_90.ptx:178) @%p14 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x2e0 (mw_reduce_atomic.1.sm_90.ptx:185) @%p15 bra $L__BB1_20;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x320 (mw_reduce_atomic.1.sm_90.ptx:196) @%p16 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x350 (mw_reduce_atomic.1.sm_90.ptx:205) barrier.cluster.arrive;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x360 (mw_reduce_atomic.1.sm_90.ptx:207) @%p16 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x388 (mw_reduce_atomic.1.sm_90.ptx:215) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x398 (mw_reduce_atomic.1.sm_90.ptx:217) @%p16 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3c8 (mw_reduce_atomic.1.sm_90.ptx:226) barrier.cluster.arrive;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x3d8 (mw_reduce_atomic.1.sm_90.ptx:228) @%p16 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x408 (mw_reduce_atomic.1.sm_90.ptx:237) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x438 (mw_reduce_atomic.1.sm_90.ptx:243) @%p20 bra $L__BB1_11;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x448 (mw_reduce_atomic.1.sm_90.ptx:247) @%p21 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x478 (mw_reduce_atomic.1.sm_90.ptx:257) @%p22 bra $L__BB1_24;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a0 (mw_reduce_atomic.1.sm_90.ptx:265) barrier.cluster.arrive;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x4c8 (mw_reduce_atomic.1.sm_90.ptx:270) @%p23 bra $L__BB1_22;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x4d8 (mw_reduce_atomic.1.sm_90.ptx:274) @%p24 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4e8 (mw_reduce_atomic.1.sm_90.ptx:279) ret;
+gpu_tot_sim_cycle = 7102
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=56 forward_downgrades=56 atomic_local_owner=8 atomic_nack=0 new_fabric_msgs=56
+MW_REDUCE FORM=0 cluster=8 num_clusters=8 rounds=1 OUT_CHECKSUM=33216 REF_CHECKSUM=33216 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM3 RESC-OLD-ESCAPE (RESC_MW=0) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GP3f9d24aba11a57fbb0bf0381202bb0cb  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting PTX file and ptxas options    1: mw_reduce_atomic.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting specific PTX file named mw_reduce_atomic.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x060 (mw_reduce_atomic.1.sm_90.ptx:51) @%p3 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_reduce_atomic.1.sm_90.ptx:62) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_reduce_atomic.1.sm_90.ptx:70) @%p5 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_reduce_atomic.1.sm_90.ptx:141) @%p10 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_reduce_atomic.1.sm_90.ptx:145) @%p11 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_reduce_atomic.1.sm_90.ptx:168) @%p13 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2b0 (mw_reduce_atomic.1.sm_90.ptx:178) @%p14 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x2e0 (mw_reduce_atomic.1.sm_90.ptx:185) @%p15 bra $L__BB1_20;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x320 (mw_reduce_atomic.1.sm_90.ptx:196) @%p16 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x350 (mw_reduce_atomic.1.sm_90.ptx:205) barrier.cluster.arrive;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x360 (mw_reduce_atomic.1.sm_90.ptx:207) @%p16 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x388 (mw_reduce_atomic.1.sm_90.ptx:215) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x398 (mw_reduce_atomic.1.sm_90.ptx:217) @%p16 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3c8 (mw_reduce_atomic.1.sm_90.ptx:226) barrier.cluster.arrive;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x3d8 (mw_reduce_atomic.1.sm_90.ptx:228) @%p16 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x408 (mw_reduce_atomic.1.sm_90.ptx:237) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x438 (mw_reduce_atomic.1.sm_90.ptx:243) @%p20 bra $L__BB1_11;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x448 (mw_reduce_atomic.1.sm_90.ptx:247) @%p21 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x478 (mw_reduce_atomic.1.sm_90.ptx:257) @%p22 bra $L__BB1_24;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a0 (mw_reduce_atomic.1.sm_90.ptx:265) barrier.cluster.arrive;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x4c8 (mw_reduce_atomic.1.sm_90.ptx:270) @%p23 bra $L__BB1_22;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x4d8 (mw_reduce_atomic.1.sm_90.ptx:274) @%p24 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4e8 (mw_reduce_atomic.1.sm_90.ptx:279) ret;
+gpu_tot_sim_cycle = 7061
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=0 cluster=8 num_clusters=8 rounds=1 OUT_CHECKSUM=33216 REF_CHECKSUM=33216 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM4 RESC-WHOLE-LINE-LWW (RESC_MW=1 LWW=1) ===
+-gpgpu_runtime_pending_launch_count_limit                 2048 # GP3f9d24aba11a57fbb0bf0381202bb0cb  /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting PTX file and ptxas options    1: mw_reduce_atomic.1.sm_90.ptx -arch=sm_90 
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Running md5sum using "md5sum /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic "
+self exe links to: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/mw_reduce_atomic
+Extracting specific PTX file named mw_reduce_atomic.1.sm_90.ptx 
+GPGPU-Sim PTX: Parsing mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: finished parsing EMBEDDED .ptx file mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX: Loading PTXInfo from mw_reduce_atomic.1.sm_90.ptx
+GPGPU-Sim PTX:  1 (potential) branch divergence @  PC=0x060 (mw_reduce_atomic.1.sm_90.ptx:51) @%p3 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  2 (potential) branch divergence @  PC=0x0b0 (mw_reduce_atomic.1.sm_90.ptx:62) @%p4 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  3 (potential) branch divergence @  PC=0x0e8 (mw_reduce_atomic.1.sm_90.ptx:70) @%p5 bra $L__BB1_5;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  4 (potential) branch divergence @  PC=0x208 (mw_reduce_atomic.1.sm_90.ptx:141) @%p10 bra $L__BB1_4;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x210 (mw_reduce_atomic.1.sm_90.ptx:144) setp.eq.s32 %p11, %r77, 0;
+GPGPU-Sim PTX:  5 (potential) branch divergence @  PC=0x218 (mw_reduce_atomic.1.sm_90.ptx:145) @%p11 bra $L__BB1_8;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  6 (potential) branch divergence @  PC=0x270 (mw_reduce_atomic.1.sm_90.ptx:168) @%p13 bra $L__BB1_7;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x278 (mw_reduce_atomic.1.sm_90.ptx:171) cvta.to.global.u64 %rd36, %rd19;
+GPGPU-Sim PTX:  7 (potential) branch divergence @  PC=0x2b0 (mw_reduce_atomic.1.sm_90.ptx:178) @%p14 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX:  8 (potential) branch divergence @  PC=0x2e0 (mw_reduce_atomic.1.sm_90.ptx:185) @%p15 bra $L__BB1_20;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX:  9 (potential) branch divergence @  PC=0x320 (mw_reduce_atomic.1.sm_90.ptx:196) @%p16 bra $L__BB1_13;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x350 (mw_reduce_atomic.1.sm_90.ptx:205) barrier.cluster.arrive;
+GPGPU-Sim PTX: 10 (potential) branch divergence @  PC=0x360 (mw_reduce_atomic.1.sm_90.ptx:207) @%p16 bra $L__BB1_15;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x388 (mw_reduce_atomic.1.sm_90.ptx:215) barrier.cluster.arrive;
+GPGPU-Sim PTX: 11 (potential) branch divergence @  PC=0x398 (mw_reduce_atomic.1.sm_90.ptx:217) @%p16 bra $L__BB1_17;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x3c8 (mw_reduce_atomic.1.sm_90.ptx:226) barrier.cluster.arrive;
+GPGPU-Sim PTX: 12 (potential) branch divergence @  PC=0x3d8 (mw_reduce_atomic.1.sm_90.ptx:228) @%p16 bra $L__BB1_19;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x408 (mw_reduce_atomic.1.sm_90.ptx:237) barrier.cluster.arrive;
+GPGPU-Sim PTX: 13 (potential) branch divergence @  PC=0x438 (mw_reduce_atomic.1.sm_90.ptx:243) @%p20 bra $L__BB1_11;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x440 (mw_reduce_atomic.1.sm_90.ptx:246) setp.eq.s32 %p21, %r82, 0;
+GPGPU-Sim PTX: 14 (potential) branch divergence @  PC=0x448 (mw_reduce_atomic.1.sm_90.ptx:247) @%p21 bra $L__BB1_25;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 15 (potential) branch divergence @  PC=0x478 (mw_reduce_atomic.1.sm_90.ptx:257) @%p22 bra $L__BB1_24;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4a0 (mw_reduce_atomic.1.sm_90.ptx:265) barrier.cluster.arrive;
+GPGPU-Sim PTX: 16 (potential) branch divergence @  PC=0x4c8 (mw_reduce_atomic.1.sm_90.ptx:270) @%p23 bra $L__BB1_22;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4d0 (mw_reduce_atomic.1.sm_90.ptx:273) setp.ne.s32 %p24, %r3, 0;
+GPGPU-Sim PTX: 17 (potential) branch divergence @  PC=0x4d8 (mw_reduce_atomic.1.sm_90.ptx:274) @%p24 bra $L__BB1_27;
+GPGPU-Sim PTX:    immediate post dominator      @  PC=0x4e8 (mw_reduce_atomic.1.sm_90.ptx:279) ret;
+gpu_tot_sim_cycle = 7102
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=56 forward_downgrades=56 atomic_local_owner=8 atomic_nack=0 new_fabric_msgs=56
+MW_REDUCE FORM=0 cluster=8 num_clusters=8 rounds=1 OUT_CHECKSUM=33216 REF_CHECKSUM=33216 BITIDENTICAL=1 mismatches=0 first_mis=-1

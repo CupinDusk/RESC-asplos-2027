@@ -60,9 +60,24 @@ class ptx_recognizer;
 #include "cuda_device_runtime.h"
 
 // 声明注册函数（在gpu-cache.cc中定义）
+// SELECTIVE-INVALIDATE (2026-09-03): RESC_QUIET=1 silences the per-registration
+// [CLUSTER_STATE] trace (15 printf per marked line; multi-MB per run, and the
+// direct cause of the timeouts in the previous experiment).  Output only.
+static int g_resc_q_ins = -1;
+static void resc_qprintf(const char *fmt, ...) {
+  if (g_resc_q_ins < 0) {
+    const char *q = getenv("RESC_QUIET");
+    g_resc_q_ins = (q && atoi(q)) ? 1 : 0;
+  }
+  if (g_resc_q_ins) return;
+  va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap);
+}
+
 extern "C" void gpgpusim_register_cluster_coherent_addr(new_addr_type addr,
                                                         unsigned gpc_id,
                                                         unsigned cluster_slot);
+extern "C" void gpgpusim_register_cross_cluster_addr(new_addr_type block_addr);
+extern "C" void resc_epoch_tick(unsigned gpc_id, unsigned cluster_slot);
 
 #include <stdarg.h>
 #include "../../libcuda/gpgpu_context.h"
@@ -2112,6 +2127,20 @@ void bar_impl(const ptx_instruction *pIin, ptx_thread_info *thread) {
             thread->m_cluster_info->reset_arrive_status();
             thread->m_cluster_info->waiting_at_cluster_bar = false;
             thread->m_cluster_info->threads_arrived = 0;
+            // RESC OVERLAPPING-EPOCH: advance this cluster's generation exactly
+            // once per completed cluster.sync (the epoch tick, deterministic).
+            {
+              shader_core_ctx *sc =
+                  dynamic_cast<shader_core_ctx *>(thread->get_core());
+              if (sc) {
+                unsigned cslot =
+                    sc->get_warp_cluster_slot(thread->get_hw_wid());
+                simt_core_cluster *scc = sc->get_simt_core_cluster();
+                unsigned gpc =
+                    (scc && scc->m_gpc) ? scc->m_gpc->get_gpc_id() : 0u;
+                resc_epoch_tick(gpc, cslot);
+              }
+            }
           }
         } else {
           int y = thread->get_uid();
@@ -2700,7 +2729,7 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
 
   // 无条件调试输出：打印所有函数调用名（用于调试）
   // 同时打印函数名的长度和原始字符串，帮助调试名称匹配问题
-  printf("\n[CLUSTER_STATE] Function call intercepted: '%s' (len=%zu)\n", fname.c_str(), fname.length());
+  resc_qprintf("\n[CLUSTER_STATE] Function call intercepted: '%s' (len=%zu)\n", fname.c_str(), fname.length());
   fflush(stdout);
 
 
@@ -2710,17 +2739,49 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
   }
   // 处理cluster一致性地址注册函数
   // 注意：函数名可能包含名称修饰，尝试多种匹配方式
+  else if (fname == "gpgpusim_register_cross_cluster_addr") {
+    // RESC cross-cluster line marker (NEW). One u64 generic address arg.
+    unsigned n_return = target_func->has_return();
+    unsigned n_args = target_func->num_args();
+    if (n_args != 1) return;
+    const operand_info &addr_op = pI->operand_lookup(n_return + 1);
+    const symbol *formal_param = target_func->get_arg(0);
+    ptx_reg_t addr_reg;
+    if (addr_op.is_reg()) {
+      addr_reg = thread->get_reg(addr_op.get_symbol());
+    } else if (addr_op.is_param_local()) {
+      unsigned size = formal_param->get_size_in_bytes();
+      addr_t frame_offset = addr_op.get_symbol()->get_address();
+      addr_t from_addr = thread->get_local_mem_stack_pointer() + frame_offset;
+      unsigned long long buffer[2];
+      assert(size <= sizeof(buffer));
+      thread->m_local_mem->read(from_addr, size, buffer);
+      addr_reg.u64 = (unsigned long long)buffer[0];
+    } else {
+      addr_reg = thread->get_operand_value(addr_op, addr_op, U64_TYPE, thread, 0);
+    }
+    new_addr_type generic_addr = (new_addr_type)addr_reg.u64;
+    new_addr_type global_addr = generic_addr;
+    if (whichspace(generic_addr) == global_space) {
+      gpgpu_sim *gpu = thread->get_gpu();
+      global_addr = generic_to_global(generic_addr, gpu);
+    }
+    // Register at cache-line granularity handled sim-side; pass raw global addr,
+    // benchmark aligns to line. Block-addr masking happens in the cache.
+    gpgpusim_register_cross_cluster_addr(global_addr);
+    return;
+  }
   else if (fname == "gpgpusim_register_cluster_coherent_addr") {
-    printf("\n[CLUSTER_STATE] MATCHED! Intercepted gpgpusim_register_cluster_coherent_addr call\n");
+    resc_qprintf("\n[CLUSTER_STATE] MATCHED! Intercepted gpgpusim_register_cluster_coherent_addr call\n");
     fflush(stdout);
     // 获取函数参数（地址）
     unsigned n_return = target_func->has_return();
     unsigned n_args = target_func->num_args();
-    printf("\n[CLUSTER_STATE] Function has %u args, %u returns\n", n_args, n_return);
+    resc_qprintf("\n[CLUSTER_STATE] Function has %u args, %u returns\n", n_args, n_return);
     fflush(stdout);
 
     if (n_args != 1) {
-      printf("\n[CLUSTER_STATE] ERROR: gpgpusim_register_cluster_coherent_addr expects 1 argument, got %u\n", n_args);
+      resc_qprintf("\n[CLUSTER_STATE] ERROR: gpgpusim_register_cluster_coherent_addr expects 1 argument, got %u\n", n_args);
       fflush(stdout);
       return;
     }
@@ -2730,13 +2791,13 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
     const symbol *formal_param = target_func->get_arg(0);
 
     // 打印调试信息
-    printf("\n[CLUSTER_STATE] addr_op.is_reg()=%d, addr_op.is_param_local()=%d\n",
+    resc_qprintf("\n[CLUSTER_STATE] addr_op.is_reg()=%d, addr_op.is_param_local()=%d\n",
            addr_op.is_reg(), addr_op.is_param_local());
     if (addr_op.get_symbol()) {
-      printf("\n[CLUSTER_STATE] addr_op symbol name: %s\n", addr_op.get_symbol()->name().c_str());
+      resc_qprintf("\n[CLUSTER_STATE] addr_op symbol name: %s\n", addr_op.get_symbol()->name().c_str());
       if (addr_op.get_symbol()->type()) {
         const type_info_key &info = addr_op.get_symbol()->type()->get_key();
-        printf("\n[CLUSTER_STATE] symbol type: is_reg=%d, is_param_kernel=%d, is_param_local=%d\n",
+        resc_qprintf("\n[CLUSTER_STATE] symbol type: is_reg=%d, is_param_kernel=%d, is_param_local=%d\n",
                info.is_reg(), info.is_param_kernel(), info.is_param_local());
       }
     }
@@ -2748,7 +2809,7 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
     if (addr_op.is_reg()) {
       // 参数是寄存器，直接读取寄存器值
       addr_reg = thread->get_reg(addr_op.get_symbol());
-      printf("\n[CLUSTER_STATE] Parameter is register, reading from reg: 0x%llx\n", (unsigned long long)addr_reg.u64);
+      resc_qprintf("\n[CLUSTER_STATE] Parameter is register, reading from reg: 0x%llx\n", (unsigned long long)addr_reg.u64);
     } else if (addr_op.is_param_local()) {
       // 参数是 local param，从 local memory 读取
       unsigned size = formal_param->get_size_in_bytes();
@@ -2758,11 +2819,11 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
       assert(size <= sizeof(buffer));
       thread->m_local_mem->read(from_addr, size, buffer);
       addr_reg.u64 = (unsigned long long)buffer[0];
-      printf("\n[CLUSTER_STATE] Parameter is param_local, reading from local mem at offset 0x%llx, value=0x%llx\n",
+      resc_qprintf("\n[CLUSTER_STATE] Parameter is param_local, reading from local mem at offset 0x%llx, value=0x%llx\n",
              (unsigned long long)from_addr, (unsigned long long)addr_reg.u64);
     } else {
       // 尝试使用 copy_arg_to_buffer 的方式
-      printf("\n[CLUSTER_STATE] Trying copy_arg_to_buffer approach...\n");
+      resc_qprintf("\n[CLUSTER_STATE] Trying copy_arg_to_buffer approach...\n");
       // 检查 formal_param 的类型
       if (formal_param && formal_param->type()) {
         const type_info_key &info = formal_param->type()->get_key();
@@ -2774,10 +2835,10 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
           assert(size <= sizeof(buffer));
           thread->m_local_mem->read(from_addr, size, buffer);
           addr_reg.u64 = (unsigned long long)buffer[0];
-          printf("\n[CLUSTER_STATE] Read from param_local via frame offset, value=0x%llx\n", (unsigned long long)addr_reg.u64);
+          resc_qprintf("\n[CLUSTER_STATE] Read from param_local via frame offset, value=0x%llx\n", (unsigned long long)addr_reg.u64);
         } else {
           // 最后尝试 get_operand_value
-          printf("\n[CLUSTER_STATE] Falling back to get_operand_value\n");
+          resc_qprintf("\n[CLUSTER_STATE] Falling back to get_operand_value\n");
           addr_reg = thread->get_operand_value(addr_op, addr_op, U64_TYPE, thread, 0);
         }
       } else {
@@ -2786,7 +2847,7 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
     }
 
     new_addr_type generic_addr = (new_addr_type)addr_reg.u64;
-    printf("\n[CLUSTER_STATE] Registering generic address: 0x%llx (from reg.u64=0x%llx)\n",
+    resc_qprintf("\n[CLUSTER_STATE] Registering generic address: 0x%llx (from reg.u64=0x%llx)\n",
            (unsigned long long)generic_addr, (unsigned long long)addr_reg.u64);
     fflush(stdout);
 
@@ -2798,10 +2859,10 @@ void call_impl(const ptx_instruction *pI, ptx_thread_info *thread) {
       // 获取 GPU 对象进行地址转换
       gpgpu_sim *gpu = thread->get_gpu();
       global_addr = generic_to_global(generic_addr, gpu);
-      printf("\n[CLUSTER_STATE] Converted to global address: 0x%llx\n", (unsigned long long)global_addr);
+      resc_qprintf("\n[CLUSTER_STATE] Converted to global address: 0x%llx\n", (unsigned long long)global_addr);
       fflush(stdout);
     } else {
-      printf("\n[CLUSTER_STATE] WARNING: Address is not global space, space type: %d\n", space.get_type());
+      resc_qprintf("\n[CLUSTER_STATE] WARNING: Address is not global space, space type: %d\n", space.get_type());
       fflush(stdout);
     }
 

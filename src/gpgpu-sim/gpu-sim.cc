@@ -464,6 +464,17 @@ void shader_core_config::reg_options(class OptionParser *opp) {
   option_parser_register(opp, "-gpgpu_cluster_wait_latency", OPT_INT32,
                          &cluster_wait_latency,
                          "Minimum latency for cluster.wait", "50");
+  // FIDELITY FIX D2 (2026-09-03): see abstract_hardware_model.h.
+  option_parser_register(opp, "-gpgpu_cluster_barrier_invalidate_l1", OPT_INT32,
+                         &cluster_barrier_invalidate_l1,
+                         "Cluster-barrier acquire behaviour: 0 = no L1 "
+                         "invalidate (models fence.acquire.sync_restrict::"
+                         "shared::cluster.cluster); 1 = whole-L1 invalidate as "
+                         "real sm_90 does via CCTL.IVALL; 2 = RESC marked-line "
+                         "SELECTIVE invalidate (unmarked lines preserved); "
+                         "3 = 2 but marked lines in an owner cluster-state are "
+                         "also retained (DeNovo/hLRC self-invalidation rule)",
+                         "1");
   option_parser_register(
       opp, "-gpgpu_shmem_sizeDefault", OPT_UINT32, &gpgpu_shmem_sizeDefault,
       "Size of shared memory per shader core (default 16kB)", "16384");
@@ -1427,6 +1438,117 @@ void gpgpu_sim::gpu_print_stat() {
   printf("gpu_sim_insn = %lld\n", gpu_sim_insn);
   printf("gpu_ipc = %12.4f\n", (float)gpu_sim_insn / gpu_sim_cycle);
   printf("gpu_tot_sim_cycle = %lld\n", gpu_tot_sim_cycle + gpu_sim_cycle);
+  {
+    extern unsigned long long g_c2c_neighbor_hits, g_c2c_l2_fallbacks,
+        g_c2c_mispredicts, g_c2c_pred_hits, g_c2c_total_reads,
+        g_c2c_phys_resident_hits, g_c2c_pinned_only_hits;
+    extern unsigned long long g_ccop_probes, g_ccop_fresh_hits, g_ccop_mispredict,
+        g_ccop_cold_l2_learn, g_ccop_poison_skips, g_c2c_probe_bytes,
+        g_c2c_l2_accesses_saved, g_c2c_crossgpc_probes, g_c2c_samegpc_skips,
+        g_c2c_crossgpc_reads, g_c2c_samegpc_reads;
+    printf("[C2C_STATS] total_reads=%llu neighbor_hits=%llu l2_fallbacks=%llu "
+           "pred_hits=%llu mispredicts=%llu phys_resident=%llu pinned_only=%llu\n",
+           g_c2c_total_reads, g_c2c_neighbor_hits, g_c2c_l2_fallbacks,
+           g_c2c_pred_hits, g_c2c_mispredicts,
+           g_c2c_phys_resident_hits, g_c2c_pinned_only_hits);
+    unsigned long long xr = g_c2c_crossgpc_reads + g_c2c_samegpc_reads;
+    double xfrac = xr ? (double)g_c2c_crossgpc_reads / (double)xr : 0.0;
+    printf("[CCOP_STATS] ccop_probes=%llu ccop_fresh_hits=%llu ccop_mispredict=%llu "
+           "ccop_cold_l2_learn=%llu ccop_poison_skips=%llu c2c_probe_bytes=%llu "
+           "l2_accesses_saved=%llu crossgpc_probes=%llu samegpc_skips=%llu "
+           "crossgpc_reads=%llu samegpc_reads=%llu crossgpc_read_frac=%.4f\n",
+           g_ccop_probes, g_ccop_fresh_hits, g_ccop_mispredict,
+           g_ccop_cold_l2_learn, g_ccop_poison_skips, g_c2c_probe_bytes,
+           g_c2c_l2_accesses_saved, g_c2c_crossgpc_probes, g_c2c_samegpc_skips,
+           g_c2c_crossgpc_reads, g_c2c_samegpc_reads, xfrac);
+  }
+  {
+    // EXPERIMENT B: per-supplier injection-port contention charge stats.
+    extern unsigned long long g_resc_inject_events, g_resc_inject_queue_cyc,
+        g_resc_inject_serve_cyc, g_resc_inject_maxq;
+    extern int g_resc_inject_charge; extern double g_resc_inject_bw_bits;
+    double avgq = g_resc_inject_events
+        ? (double)g_resc_inject_queue_cyc / (double)g_resc_inject_events : 0.0;
+    double avgs = g_resc_inject_events
+        ? (double)g_resc_inject_serve_cyc / (double)g_resc_inject_events : 0.0;
+    printf("[RESC_INJECT_STATS] charge=%d inject_bw_bits=%.4f events=%llu "
+           "total_queue_cyc=%llu total_serve_cyc=%llu avg_queue=%.3f avg_serve=%.3f "
+           "max_queue=%llu\n",
+           g_resc_inject_charge, g_resc_inject_bw_bits, g_resc_inject_events,
+           g_resc_inject_queue_cyc, g_resc_inject_serve_cyc, avgq, avgs,
+           g_resc_inject_maxq);
+  }
+  {
+    // RESC MULTI-WRITER firing counters -- prove the multi-writer / F-state /
+    // invalidate paths are actually exercised (the Round-9 deliverable).
+    extern unsigned long long g_mw_merge_entries, g_mw_falsesharing_reads,
+        g_mw_sector_writebacks, g_mw_atomic_upgradereq, g_mw_forward_downgrades,
+        g_mw_atomic_local_owner, g_mw_atomic_nack, g_mw_fabric_msgs;
+    printf("[RESC_MW_STATS] mw_merge_entries=%llu falsesharing_reads=%llu "
+           "sector_writebacks=%llu atomic_upgradereq=%llu forward_downgrades=%llu "
+           "atomic_local_owner=%llu atomic_nack=%llu new_fabric_msgs=%llu\n",
+           g_mw_merge_entries, g_mw_falsesharing_reads, g_mw_sector_writebacks,
+           g_mw_atomic_upgradereq, g_mw_forward_downgrades,
+           g_mw_atomic_local_owner, g_mw_atomic_nack, g_mw_fabric_msgs);
+  }
+  {
+    extern int g_resc_gen_ring;
+    extern unsigned long long g_resc_epoch_ticks, g_resc_gen_served,
+        g_resc_gen_expired;
+    printf("[RESC_GEN_STATS] gen_ring=%d epoch_ticks=%llu readshare_served=%llu "
+           "readshare_expired=%llu\n",
+           g_resc_gen_ring, g_resc_epoch_ticks, g_resc_gen_served,
+           g_resc_gen_expired);
+  }
+  {
+    // SELECTIVE-INVALIDATE (2026-09-03): the selective-acquire counters and the
+    // marked/unmarked split L1 read hit/miss counts (KILL-S4 instrument).
+    extern unsigned long long g_cluster_acquire_invalidates,
+        g_cluster_acquire_selective_invalidates;
+    extern unsigned long long g_selinv_events, g_selinv_lines_examined,
+        g_selinv_marked_invalidated, g_selinv_unmarked_preserved,
+        g_selinv_owner_retained;
+    extern unsigned long long g_l1_rd_marked_hit, g_l1_rd_marked_miss,
+        g_l1_rd_unmarked_hit, g_l1_rd_unmarked_miss;
+    printf("[RESC_SELINV_STATS] whole_invalidates=%llu selective_invalidates=%llu "
+           "selinv_events=%llu lines_examined=%llu marked_invalidated=%llu "
+           "unmarked_preserved=%llu owner_retained=%llu\n",
+           g_cluster_acquire_invalidates, g_cluster_acquire_selective_invalidates,
+           g_selinv_events, g_selinv_lines_examined, g_selinv_marked_invalidated,
+           g_selinv_unmarked_preserved, g_selinv_owner_retained);
+    unsigned long long mtot = g_l1_rd_marked_hit + g_l1_rd_marked_miss;
+    unsigned long long utot = g_l1_rd_unmarked_hit + g_l1_rd_unmarked_miss;
+    printf("[RESC_L1SPLIT_STATS] marked_rd_hit=%llu marked_rd_miss=%llu "
+           "marked_hitrate=%.6f unmarked_rd_hit=%llu unmarked_rd_miss=%llu "
+           "unmarked_hitrate=%.6f\n",
+           g_l1_rd_marked_hit, g_l1_rd_marked_miss,
+           mtot ? (double)g_l1_rd_marked_hit / (double)mtot : 0.0,
+           g_l1_rd_unmarked_hit, g_l1_rd_unmarked_miss,
+           utot ? (double)g_l1_rd_unmarked_hit / (double)utot : 0.0);
+  }
+  {
+    // RESC EPOCH-SCOPED RETENTION BIAS (2026-09-04): pure-increment counters.
+    // biased = capacity evictions where a protected line was spared.
+    // spills = protected lines evicted anyway -- retention's OWN cost, i.e.
+    //          the handoff that now comes from L2 instead of a peer L1.
+    // legacy_differ / stamp_unmarked are self-checks and MUST both be 0.
+    extern unsigned long long g_resc_retain_victim_walks,
+        g_resc_retain_prot_seen, g_resc_retain_biased, g_resc_retain_spills,
+        g_resc_retain_quota_override, g_resc_retain_setfull,
+        g_resc_retain_no_epoch, g_resc_retain_legacy_agree,
+        g_resc_retain_legacy_differ, g_resc_retain_stamp_unmarked;
+    unsigned long long __tot = g_resc_retain_biased + g_resc_retain_spills;
+    printf("[RESC_RETAIN_STATS] victim_walks=%llu prot_candidates_seen=%llu "
+           "biased=%llu spills=%llu spill_rate=%.6f quota_override=%llu "
+           "set_full=%llu no_epoch=%llu legacy_agree=%llu legacy_differ=%llu "
+           "stamp_unmarked=%llu\n",
+           g_resc_retain_victim_walks, g_resc_retain_prot_seen,
+           g_resc_retain_biased, g_resc_retain_spills,
+           __tot ? (double)g_resc_retain_spills / (double)__tot : 0.0,
+           g_resc_retain_quota_override, g_resc_retain_setfull,
+           g_resc_retain_no_epoch, g_resc_retain_legacy_agree,
+           g_resc_retain_legacy_differ, g_resc_retain_stamp_unmarked);
+  }
   printf("gpu_tot_sim_insn = %lld\n", gpu_tot_sim_insn + gpu_sim_insn);
   printf("gpu_tot_ipc = %12.4f\n", (float)(gpu_tot_sim_insn + gpu_sim_insn) /
                                        (gpu_tot_sim_cycle + gpu_sim_cycle));

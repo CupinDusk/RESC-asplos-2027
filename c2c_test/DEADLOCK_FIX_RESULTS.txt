@@ -1,0 +1,86 @@
+=========================================================================
+FIX 3 (HYBRID) APPLIED + GATES  (request AND response BOTH off-L1)
+Date: 2026-08-31
+Tree: /legacy-research/owner/cudatest/RESC-c2c-wt  branch contention-collapse HEAD d3cc7ad7
+=========================================================================
+
+VERDICT: ALL GATES PASS. The contended-atomic deadlock is RESOLVED.
+         Fix is in shader.cc ONLY (2 edits). gpu-cache.cc byte-identical to
+         clean baseline. RESC multi-writer mechanism genuinely fires
+         (g_mw_* non-zero). Baseline/non-marked paths byte-identical.
+
+--- DIAGNOSIS (RESC_DL2_DEBUG, baseline code, bounded rounds=2) ---
+Freeze mechanism = (a) L1 MSHR ORPHAN -> round-2 RESERVATION_FAIL forever.
+Runtime evidence at freeze (cycle 7357, all cores stalled):
+  * try_cluster_atomic_token fired 128x (8 FIRST_TOUCH + 120 PEER_MIGRATE), all
+    done by t=6859; by code it ALWAYS returns false -> NO warp ever waits on a
+    token (rules out a token-wait liveness cycle).
+  * 72 NEW_MSHR + 88 legit MERGE, then 2064 MERGE_FAIL(RESV) (mshr_hit=1,
+    mshr_avail=0) on all 8 lines, spinning past the freeze = round-2 atomics
+    colliding at ISSUE time on the orphaned round-1 L1 MSHRs.
+  * All 64 atomic replies took bypassL1D=1 -> m_next_global -> decrement_atomic_
+    count; m_L1D->fill() ran 0x -> the 72 L1 MSHRs were never freed (orphan).
+Root cause: shader.cc request gate forced bypassL1D=false for marked atomics ->
+they reserved an L1 MSHR, but their CACHE_GLOBAL reply bypasses L1 -> fill()
+never runs -> MSHR orphaned -> next-round same-line atomic RESERVATION_FAILs.
+Structural corollary (confirmed): g_mw_atomic_owner (gpu-cache.cc:247) and
+g_xcwl_gen (:75) are process-global and never reset at epoch/round boundary,
+and the token PEER_MIGRATE side-effect invalidates the previous owner L1 line --
+which is why the prior response-side-MSHR-symmetry fix (which made the reply
+FILL L1D) ALSO froze at the identical cycle: the token was invalidating peer L1
+lines that had in-flight atomic MSHRs.
+
+--- WHY THIS DIFFERS FROM THE 3 PRIOR FAILED FIXES ---
+Prior fixes (token-downgrade; L1-HIT ack; response-side MSHR symmetry) all KEPT
+the request-side gate bypassL1D=false (shader.cc:2261) -> still reserved an L1
+MSHR -> still hit the round-2 collision. This hybrid REMOVES the request-side L1
+reservation (the real edit target) and fires the token for side-effect only.
+
+--- FIX (shader.cc, 2 edits) ---
+EDIT 1 (~2253): request gate no longer sets bypassL1D=false for a marked atomic;
+  it only sets a flag resc_mw_marked_atomic. bypassL1D stays true -> the atomic
+  takes the STOCK bypass-L1 path (request AND response off-L1, symmetric, the
+  proven deadlock-free m_next_global ack; no L1 MSHR to orphan or collide on).
+EDIT 2 (~2286, inside the bypass block, after the real mem_fetch is allocated,
+  before m_icnt->push): fire m_L1D->try_cluster_atomic_token(...) for its
+  COHERENCE SIDE-EFFECT (owner-token migration + UpgradeReq/FORWARD-downgrade +
+  g_mw_* counters). Returns false (bookkeeping); return value ignored. Because a
+  marked atomic is never L1-resident, the owner-downgrade probes a non-resident
+  peer line == harmless no-op, but the transition counters live OUTSIDE the
+  residency guard (gpu-cache.cc:3658-3660) so they still increment -> mechanism
+  genuinely fires. Functional RMW unchanged (functional sim vs L2) -> bit-ident.
+
+BUILD: make -j6 EXIT 0.
+FIXED .so md5 = 1a2a46045fc819225427745e6d1e0a11
+CLEAN baseline .so md5 (pre-fix) = b21bf24839cd01c33bd359d3fca1d72a
+
+--- GATES (ALL PASS) ---
+sanity (RESC_GEN_RING= ./simxl_c8 256):
+  DSM=2656.0 GLOBAL=2868.0 ratio=0.926  -> PASS (byte-identical baseline).
+liveness + bit-identity (RESC_MW=1 ./mw_reduce_atomic 8 R):
+  rounds=1: COMPLETE  OUT=REF=33216   BITIDENTICAL=1  PASS
+  rounds=2: COMPLETE  OUT=REF=66880   BITIDENTICAL=1  PASS  <== prior fixes deadlocked here
+  rounds=4: COMPLETE  OUT=REF=135552  BITIDENTICAL=1  PASS
+mechanism-fires (g_mw_* CONTENDED run, RESC_MW=1, rounds=2):
+  atomic_upgradereq=120  forward_downgrades=120  atomic_local_owner=8
+  new_fabric_msgs=120  atomic_nack=0 -> NON-ZERO; scales 56/120/248 for r=1/2/4.
+negative control (RESC_MW unset, rounds=2):
+  all g_mw_*=0 AND COMPLETE OUT=REF=66880 BITIDENTICAL=1 -> gating clean.
+discriminating prediction (RESC_DL2_DEBUG on FIXED lib, rounds=2, per-cache):
+  L1D atomic send_read_request: NEW_MSHR=0, MERGE_FAIL=0 (L1 reservation removed;
+  fix is NOT a no-op). ALL remaining atomic MSHR contention is on L2 banks
+  (L2_bank_000..003) = stock behavior, self-draining, run COMPLETES.
+carry-forward pipe_chain (bash run_chain.sh 1 3):
+  G=1 cycles=57906 served=0     expired=13440 BITIDENTICAL=1
+  G=3 cycles=55986 served=13440 expired=0     BITIDENTICAL=1
+  served flips at G>=3, same OUT_CHECKSUM=114866383147008. PASS.
+
+--- FILES / BACKUPS ---
+Clean-baseline backups: src/gpgpu-sim/{shader,gpu-cache}.cc.bak_fix3_1788159900
+Fix is shader.cc ONLY; gpu-cache.cc == clean baseline (verified diff -q).
+Instrumentation was gated (RESC_DL2_DEBUG, off by default) and fully reverted.
+
+CONCLUSION: FIX 3 (hybrid) RESOLVES the contended-atomic deadlock at all tested
+round counts, bit-identical, mechanism genuinely firing, baseline + carry-forward
+byte-identical. NOT a global-punt: the token coherence mechanism runs; only the
+physical memory request rides the stock (already correct) bypass-L1 atomic path.

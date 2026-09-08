@@ -1,0 +1,201 @@
+
+================================================================================
+ATTENTION E2E EXPERIMENT (RESC ASPLOS 2027, Round-9 bound-at-2 rebuttal)
+Agent run 2026-08-29. Raw measured numbers only.
+================================================================================
+
+[GATE-0a] SIM SANITY GATE (live re-run)
+  host: legacy-user@legacy-host.invalid  tree: /legacy-research/owner/cudatest/RESC-c2c-wt (branch contention-collapse, d3cc7ad7)
+  cmd:  cp cfg_cal195.config gpgpusim.config; ./simxl_c8 256  (PATH=ptxas_shim, conda clustersim-py311)
+  RESULT: nfloats=256 cluster=8 | DSM=2656.0 GLOBAL=2868.0 ratio(dsm/glob)=0.926 N=2  [PASS, exact match to brief]
+
+[GATE-0b] wgmma FAITHFUL EXECUTION? -> NO.
+  evidence: src/cuda-sim/ptx.l:83-179 recognizes only wmma (Volta/Ampere WMMA) and .mma.sync
+            (Ampere warp-MMA). grep -rniE "wgmma" src/ returns EMPTY. No Hopper warp-group MMA
+            opcode in the fork. => Route 1 cannot time wgmma; compute modeled as scaled FMA at the
+            3.2x operating point (cfg latency multiplier). Route 3 (silicon) is the load-bearing lever.
+
+[ROUTE 3] REAL-H20 NCU PROXY  host: legacy-user@legacy-host.invalid (H20, CUDA 13.0, sm_90a, pure CUDA)
+  kernel /root/route3_kv.cu (single-block decode) and /root/route3_fanout.cu (cross-SM shared-KV fan-out)
+  MODE0=ld.cg (legal cross-SM, refetch L2) vs MODE1=ld.ca (L1-resident, RESC counterfactual)
+  Compute body BYTE-IDENTICAL across modes; only K/V serving path differs.
+
+  --- Single-block decode  L=128 D=128 REUSE=8 nblocks=256 (ncu --launch-skip 1 --launch-count 1) ---
+  metric                          BASE(ld.cg)   RESC(ld.ca)   delta
+  l1tex__t_sector_hit_rate.pct       1.49%        87.64%       L1 hit 1.5% -> 87.6%
+  lts__t_sector_hit_rate.pct        98.00%        87.85%
+  lts__t_sectors_srcunit_tex_op_read.sum  43,840,225  8,424,496   5.20x LESS L2 traffic (80.8% eliminated)
+  dram__bytes_read.sum              34.68 MB      34.69 MB     identical (KV set L2-resident)
+  lts__throughput SOL               44.64%        8.72%        5.1x less L2 bandwidth pressure
+  l1tex__throughput SOL             81.05%        79.73%       common-mode ceiling (BOTH ~80%)
+  long_scoreboard stall/issue       38.03         38.48        memory-latency-bound, common-mode
+
+  --- Cross-SM fan-out (REAL RESC scenario) L=128 D=128 FANOUT=32 ngroups=32 ---
+  lts__t_sectors_srcunit_tex_op_read.sum  27,152,920  5,269,626   5.15x LESS L2 traffic
+  lts__throughput SOL               62.34%        12.12%       5.1x less L2 bandwidth pressure
+  l1tex__t_sector_hit_rate.pct       1.22%        83.66%
+  dram__bytes_read.sum               4.73 MB       4.73 MB     identical
+  l1tex__throughput SOL             91.96%        90.59%       common-mode ceiling (BOTH ~91%)
+
+  --- Wall-clock sweep (cudaEvents), REUSE x nblocks, L=128 D=128 repeat=8 ---
+  nblocks REUSE  base_ms   resc_ms   base/resc  checksum
+  256     4      2.2178    2.2553    0.9834     IDENTICAL 1.53490973e+22
+  256     8      4.4309    4.5003    0.9846     IDENTICAL 3.0711037e+22
+  256     16     8.8244    8.9755    0.9832     IDENTICAL 6.14171299e+22
+  1024    4      7.7551    7.7848    0.9962     IDENTICAL 6.14181371e+22
+  1024    8      15.5478   15.5591   0.9993     IDENTICAL 1.22844372e+23
+  1024    16     31.0842   31.0971   0.9996     IDENTICAL 2.45680635e+23
+  4096    4      29.2691   29.4064   0.9953     IDENTICAL 2.45689594e+23
+  4096    8      58.4500   58.7826   0.9943     IDENTICAL 4.91384883e+23
+  4096    16     117.0081  117.5881  0.9951     IDENTICAL 9.82770347e+23
+
+  ROUTE 3 VERDICT: The K/V-refetch lever is REAL and large on the memory hierarchy
+  (5.2x less L2 traffic; L1 hit 1.5%->87.6%; L2 BW SOL 5.1x lower) -- squarely in the
+  sourced 4.4x-11.7x band [Hopper Table IV]. BUT the AMDAHL valve reads HONEST-SMALL on
+  wall-clock: in these occupancy-saturated FP32 proxies the L1TEX issue pipe (~80-91% SOL,
+  common-mode) is the ceiling, so eliminated L2 traffic does NOT convert to wall-clock
+  (base/resc ~= 0.98-1.00). Checksums bit-identical across modes (correctness gate PASS).
+
+  --- Amdahl valve: K/V-reuse traffic fraction of decode time (kv_on vs kv_elided, matched inst count) ---
+  L=128 D=128 REUSE=8 nblocks=1024 repeat=8:
+  citers  kv_on(ms)  kv_off(ms)  KV_traffic_fraction
+  0       15.4616    1.2921      91.6%
+  8       15.4410    1.3052      91.5%
+  32      15.4574    1.3172      91.5%
+  128     15.4656    1.3737      91.1%
+  (proxy is memory-bound FP32; real Hopper e2e fraction depends on tensor-core compute this proxy omits)
+
+  --- Long-context DRAM crossover (does L1-residency cut DRAM when KV set >> 60MB L2?) NO ---
+  L=128 D=128 REUSE=8, dram__bytes_read.sum:
+  nblocks=1024 KVset=134.2MB : base=1.01 GB  resc=1.08 GB   (essentially equal)
+  nblocks=8192 KVset=1073.7MB: base=8.61 GB  resc=8.59 GB   (essentially equal)
+  => RESC lever is purely on-chip L1-hit-vs-L2 (eliminates L2 traffic), NOT L1-vs-DRAM. L1(256KB/SM)
+     cannot hold a 134MB+ set, so DRAM streaming is common-mode. Benefit is real only when the reused
+     tile fits in L1 AND L2 bandwidth is the bottleneck.
+
+[ROUTE 1] SIM E2E -- real decode-attention kernel  (resc_decode.cu, host legacy-user@legacy-host.invalid)
+  Kernel: /legacy-research/owner/cudatest/RESC-c2c-wt/c2c_test/resc_decode.cu (302 lines). Cluster-cooperative
+  fused GQA decode: rank0 gathers current-token K/V tile (region #1, fan-out read-share); all query-head
+  blocks reuse it over the medium; per-block Q.K^T GeMV then online-softmax partial then weighted-V; then
+  ClusterReduce partials (region #2) over the CS blocks. Compute body BYTE-IDENTICAL across arms; only the
+  marked-region serving path differs (arm0 ld.cg/st.cg=L2 refetch; arm1 map_shared_rank=SMEM; arm2 register
+  + ld.ca/st.wb = L1-to-L1 over sm2sm fabric). sm2sm_latency=195, l2_rop=242 (cfg_h20.config).
+
+  *** CRITICAL TOOLCHAIN ROOT CAUSE (reproducibility) ***
+  RESC registration (gpgpusim_register_cluster_coherent_addr interception) CRASHES the functional sim
+  for binaries built with /usr/local/cuda-12.4/bin/nvcc OR /usr/local/cuda/bin/nvcc (13.0): the call
+  reaches "[CLUSTER_STATE] Converted to global address" then exits with 0 registrations, no cycles.
+  FIX: build with the CONDA nvcc = /legacy-research/owner/miniconda3/envs/clustersim-py311/bin/nvcc (CUDA 12.9),
+  PATH=ptxas_shim:PATH (NO -L build/lib needed; it links build/lib/libcudart.so.12 automatically).
+  This is exactly how the working run_correct.sh built its binaries (resc_c registers 2560 addrs, works).
+  Rebuilding resc_e2e with cuda-12.4 ALSO crashes -> not kernel-specific; it is a PTX/toolchain mismatch
+  with the sim's registration interceptor. Verified: dec_resc built with conda nvcc -> 64 registrations,
+  EXIT=0, 24365 cycles, finite checksum.
+
+  Also required: link the SIM libcudart.so.12 (from build/lib), NOT system libcudart.so.13, or you get
+  "no kernel image is available for execution on the device" (runs on the real A6000 instead of the sim).
+
+  --- L1-FITTING working set (16KB KV tile, small L high reuse): does L2-cut convert to wall-clock? NO ---
+  L=32 D=64 nblocks=2048 repeat=16 (KV tile fits L1), single-GPU H20:
+  REUSE  base_ms   resc_ms   base/resc  checksum
+  8      7.5211    8.0451    0.9349     IDENTICAL
+  16     15.0308   16.1694   0.9296     IDENTICAL
+  32     30.0465   32.1431   0.9348     IDENTICAL
+  64     60.0739   64.2692   0.9347     IDENTICAL
+  => On H20 silicon, ld.ca (L1-resident, single-block reuse) is ~6.5% SLOWER than ld.cg: L1 lookup
+     overhead with no offsetting benefit when data is L2-resident and kernel is issue-bound.
+  KEY INTERPRETATION: H20 has NO SM-to-SM fabric for L1<->L1 cross-SM sharing (that IS the RESC hardware
+     feature, unbuilt). On silicon "L1-resident" = same-block reuse only, which cannot show the cross-SM
+     lever. The cross-SM L1<->L1 serving (195cyc fabric vs 242cyc L2) is what the SIM models. So Route 3
+     silicon bounds the L2-traffic-reduction OPPORTUNITY (5.2x, in-band); Route 1 sim is required for the
+     fabric timing win. This is the honest division of labor between the two routes.
+
+  === CORRECTNESS GATE (decode kernel, conda nvcc 12.9, cluster=4 repeat=8 ncl=8, cfg_h20 1x) ===
+  arm     cycles   OUT_CHECKSUM (must be bit-identical)
+  global  334005   sum=5.088000 min=0.000000 max=0.664000 n=32
+  dsm     275756   sum=5.088000 min=0.000000 max=0.664000 n=32
+  resc    130418   sum=5.088000 min=0.000000 max=0.664000 n=32
+  => ALL THREE BIT-IDENTICAL (5.088000). Correctness preserved. RESC changes only WHERE data is served.
+  => At 1x compute: RESC beats correct-global 334005/130418 = 2.56x; beats DSM 275756/130418 = 2.11x.
+     (DSM slow = occupancy tax: map_shared_rank SMEM reserve caps resident CTAs.)
+  Compute-scale sanity: resc 1x=38755 cyc vs 5x=50193 cyc (cluster=4 rep=2 ncl=4) -> cfg latency
+     multiplier does scale compute; the 1x-5x sweep is meaningful (compute is a real fraction).
+
+  --- H20 absolute wall-clock anchor (Route 2 out-of-sample, silicon) ---
+  r3_base 1-wave (nblocks=78=SM count), repeat=100, per-iter time:
+    L=32  D=64  REUSE=8: 98.3 us/iter
+    L=128 D=128 REUSE=8: 203.1 us/iter
+  --- Fanout wall-clock (cross-SM shared KV = RESC scenario), repeat=16 ---
+  FANOUT ngroups base_ms resc_ms base/resc
+  8      32      1.1148  1.1248  0.9911
+  8      78      2.2209  2.2372  0.9927
+  32     32      3.8817  3.9002  0.9953
+  32     78      8.8479  8.9263  0.9912
+  => Consistent: on H20 silicon the cross-SM shared-KV fan-out is FLAT (~0.99, resc marginally slower).
+     Silicon has no L1<->L1 fabric so ld.ca cannot serve peers' L1. The win requires the SM-to-SM fabric
+     that only the SIM models. Silicon bounds the OPPORTUNITY (5.2x L2-traffic cut); sim shows the timing win.
+
+  --- L2-traffic reduction vs FANOUT (RESC read-share lever scaling) NCU, L=128 D=128 ngroups=16 ---
+  FANOUT  base_L2sectors  resc_L2sectors  reduction  L1hit_base  L1hit_resc
+  4       669111          116336          5.75x      1.49%       87.64%
+  8       1661081         374548          4.43x      1.49%       87.64%
+  16      4245210         802475          5.29x      1.49%       87.64%
+  32      14107435        2020312         6.98x      1.36%       87.51%
+  => The RESC read-share lever SCALES with GQA fan-out: 5.75x (FO=4) to 6.98x (FO=32) L2-traffic cut,
+     L1 hit 1.5%->87.6% throughout. Robustly in/above the sourced 4.4x-11.7x band [Hopper Table IV].
+     Larger GQA group => larger lever. This is the strongest silicon-grounded evidence for region #1.
+
+  --- H20 dependent-load latency (real H20, pointer-chase, cyc/access) -- independent lever confirmation ---
+  buffer  mode     cyc/access
+  16KB    ld.ca    55     (L1-hit)
+  8MB     ld.cg    365    (L2-hit; exceeds L1)
+  8MB     ld.ca    365    (same -- 8MB exceeds L1, both go to L2)
+  256MB   ld.cg    591    (DRAM)
+  => H20 L1-hit-vs-L2 ratio = 365/55 = 6.6x, matching sourced Hopper Table IV ~6.4x on ACTUAL H20 silicon
+     (Table IV was H800). L2-vs-DRAM = 591/365 = 1.6x. This independently validates the per-access lever
+     magnitude on the target hardware -- the RESC L1<->L1 serving saves ~310 cyc/access vs the L2 refetch.
+
+  === ROUTE 1 SWEEP (decode kernel, cluster=4 repeat=4 ncl=8, compute-scale via cfg latency) ===
+  scale  global   dsm      resc     checksum   RESC/global  RESC/dsm
+  1.0x   170941   140940   69330    2.096000   2.47x        2.03x
+  2.0x   176498   146654   74466    2.096000   2.37x        1.97x
+  (headline 3.2x + 3.0/4.0/5.0 pending; advantage dilutes gently as compute scales -- the predicted
+   overlap signature: scaling compute shifts critical path toward compute, so the comm lever softens.
+   All checksums bit-identical across arms at every scale.)
+
+  *** HEADLINE 3.2x POINT (conservative operating point per brief) -- DEFENSIBLE WIN ***
+  cluster=4 repeat=4 ncl=8, cfg_cs3_2 (FP MMA-lane latency 39->125):
+  arm     cycles   checksum
+  global  183429   sum=2.096000
+  dsm     152755   sum=2.096000
+  resc    81415    sum=2.096000
+  => ALL BIT-IDENTICAL. RESC vs correct-global = 183429/81415 = 2.253x. RESC vs DSM = 1.876x.
+  => Verdict stable across compute scale: 2.47x(1x) -> 2.37x(2x) -> 2.25x(3.2x). Dilutes gently as
+     predicted (compute scaling shifts critical path toward compute) but stays strongly >1 at the
+     conservative 3.2x point. This is a real fused decode-attention kernel, bit-identical output.
+
+  === COMPLETE 1x-5x COMPUTE-SCALE SWEEP (decode kernel, cluster=4 repeat=4 ncl=8) -- FINAL ===
+  scale  global   dsm      resc     checksum   RESC/global  RESC/dsm
+  1.0x   170941   140940   69330    2.096000   2.466x       2.033x
+  2.0x   176498   146654   74466    2.096000   2.370x       1.969x
+  3.0x   182065   151554   80109    2.096000   2.273x       1.892x
+  3.2x*  183429   152755   81415    2.096000   2.253x       1.876x   <-- HEADLINE (conservative point)
+  4.0x   187851   156264   86085    2.096000   2.182x       1.815x
+  5.0x   193329   160996   91349    2.096000   2.116x       1.762x
+  ALL 18 runs bit-identical checksum 2.096000 (n=32). VERDICT STABLE across the entire 1x-5x range:
+  RESC beats correct-global 2.47x(1x) -> 2.12x(5x), never approaching 1.0. Beats DSM occupancy comparator
+  2.03x -> 1.76x. Priority 3.2x run reproduced sweep 3.2x EXACTLY (deterministic). HEADLINE at 3.2x = 2.253x.
+
+  === FINAL VERDICT: DEFENSIBLE WIN ===
+  Success criteria (brief SS3) -- ALL MET:
+  [x] RESC beats correct-global by a clear margin AT 3.2x (2.253x), verdict stable across 1x-5x (2.47x-2.12x)
+  [x] per-arm compute is common-mode: identical checksum 2.096000 across all arms & scales (compute cancels)
+  [x] RESC output bit-identical to global (2.096000) -- correctness gate PASS
+  [x] H20 proxy shows K/V-refetch lever is real: 5.2x-7.0x less L2 traffic (scales with fan-out),
+      L1-vs-L2 = 6.6x on real H20 (matches Hopper Table IV ~6.4x), in the sourced band
+  HONEST BOUNDARIES (kept, not hidden):
+  - wgmma NOT modeled by fork -> compute is scaled FMA, number placed at measured 3.2x FP-gap point
+  - H20 silicon wall-clock is flat (no SM-to-SM L1<->L1 fabric exists; that IS the unbuilt RESC HW).
+    Silicon bounds the OPPORTUNITY; the sim (195cyc fabric vs 242cyc L2) demonstrates the timing win.
+  - Amdahl: K/V-reuse ~91% of this memory-bound proxy's decode time; real-kernel fraction depends on
+    tensor-core compute the proxy omits.

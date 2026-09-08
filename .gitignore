@@ -61,3 +61,24 @@ debug_tools/WatchYourStep/ptxjitplus/*.ptx
 accel-sim-framework/
 gpu-app-collection/
 
+# RESC experiment workspace artifacts (source migration 2026-09-09)
+build/
+build-*/
+*.log
+*.out
+*.err
+*.ptx
+*.ptxas
+*.sass
+*.so
+*.so.*
+*.a
+*.bak*
+*.MINE*
+run_*/
+*_run/
+exit.code
+gpgpu_inst_stats.txt
+_cuobjdump_*
+c2c_test/ptxas_shim_log/
+c2c_test/**/bin/

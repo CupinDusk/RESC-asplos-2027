@@ -1,0 +1,9 @@
+# ATTRIBUTION make-or-break sweep 2026-08-29T14:31:44Z
+# cfg_h20, pipe_chain distributed suppliers (fan-in=1, non-strawman), charge ON
+# arm0=G1(eager) arm2=G2(DeNovo cur+next) arm3=G(LAG+1) full-RESC ring
+# LAG arm0_G1 arm2_G2 arm3_Gopt served0 served2 served3 bit0 bit2 bit3 arm3_over_arm2
+LAG=1 G3=2 arm0=58645 arm2=56661 arm3=56661 served0=0 served2=13888 served3=13888 bit=1/1/1 arm3_over_arm2=1.000
+LAG=2 G3=3 arm0=57906 arm2=57906 arm3=55986 served0=0 served2=0 served3=13440 bit=1/1/1 arm3_over_arm2=0.967
+LAG=3 G3=4 arm0=57167 arm2=57167 arm3=55311 served0=0 served2=0 served3=12992 bit=1/1/1 arm3_over_arm2=0.968
+LAG=4 G3=5 arm0=56428 arm2=56428 arm3=54636 served0=0 served2=0 served3=12544 bit=1/1/1 arm3_over_arm2=0.968
+MAKEORBREAK_DONE

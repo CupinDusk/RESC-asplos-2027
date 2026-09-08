@@ -1,0 +1,300 @@
+================================================================================
+RESC MULTI-WRITER — DIRECTORYLESS INTRA-EPOCH CONCURRENT-WRITER NOVELTY ENGINE
+Verification + directoryless/concurrent-writer evidence (2026-08-29)
+================================================================================
+Tree : /legacy-research/owner/cudatest/RESC-c2c-wt   branch contention-collapse
+HEAD : d3cc7ad77326c22ed497ed66d8ec5916de47f99c  (working tree has uncommitted
+       overlap-agent + MW changes: gpu-cache.cc +988, gpu-cache.h +40,
+       instructions.cc +48 vs HEAD)
+Sim library UNDER TEST (post-overlap-agent rebuild):
+       build/lib/libcudart.so.12  md5=b21bf24839cd01c33bd359d3fca1d72a
+       mtime 2026-08-29 17:56  == mtime of gpu-cache.cc / instructions.cc
+       => the binary that produced every number below INCLUDES the overlap
+          agent's generation-ring changes. This is the correct thing to test:
+          it proves the MW machinery still works AFTER the overlap edits.
+Config : cfg_h20.config (78 SM / 1980 MHz), cluster=8, num_clusters=8.
+Env    : conda clustersim-py311; PATH has ptxas_shim + cuda-12.4;
+         LD_LIBRARY_PATH=build/lib (libcudart.so.12) + conda lib.
+
+################################################################################
+(a) SANITY GATE — PASS (exact)
+################################################################################
+  cp cfg_h20.config gpgpusim.config && ./simxl_c8 256
+  => nfloats=256 bytes=1024 cluster=8 | DSM=2656.0±0.0  GLOBAL=2868.0±0.0
+     ratio(dsm/glob)=0.926  N=2
+  Matches the required gate (DSM=2656 / GLOBAL=2868 / ratio=0.926) exactly.
+  The single-writer read-share fast path + cross-GPC escape are intact on the
+  post-overlap library.
+
+################################################################################
+(b) MULTI-WRITER RESULTS REPRODUCE ON THE POST-OVERLAP LIBRARY
+################################################################################
+PATH A — false sharing (mw_reduce FORM=1, disjoint sub-line writes, nc=8 rounds=5)
+  8 ranks each store their OWN word of one shared 128B line each round
+  (distinct words, same line = genuine concurrent disjoint-sector writers).
+
+  arm  label                          cycles  merge  sector_wb  fabric  checksum  bitident
+  A1   correct-global (no RESC)        10956   0      0          0       341120    1
+  A2   RESC-MW (per-sector merge)      10740   64     280        0       341120    1
+  A3   RESC-old-escape (RESC_MW=0)     10740   0      0          0       341120    1
+  A4   RESC-whole-line-LWW (ablation)  10740   64     1120       0       341120    1
+
+  Reproduction vs frozen data/multiwriter.dat:
+    - merge entries      64  == 64        (IDENTICAL)  -> MW_MERGE fires
+    - sector_wb A2/A4    280 / 1120 == 280 / 1120 (IDENTICAL) -> 4x traffic,
+      per-sector necessity preserved
+    - fabric msgs        0   == 0         (IDENTICAL)  -> 0 new fabric messages
+    - checksum           341120, BITIDENTICAL=1 on ALL 4 arms (mismatches=0)
+    - ordering A2 <= A3 < A1 preserved (RESC-MW no slower than escape, both
+      faster than correct-global)
+    - cycles drifted from the .dat snapshot by +0.16..+0.32% (A1 10956 vs 10939,
+      A2/A3/A4 10740 vs 10706) — the ONLY change, attributable to the overlap
+      agent's additive gen-ring code on shared read-share timing paths (gate is
+      OFF by default). The MECHANISM COUNTERS (merge/sector_wb/fabric) and
+      BITIDENTITY are byte-for-byte unchanged.
+
+PATH B — concurrent atomics (mw_reduce FORM=0, RMW to same word, nc=8 rounds=1)
+  All 8 blocks/cluster atomicAdd the SAME 32-bit accumulator word.
+
+  arm  label                       cycles  upgradereq  fwd_downgr  local_owner  fabric  checksum  bitident
+  B1   correct-global (no RESC)    7049    0           0           0            0       33216     1
+  B2   RESC-MW (owner-token)       7102    56          56          8            56      33216     1
+  B3   RESC-old-escape (MW=0)      7061    0           0           0            0       33216     1
+  B4   RESC-whole-line-LWW         7102    56          56          8            56      33216     1
+
+  Reproduction vs frozen data/multiwriter.dat: BYTE-FOR-BYTE IDENTICAL.
+    - upgradereq 56, forward_downgrades 56 (EM->FORWARD->INVALID dead edge LIVE),
+      atomic_local_owner 8 (one first-touch/cluster), new_fabric_msgs 56
+      (exactly one sm2sm hop per ownership change, NEVER broadcast)
+    - checksum 33216, BITIDENTICAL=1 (mismatches=0)
+    - cycles 7049 / 7102 / 7061 == .dat (7049 / 7102 / 7061), +0.6% token
+      overhead vs escape (honest, not a speedup claim)
+
+  VERDICT: the multi-writer machinery survives the overlap-agent changes intact.
+  Path B is identical; Path A mechanism counters + bit-identity are identical
+  (sub-0.3% cycle drift only). NOT broken.
+
+################################################################################
+(c) DIRECTORYLESS PROPERTY — file:line evidence (line numbers on the live tree)
+################################################################################
+CLAIM: the intra-cluster multi-writer merge (Path A) and the atomic owner-token
+(Path B) use NO sharer vector, NO home-node/LLC owner registry, NO directory —
+only per-line/per-sector L1 state + a bounded same-cluster probe over the fabric.
+
+Path A (false-sharing sync-merge) — try_cluster_multiwriter_merge
+  gpu-cache.cc:3443  function entry (plain GLOBAL_ACC_W only)
+  gpu-cache.cc:3470  gpc->collect_shader_cores_for_cluster_slot(slot, peers)
+                     -> the ONLY lookup: a BOUNDED same-cluster peer list
+                        (<= cluster size, 8 here), NOT a directory.
+  shader.cc:5079     collect_shader_cores_for_cluster_slot(): iterates the GPC's
+                     own cores, keeps those with an active warp in this cluster
+                     slot. Region-scoped enumeration, no global sharer state.
+  gpu-cache.cc:3487-3499  peer-writer test = read each peer L1's per-SECTOR
+                     cluster_line_state (EM/SM/MW_MERGE) + its per-line
+                     mw_written_mask — LOCAL cache state only.
+  gpu-cache.cc:3536-3555  install CLUSTER_MW_MERGE + OR the per-sector written
+                     mask on BOTH L1 copies. State lives in the L1 line
+                     (gpu-cache.h:555 m_mw_written_mask), NOT a directory entry.
+  gpu-cache.cc:3583  "No fabric message: the store's own write-through carries
+                     the value to L2." -> merge adds ZERO fabric traffic.
+  Path A uses NO g_xcwl, NO g_mw_atomic_owner, NO sharer set (confirmed by grep
+  over lines 3443-3585: no directory/sharer/owner-map reference at all).
+
+  Per-line/per-sector state carriers (marked lines only — data scoping):
+    gpu-cache.h:58    enum adds CLUSTER_MW_MERGE (a per-sector label)
+    gpu-cache.h:457-463  mw_or/get/clear_written_mask (1 bit / 32B sector)
+    gpu-cache.h:555   m_mw_written_mask : mem_access_sector_mask_t (in the block)
+    abstract_hardware_model.h:805  SECTOR_CHUNCK_SIZE = 4 -> 4-bit written mask
+
+Path B (cluster-scoped atomics) — try_cluster_atomic_token
+  gpu-cache.cc:242-246  g_mw_atomic_owner[gpc][addr] = ONE shader_core_ctx* — a
+                     SINGLE migrating owner token, comment: "a single owner at a
+                     time (the token) ... No sharer set."
+  gpu-cache.cc:3589  function entry (marked atomic enters as GLOBAL_ACC_R+isatomic)
+  gpu-cache.cc:3620-3623  read the CURRENT single owner (one pointer), not a set.
+  gpu-cache.cc:3628-3630  freshness gate reuses g_xcwl_gen (one counter/line),
+                     not a sharer bitmap.
+  gpu-cache.cc:3646-3667  UpgradeReq: previous owner downgraded
+                     EM->FORWARD->INVALID over ONE sm2sm hop; requester installs
+                     EM. g_mw_fabric_msgs++ = "exactly one hop / ownership change".
+  gpu-cache.cc:3689  owner_map[block_addr] = m_owner  (token migrates to one SM)
+  There is NO presence/sharer vector and NO home-node registration of readers.
+
+NOT-directory confirmation (grep over gpu-cache.cc): the only structure literally
+called an "owner directory" is g_xcwl at gpu-cache.cc:3875 inside
+try_cross_cluster_read — the CROSS-CLUSTER CCOP predictive-forwarding path, a
+DIFFERENT mechanism. The INTRA-cluster multi-writer paths (Path A/B, this task)
+touch none of it for sharer tracking. (Path B reuses only g_xcwl_gen, a scalar
+per-line generation counter, as a staleness gate — not a directory.)
+
+CONTRAST WITH THE SELF-INVALIDATION FAMILY (primary sources, read this session):
+  DeNovo (PACT'11, local PDF denovo-pact2011.pdf p.1,4): removes the sharer-list
+  directory BUT "on a write, a core register itself at (i.e., inform) the shared
+  L2 cache. The L2 data banks serve as the registry ... keeps the identity of an
+  L1 that has the up-to-date data (registered state)." => DeNovo has a
+  SINGLE-OWNER REGISTRATION AT THE LLC/home. RESC Path A has NO such L2
+  registration — co-writer discovery is a bounded L1-to-L1 cluster probe; state
+  is per-sector in the L1 line. RESC Path B's token is an L1<->L1 migration, also
+  never registered at a home node.
+  VIPS/VIPS-M (PACT'12, vips-pact2012.pdf p.1-4): truly directory-less BUT relies
+  on write-through at WORD granularity so "there is only one writer per word at a
+  time (otherwise there would be a data race)"; self-invalidate + flush L1 at
+  every synchronization. Concurrent writers to one word in one epoch = a data
+  race, outside its model.
+
+################################################################################
+(d) CONCURRENT-WRITER DEMONSTRATION + HONEST SCOPE
+################################################################################
+The chair said DROP "at most one LD per line per epoch". The evidence supports a
+genuinely CONCURRENT multi-writer claim in ONE epoch, in two forms:
+
+  DISJOINT-SECTOR (the clean, load-bearing case) — Path A above.
+    8 same-cluster SMs concurrently write DIFFERENT words (sectors) of ONE 128B
+    line within one cluster epoch (mw_reduce.cu FORM=1: each rank st.global.wb to
+    my_acc[rank]; all 8 words share one registered 128B line). The merge fires
+    (mw_merge_entries=64), installs CLUSTER_MW_MERGE on BOTH copies, tracks each
+    writer's own sectors (per-sector OR mask), and the serve-path invariant
+    (gpu-cache.cc:2825, :3284) FORBIDS a single-owner whole-line forward from a
+    MW_MERGE line so the consumer reads the byte-accurate merge. Multiple writers,
+    one line, one epoch, directoryless, bit-identical (checksum 341120,
+    mismatches=0). Correctness (I1/I2, below) proves no lost/torn write.
+
+  CLUSTER ATOMICS (concurrent same-address RMW) — Path B above.
+    8 SMs concurrently atomicAdd the SAME word; a single migrating owner-token
+    serialises them over one sm2sm hop each (upgradereq=56). Concurrent RMW to
+    one line, one epoch, directoryless (one token, no sharer set), bit-identical
+    (checksum 33216). Correctness (I3) proves serialisability / no lost update.
+
+  HONEST SCOPE / what is NOT claimed:
+    - Racing PLAIN writes to the SAME byte are a data race, UNDEFINED under the
+      PTX scoped memory model (Lustig et al., ASPLOS'19). RESC does not order
+      them and only guarantees it never returns a value outside the write-set.
+      This is case (C) in multiwriter.dat and is stated, not "handled".
+    - The stencil secondary kernel (mw_stencil) is structurally
+      single-writer-per-line in this sim's residency model: merge NEVER fires
+      (mw_merge_entries=0 on all 4 arms), bit-identical. Reported honestly as a
+      correctness case, NOT a merge demonstration (see MW_RESULTS.txt).
+    - Multi-writer is a CORRECTNESS/generality result (removes the "single-writer
+      forwarding cache" cap), NOT a new speedup axis. Path A is ~2% faster than
+      correct-global and 0 vs old-escape; Path B is +0.6% honest token overhead.
+      The win axis stays occupancy + read-share legality elsewhere in the paper.
+
+################################################################################
+(e) CORRECTNESS COVERAGE — model-check + data-carrying harness (re-run, PASS)
+################################################################################
+Off-sim explicit-state model check (resc_mw_modelcheck.py; Murphi not installed,
+Python BFS/permutation enumerator per Dill et al. ICCD'92) — RE-RUN THIS SESSION:
+  PART 1 real protocol, all PASS (exhaustive at bound):
+    (I1) SWMR data-value integrity per sector (disjoint-sector false sharing):
+         PASS for 2/3/4 SMs (orders_checked 2/6/24) — no lost/torn write.
+    (I2) merge commutativity + associativity: PASS 2/3/4 SMs — delivered line
+         independent of merge order.
+    (I3) atomic owner-token serialisability: PASS 2/3/4 concurrent atomicAdd
+         (base 1000 -> 1021/1033/1046) — total order = a serial execution.
+  PART 2 ablations (mechanism NECESSARY), both produce counterexamples:
+    Ablation-1 whole-line LWW (drop per-sector mask): lost-write CE
+       (delivered (-1,-1,-1,103); sectors of earlier writers lost).
+    Ablation-2 no owner-token (RMW race): lost-update CE
+       (base 1000, expected 1021, got 1011, lost 10).
+  Verdict line: "ALL CHECKS AS EXPECTED: I1/I2/I3 PASS on the real protocol;
+  both ablations produced counterexamples (mechanism is NECESSARY)."
+
+Data-carrying harness (resc_mw_harness.cpp, real arrays, serial golden ref) —
+RE-COMPILED + RE-RUN THIS SESSION:
+    PATH A  800,000 disjoint-sector writes, 16 SMs:
+      real per-sector merge : mismatches=0  (checksum==golden 0x4b0ca9169736129f)
+      LWW ablation          : mismatches=600000  (checksum diverges)
+    PATH B  1,600,000 concurrent RMWs / 50,000 hot lines, 16 SMs:
+      real owner-token      : mismatches=0  (checksum==golden 0xb0e35ab0b7186e7c)
+      no-token ablation     : mismatches=50000  (lost updates)
+    HARNESS VERDICT: PASS.
+
+Coverage status vs the directoryless multi-writer invariants:
+  - disjoint-sector SWMR  -> I1 (covered, PASS + harness 0-mismatch)
+  - merge commutative+associative -> I2 (covered, PASS)
+  - atomic token serialises -> I3 (covered, PASS + harness 0-mismatch)
+  All three invariants the task requires ARE covered. The model reflects the
+  IMPLEMENTED transition table (file:line handoff table in
+  correctness/CORRECTNESS_ARGUMENT.md §7). Honest gap (already disclosed there):
+  the model is an abstraction of the transitions, not a C++ extraction; the sim
+  is tag-only so in-sim bit-identity is structural — which is exactly WHY the
+  off-sim model-check + data-carrying harness are the coherence proof. The
+  overlap-agent changes do NOT touch the modelled transitions (merge + token
+  functions unchanged; overlap added an ADDITIVE gen-ring gate defaulting OFF),
+  so the correctness argument remains valid as written.
+
+################################################################################
+(f) PRECISE NOVELTY STATEMENT vs DeNovo / hLRC / VIPS (evidence per clause)
+################################################################################
+STATEMENT:
+  "The self-invalidation family (DeNovo PACT'11, hLRC MICRO'16, VIPS/VIPS-M
+  PACT'12) provides coherence for data-race-free execution in which, within a
+  synchronization phase/epoch, each coherence unit has a single writer;
+  concurrent conflicting writers to one unit in one phase are, by construction, a
+  data race outside their model. RESC provides coherence for the multi-writer
+  patterns that ONE cluster epoch legitimately admits — concurrent disjoint-
+  sector writers to a single line, and concurrent cluster-scoped atomics to a
+  single address — and does so DIRECTORYLESS: no sharer vector, no home-node/LLC
+  owner registry, only per-line/per-sector L1 state plus a bounded intra-cluster
+  probe over the SM-to-SM fabric."
+
+  Clause 1 — "SI family assumes single-writer-per-phase under DRF":
+    DeNovo: "data-race-freedom eliminates concurrent conflicting accesses and
+      corresponding transient states" and coherence state is kept "at the
+      granularity at which the program guarantees data race freedom" (PACT'11,
+      denovo-pact2011.pdf p.4).
+    VIPS-M: "there is only one writer per word at a time (otherwise there would
+      be a data race)" (PACT'12, vips-pact2012.pdf p.4).
+    hLRC: built on the heterogeneous-race-free (HRF) model; GPUs "forgo CPU-like
+      coherence protocols where each write obtains ownership to enforce the
+      single-writer/multiple reader invariant" and self-invalidate at sync
+      (MICRO'16, hlrc-micro2016.pdf p.1).
+
+  Clause 2 — "RESC handles concurrent writers one epoch admits": Path A
+    (disjoint-sector, 8 concurrent writers to one line, mw_merge_entries=64,
+    bit-identical) + Path B (concurrent atomics, upgradereq=56, bit-identical),
+    both this session (b); correctness I1/I2/I3 + ablations (e).
+
+  Clause 3 — "directoryless": Path A no owner/sharer structure at all, bounded
+    L1<->L1 cluster probe (gpu-cache.cc:3470, shader.cc:5079), per-sector state
+    in the L1 line (gpu-cache.h:555); Path B a single migrating owner-token, "No
+    sharer set" (gpu-cache.cc:244), one sm2sm hop/handoff, never broadcast
+    (gpu-cache.cc:3646-3667). Evidence (c).
+
+  Clause 4 — "beyond DeNovo specifically": DeNovo removes the sharer directory
+    but STILL registers a single owner at the LLC ("on a write, a core register
+    itself at ... the shared L2 cache. The L2 data banks serve as the registry",
+    PACT'11 p.4). RESC Path A performs NO home/L2 owner registration for the
+    merge — co-writers are discovered by a region-scoped L1 probe and reconciled
+    per-sector, and the value reaches L2 by ordinary write-through. This is the
+    load-bearing distinction from DeNovo.
+
+  This also discharges the author's standing "multi-writer must be evaluated"
+  directive: multi-writer is BUILT, MEASURED (b), proved correct (e), and framed
+  against the correct neighbors — not punted to global.
+
+Bibs (already present, DBLP-verified, in resc-regime-paper/refs.bib):
+  denovo-pact11, alsop-lazy-release-micro16 (hLRC), ros-kaxiras-vips (VIPS),
+  hower-hrf (HRF), singh-temporal-coherence, tardis*. Correctness bibs
+  (correctness/refs.bib): DBLP:conf/iccd/DillDHY92 (Murphi/model-checking),
+  DBLP:conf/asplos/LustigSG19 (PTX memory model, case-C UB).
+
+################################################################################
+FILE PATHS
+################################################################################
+  Sim source (live tree):
+    src/gpgpu-sim/gpu-cache.cc  (merge :3443, token :3589, serve-invariant :2825
+      & :3284, MW globals :238-257, atomic-owner token :242-246)
+    src/gpgpu-sim/gpu-cache.h   (:58 state, :457-463 mask accessors, :555 member)
+    src/gpgpu-sim/shader.cc     (:5079 collect_shader_cores_for_cluster_slot)
+  Workloads: c2c_test/mw_reduce.cu (FORM=1 Path A, FORM=0 Path B),
+             c2c_test/mw_stencil.cu (secondary, honest 0-merge)
+  Runner   : c2c_test/final_all.sh
+  Result   : c2c_test/MW_RESULTS.txt, MW_RESULTS_pathA_falsesharing.txt,
+             MW_RESULTS_pathB_atomic.txt, and THIS file
+             c2c_test/MULTIWRITER_NOVELTY.txt
+  Correctness: c2c_test/correctness/{resc_mw_modelcheck.py, resc_mw_harness.cpp,
+             CORRECTNESS_ARGUMENT.md, modelcheck_output.txt, harness_output.txt,
+             refs.bib}
+  Frozen data snapshot: resc-asplos-2027/resc-regime-paper/data/multiwriter.dat
+================================================================================

@@ -1,0 +1,197 @@
+================================================================================
+RESC ATTRIBUTION EXPERIMENT — RAW RESULTS
+Placement (safe L1 residency) vs Coherence (RESC's design point) decomposition
+================================================================================
+Date: 2026-08-29
+Sim tree: /legacy-research/owner/cudatest/RESC-c2c-wt (branch contention-collapse), host
+  legacy-user@legacy-host.invalid, env clustersim-py311. Config cfg_h20 (sm2sm=195,
+  l2_rop=242, dram=224, l1=41). Pre-registration:
+  ccl-pivot/attribution-preregistration.md (vote D, written BEFORE running).
+
+CONFIG-ONLY / OFF-SIM ADDITIONS — NO sim source edited this session. Sanity gate
+GREEN before AND after (DSM=2656.0 GLOBAL=2868.0 ratio=0.926). New files added:
+correctness/arm1_divergence.cpp (off-sim), run_attribution_makeorbreak.sh,
+run_occ_attrib.sh, run_mw_attrib.sh (config/env-only runners).
+
+--------------------------------------------------------------------------------
+(a) SANITY GATE — PASS (before and after all experiments)
+--------------------------------------------------------------------------------
+  cp cfg_h20.config gpgpusim.config; ./simxl_c8 256   (RESC_GEN_RING unset = OFF)
+  => nfloats=256 bytes=1024 cluster=8 | DSM=2656.0 GLOBAL=2868.0 ratio(dsm/glob)=0.926
+  EXACT match to the locked gate. Green post-experiments (no source edits).
+
+--------------------------------------------------------------------------------
+(b) THE FOUR ARMS — exact knobs (mostly existing config/env, NO new protocol build)
+--------------------------------------------------------------------------------
+arm0 = legal ld.cg-refetch, NO residency (correct GPU incumbent = global/DSM).
+       Legality bench: resc_e2e.cu -DBACKEND=0 (ld.global.cg, bypasses L1).
+       Occupancy bench (incumbent that pays the tax): DSM = -DBACKEND=1 (reserves
+       SMEM); zero-SMEM correct global = -DBACKEND=0.
+       Pipeline bench: RESC_GEN_RING=1 (eager/hLRC bulk self-invalidate).
+       MW bench: mw_reduce_*_base (built -DRESC_MW_BASELINE_BUILD, no RESC hook).
+
+arm1 = UNSAFE-L1 overlay: residency ON, coherence OFF (fast, upper bound, WRONG).
+       Legality bench: resc_e2e.cu -DBACKEND=4 (ld.global.ca caches in L1 with NO
+       epoch gating / self-invalidate = lines never self-invalidate = G=inf).
+       Correctness (bit-divergence): correctness/arm1_divergence.cpp (off-sim;
+       see (d) — the tag-only sim CANNOT show staleness in-sim).
+
+arm2 = DeNovo/hLRC SAFE single keep-valid interval (safe residency, per-epoch
+       self-invalidate). RESC_GEN_RING=2, RESC_MW OFF (=0).
+       Legality/occupancy: same zero-SMEM RESC binary as arm3 (-DBACKEND=2
+       -DREAD_MODE=1 -DWRITE_MODE=1); occupancy is set by launch-time SMEM
+       reservation, NOT by the gen-ring env, so arm2==arm3 there by construction.
+
+arm3 = FULL RESC: generation ring G>=LAG+1 (>=3) + RESC_MW ON (=1).
+       Pipeline: RESC_GEN_RING=<LAG+1>. MW: RESC_MW=1 (per-sector merge Path A /
+       owner-token Path B).
+
+Commands (representative):
+  arm0 pipe:  RESC_GEN_RING=1 ./pipe_chain 4 32 <LAG> 4
+  arm2 pipe:  RESC_GEN_RING=2 ./pipe_chain 4 32 <LAG> 4
+  arm3 pipe:  RESC_GEN_RING=<LAG+1> ./pipe_chain 4 32 <LAG> 4
+  arm1 legal: legality_work/ca_l ...  (BACKEND=4)   arm0: cg_l (BACKEND=0)
+  arm2/3 leg: legality_work/resc_l ... (BACKEND=2)
+  MW: mw_reduce_fs_base | RESC_MW=0 mw_reduce_fs | RESC_MW=1 mw_reduce_fs
+
+--------------------------------------------------------------------------------
+(c) PER-BIG-NUMBER ATTRIBUTION — PLACEMENT (arm2/arm0) vs COHERENCE (arm3/arm2)
+--------------------------------------------------------------------------------
+### BIG NUMBER 1 — OCCUPANCY (was 1.47-2.18x). Source: e2e_master.log (real runs)
+    cs=8 N=7, cfg_h20, avg_elems=512 reuse=4. arm0=DSM incumbent (SMEM tax),
+    arm2/arm3 = zero-SMEM RESC.
+  TILE_KB | DSM cyc | RESC cyc | PLACEMENT dsm/resc | COHERENCE arm3/arm2
+     0    |  29007  |  19823   |     1.463x         |   1.000 (identical binary)
+    32    |  74649  |  48817   |     1.529x         |   1.000
+    64    | 104263  |  72450   |     1.439x         |   1.000
+    96    | 200333  | 106762   |     1.876x         |   1.000
+   128    | 219076  | 204652   |     1.070x         |   1.000
+  Direct arm2-vs-arm3 confirm (resc_m re-run under G=2 and G=3, cs=2):
+     G=2: cta/core=8 cyc=37451 l1miss=0.2211   G=3: cta/core=8 cyc=37451 l1miss=0.2211
+     => IDENTICAL. The gen-ring env cannot change launch-time SMEM reservation.
+  ATTRIBUTION: occupancy is ~100% PLACEMENT. RESC's coherence design point adds
+  0.0% to occupancy (conceded, as pre-registered). The win is zero-SMEM residency
+  (L1+fabric) vs DSM's map_shared buffer that halves CTA occupancy.
+
+### BIG NUMBER 2 — LEGALITY (was up to 2.64x). Source: legality.log (real runs)
+    Equal occupancy (TILE=0, all arms same CTA=8). cg=arm0 correct global,
+    resc=arm2/3 safe residency, ca=arm1 UNSAFE ceiling. cs=2 N=1.
+  payloadB reuse | cg(arm0) resc(arm2/3) ca(arm1) | PLACEMENT cg/resc | resc/ca
+     2048    1   |  15959     15660    15901 |    1.019x         | 0.985
+     2048    2   |  22368     17253    17651 |    1.296x         | 0.977
+     2048    4   |  34608     20422    21715 |    1.695x         | 0.940
+     2048    8   |  59118     27515    29205 |    2.149x         | 0.942
+     2048   16   | 108032     40912    44372 |    2.641x  <-peak | 0.922
+     8192    8   | 109929     46376    50040 |    2.370x         | 0.927
+      512   16   |  43241     19523    20391 |    2.215x         | 0.957
+  ATTRIBUTION: legality within-epoch reuse is ~100% PLACEMENT. The safe residency
+  arm2 captures ALL of the 2.64x (it lands within 0.92-0.99 of the UNSAFE ceiling
+  arm1/ca; RESC often BEATS ca because RESC writes back to L2 => fewer DRAM reads,
+  406 vs 4965). RESC's coherence design point buys ~0% extra legality perf here;
+  what it buys over arm1 is CORRECTNESS (arm1 is bit-WRONG — see (d)).
+
+--------------------------------------------------------------------------------
+(d) ARM1 BIT-DIVERGENCE — the correctness hook (off-sim, data-carrying)
+--------------------------------------------------------------------------------
+WHY OFF-SIM: GPGPU-Sim cache_block_t is TAG-ONLY (no data array; gpu-cache.h).
+Every load/store/atomic runs in the FUNCTIONAL model against global shadow memory,
+so an in-sim checksum is byte-correct even for a BROKEN coherence policy
+(gpu-cache.cc:3319-3323 says this). In-sim BITIDENTICAL=1 for ALL arms — that is
+STRUCTURAL, not a correctness proof. Staleness is a VALUE property, shown on real
+data by a model that replays the exact residency + gen-window logic
+(resc_gen_live, gpu-cache.cc:407-419). Same methodology as the MW correctness
+argument (correctness/CORRECTNESS_ARGUMENT.md, modelcheck_output.txt).
+
+Workload: a REUSED cluster-scoped comm buffer (bounded ring, LAG+1 slots) that a
+producer republishes each epoch — the normal cluster idiom (mw_stencil halo /
+mailbox), NOT a fresh malloc per epoch. Golden = value(prod, epoch-LAG).
+
+  correctness/arm1_divergence 8 32 <LAG> 128 :
+  LAG | arm0 refetch | arm1 UNSAFE     | arm2 DeNovo G=2 | arm3 RESC G=LAG+1
+   1  | mism=0 CORRECT| mism=29696 WRONG| mism=0 CORRECT  | mism=0 CORRECT (served 31744)
+   2  | mism=0 CORRECT| mism=27648 WRONG| mism=0 CORRECT  | mism=0 CORRECT (served 30720)
+   4  | mism=0 CORRECT| mism=23552 WRONG| mism=0 CORRECT  | mism=0 CORRECT (served 28672)
+  arm1 returns STALE values (pinned L1 copy, no self-invalidate) once the ring
+  wraps: mism>0 = INCORRECT. arm0/arm2/arm3 bit-correct. NOTE at LAG>=2: arm2
+  (DeNovo single keep-valid interval) is CORRECT but served=0 — it CANNOT serve
+  the lagged read from peer L1, it must refetch from L2; arm3 serves it (30720).
+  FINDING: the fast unsafe-residency upper bound (arm1) is BIT-WRONG. Coherence
+  (arm2 self-invalidate OR arm3 gen-ring) is what buys CORRECTNESS atop residency.
+
+--------------------------------------------------------------------------------
+(e) THE MAKE-OR-BREAK — arm3 over CORRECT arm2, LAG + concurrent-writer regime
+--------------------------------------------------------------------------------
+### LAG sweep, pipe_chain distributed suppliers (fan-in=1, NON-strawman: each
+    producer serves exactly one consumer, no injection cliff). charge ON, cfg_h20.
+  LAG | arm0 G1 | arm2 G2 | arm3 G(LAG+1) | served2 | served3 | arm3/arm2 | bit
+   1  |  58645  |  56661  |  56661        |  13888  |  13888  |  1.000    | 1/1/1
+   2  |  57906  |  57906  |  55986        |    0    |  13440  |  0.967    | 1/1/1
+   3  |  57167  |  57167  |  55311        |    0    |  12992  |  0.968    | 1/1/1
+   4  |  56428  |  56428  |  54636        |    0    |  12544  |  0.968    | 1/1/1
+  STRUCTURAL core (real): served2=0 for LAG>=2 => arm2 (DeNovo cur+next single
+  keep-valid interval) provably CANNOT serve a lag>=2 read; it drains to L2. arm3
+  serves all of them (gen ring). This is the behaviour a single keep-valid
+  interval cannot express — it is the real, measured structural contribution.
+  PERFORMANCE: arm3-over-arm2 best = 3.3% faster (LAG=2). All bit-identical.
+
+### CONCURRENT-MULTI-WRITER regime (mw_reduce, 8 concurrent writers/cluster).
+    In-sim timing (tag-only => in-sim bit always identical; concurrent-MW
+    CORRECTNESS established off-sim: modelcheck_output.txt I1/I2/I3 PASS +
+    both ablations produce lost-write / lost-update counterexamples).
+  path | arm0 correct-global | arm2 RESC no-MW | arm3 RESC MW | arm3/arm2
+   A (false-share, r=5) |  10956  |  10740  |  10740  |  1.000
+   B (atomics,     r=1) |   7049  |   7061  |   7102  |  1.006
+  arm3/arm2 = 1.000 (Path A per-sector merge adds ZERO cycles) / 1.006 (Path B
+  owner-token +0.6% honest migration overhead, NOT a speedup). The MW machine
+  buys CORRECTNESS + generality (disjoint writers, concurrent atomics, never
+  broadcast: 1 fabric hop per ownership change), not performance.
+
+--------------------------------------------------------------------------------
+(f) PRE-REGISTERED GATE — which holds
+--------------------------------------------------------------------------------
+Prereg SUCCESS rule: arm3 beats arm2 by >=1.3x in a defensible non-strawman
+  regime (real concurrent writers / deep pipeline where arm2 provably
+  serializes/refetches).
+Prereg NULL rule: arm3-over-arm2 stays modest (<1.3x) OR the regime is a
+  sim-fidelity artifact.
+
+MEASURED best arm3-over-arm2 = 1.033x (3.3%, pipeline LAG=2); MW = 1.000 / 1.006.
+ALL well below 1.3x.  => **NULL holds. Scissors CONFIRMED.**
+
+The regime where arm2 provably fails IS defensible and non-strawman (served2=0
+for LAG>=2 is a real structural inability of a single keep-valid interval), and
+arm3 IS faster there — but only by ~3%, because the served read-share saves a
+fixed comm-latency delta (peer-L1 195 vs L2 242 cyc) that is small relative to
+whole-kernel time; the in-order ClusterSim models no async compute/copy overlap
+that would amplify it (reported honestly, not claimed).
+
+HONEST VERDICT (as pre-registered): RESC's LARGE numbers (occupancy 1.44-1.88x
+here, legality up to 2.64x) are PLACEMENT — any safe L1-resident scheme (arm2)
+gets them; the coherence design point adds ~0%. RESC's genuinely unique value is
+(a) CORRECTNESS: the fast unsafe overlay (arm1) is bit-WRONG (stale reads once a
+reused comm buffer wraps; concurrent multi-writers lose writes/updates); arm2/arm3
+are bit-correct; and (b) GENERALITY: LAG>=2 pipelines and concurrent multi-writers
+that a correct simpler baseline (arm2) provably cannot serve from L1 (served2=0)
+— arm3 serves them, correctly, ~3% faster. The honest thesis is legality-led
+"legal + general L1 residency (correct where the unsafe overlay is wrong, general
+where DeNovo serializes)", with a coherence-design-point contribution that is
+STRUCTURAL (expresses a class DeNovo/hLRC cannot) but performance-MODEST in this
+in-order simulator.
+
+--------------------------------------------------------------------------------
+(g) FILES
+--------------------------------------------------------------------------------
+Raw data (this experiment):
+  c2c_test/ATTRIBUTION_MAKEORBREAK.dat   (LAG sweep, real runs)
+  c2c_test/ATTRIBUTION_MULTIWRITER.dat   (concurrent-MW, real runs)
+  c2c_test/ATTRIBUTION_OCCUPANCY.dat     (arm2==arm3 occupancy confirm)
+  c2c_test/correctness/arm1_divergence.cpp + built binary (off-sim divergence)
+Raw data (existing real runs, reused honestly):
+  c2c_test/e2e_master.log                (occupancy staircase, all 4 arms)
+  c2c_test/legality.log                  (legality cg/resc/ca sweep)
+  c2c_test/OVERLAP_RESULTS.txt           (gen-ring LAG detail)
+  c2c_test/MW_RESULTS*.txt               (MW paths)
+  c2c_test/correctness/modelcheck_output.txt, harness_output.txt (off-sim correctness)
+Runners: run_attribution_makeorbreak.sh, run_occ_attrib.sh, run_mw_attrib.sh
+Writeup mirror: ccl-pivot/attribution-results.md
+================================================================================

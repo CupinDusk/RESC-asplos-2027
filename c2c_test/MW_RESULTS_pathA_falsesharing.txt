@@ -1,0 +1,16 @@
+=== ARM1 CORRECT-GLOBAL (no RESC) ===
+gpu_tot_sim_cycle = 10939
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=1 cluster=8 num_clusters=8 rounds=5 OUT_CHECKSUM=341120 REF_CHECKSUM=341120 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM2 RESC-MULTI-WRITER (RESC_MW=1) ===
+gpu_tot_sim_cycle = 10706
+[RESC_MW_STATS] mw_merge_entries=64 falsesharing_reads=0 sector_writebacks=280 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=1 cluster=8 num_clusters=8 rounds=5 OUT_CHECKSUM=341120 REF_CHECKSUM=341120 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM3 RESC-OLD-ESCAPE (RESC_MW=0) ===
+gpu_tot_sim_cycle = 10706
+[RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=1 cluster=8 num_clusters=8 rounds=5 OUT_CHECKSUM=341120 REF_CHECKSUM=341120 BITIDENTICAL=1 mismatches=0 first_mis=-1
+=== ARM4 RESC-WHOLE-LINE-LWW (RESC_MW=1 LWW=1) ===
+gpu_tot_sim_cycle = 10706
+[RESC_MW_STATS] mw_merge_entries=64 falsesharing_reads=0 sector_writebacks=1120 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+MW_REDUCE FORM=1 cluster=8 num_clusters=8 rounds=5 OUT_CHECKSUM=341120 REF_CHECKSUM=341120 BITIDENTICAL=1 mismatches=0 first_mis=-1

@@ -463,6 +463,24 @@ class core_config {
   uint32_t dsmem_atomic_latency;
   uint32_t cluster_arrive_latency;
   uint32_t cluster_wait_latency;
+  // FIDELITY FIX D2 (2026-09-03): model the Hopper cluster-barrier ACQUIRE.
+  // Real sm_90 lowers barrier.cluster.wait{.acquire} (acquire is the PTX
+  // default, PTX ISA 9.3 s9.7.14.3) to UCGABAR_WAIT; CCTL.IVALL -- a whole-L1
+  // invalidate.  1 = model it (faithful to shipping silicon).
+  // 0 = model fence.acquire.sync_restrict::shared::cluster.cluster
+  //     (PTX ISA 9.3 s9.7.14.4), whose effect is confined to .shared::cluster
+  //     state space and therefore leaves the global L1 intact -- the legal
+  //     escape a SMEM-staging baseline may take.
+  // SELECTIVE-INVALIDATE (2026-09-03): widened bool -> int.  RESC's defining
+  // act is neither 0 nor 1 but a THIRD behaviour -- invalidate only the lines
+  // that could be stale (the marked communication set) and preserve the rest:
+  //   2 = marked-line selective invalidate (RESC minimal-correct acquire)
+  //   3 = 2, plus retain marked lines held in an OWNER cluster-state
+  //       (the DeNovo/hLRC self-invalidation rule: an acquire self-invalidates
+  //       valid-but-not-owned lines; an owner's copy is the newest).
+  // Values 2/3 model RESC HARDWARE and must never be granted to a baseline
+  // arm that has no such hardware (fairness rule, prereg S3).
+  int cluster_barrier_invalidate_l1;
 };
 
 // bounded stack that implements simt reconvergence using pdom mechanism from

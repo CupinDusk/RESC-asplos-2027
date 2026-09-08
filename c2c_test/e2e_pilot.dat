@@ -1,0 +1,13 @@
+# RESC e2e master sweep  CI=6 NC=12 RPT=4 AE=512 RU=4  2026-08-27T10:13:26Z
+# cols: arm tile_kb cluster N cta_core limiter l1_kb cycles l1d_miss_rate l2_miss_rate ipc dram_rd_g dram_wr_g
+global 0 2 1 8 threads+regs 256 32229 0.2500 0.0718 67.4007 14748 3374
+global 0 8 7 8 threads+regs 256 39443 0.2798 0.0280 196.7472 44062 5649
+dsm 0 2 1 7 shmem 192 24809 0.2500 0.0625 75.4294 0 48
+dsm 0 8 7 7 shmem 28 38546 0.2500 0.0357 161.7823 0 336
+hybrid 0 2 1 7 shmem 224 20672 0.2500 0.1740 103.3330 4103 3374
+hybrid 0 8 7 7 shmem 192 27921 0.2798 0.0724 341.8278 13589 5649
+resc 0 2 1 8 threads+regs 256 17463 0.2168 0.3803 115.2300 938 3212
+resc 0 8 7 8 threads+regs 256 25197 0.0899 0.2637 294.9172 1077 5446
+global 32 2 1 7 shmem 224 95055 0.2000 0.0713 644.2673 14772 3470
+global 32 8 7 7 shmem 192 NA NA NA NA NA NA
+dsm 32 2 1 3 shmem 28 87810 0.1000 0.0192 694.0679 12 144

@@ -8,6 +8,30 @@ int sm2sm_latency = 171;  // Default latency for SM to SM network
 int sm2sm_bandwidth =
     88;  // Default bandwidth for SM to SM network in bits/cycle
 
+// N->1 output-port bandwidth-collapse model (calibrated to Dissecting-Hopper aggregate SM-to-SM
+// bw: 3948/2332/1960 GB/s for cluster 2/4/8). collapse_factor(k) = effective-bw fraction when k
+// concurrent inputs contend for one output port. k<=1 => 1.0 (baseline unchanged).
+int sm2sm_collapse = 0;  // 0 = stock crossbar; 1 = enable calibrated collapse
+// DSM fan-in calibration (2026-09-04). Real H20 DSM read latency is FLAT in cluster
+// size (validation_crossover.dat: 7299/7445/7427 cyc at nfloats=1024, c2/c4/c8) but the
+// stock single-winner-per-output-port RR below serializes all k consumers of one producer,
+// making sim DSM grow 8072->10504. The producer SMEM on real Hopper sustains 71-103 B/cyc
+// under broadcast (ClusterSim IISWC'25 Sec.V-B), i.e. it services several readers per cycle,
+// while one output port here delivers only m_bandwidth=88 bit/cyc to a single winner.
+// S = number of distinct requesters an output port may grant per cycle. S<=1 is EXACTLY the
+// stock path (bit-identical); S>1 relaxes the fan-in serialization only.
+int sm2sm_service_slots = 1;  // 1 = stock (unchanged); >1 = calibrated fan-in service
+static inline double sm2sm_collapse_factor(int k) {
+  if (k <= 1) return 1.0;
+  // pinned from the bw-cliff microbench (orthogonal to the payload crossover):
+  //   k=2 -> 1.00, k=4 -> 2332/3948 = 0.591, k=8 -> 1960/3948 = 0.496.
+  // piecewise-linear in k between the measured anchors, clamped.
+  if (k <= 2) return 1.00;
+  if (k <= 4) return 1.00 + (0.591 - 1.00) * (k - 2) / (4 - 2);
+  if (k <= 8) return 0.591 + (0.496 - 0.591) * (k - 4) / (8 - 4);
+  return 0.496;  // >=8 contenders: floor
+}
+
 void sm2sm_network_options(class OptionParser* opp) {
   option_parser_register(opp, "-sm_2_sm_network_latency", OPT_INT32,
                          &sm2sm_latency, "Latency of the SM to SM network",
@@ -15,6 +39,13 @@ void sm2sm_network_options(class OptionParser* opp) {
   option_parser_register(
       opp, "-sm_2_sm_network_bw", OPT_INT32, &sm2sm_bandwidth,
       "Bandwidth of the SM to SM network in bit/cycle", "88");
+  option_parser_register(
+      opp, "-sm_2_sm_collapse", OPT_INT32, &sm2sm_collapse,
+      "Enable N->1 output-port bandwidth-collapse model (0=stock,1=calibrated)", "0");
+  option_parser_register(
+      opp, "-sm_2_sm_service_slots", OPT_INT32, &sm2sm_service_slots,
+      "Requesters an output port may grant per cycle (1=stock RR, >1=calibrated fan-in)",
+      "1");
 }
 
 cluster_shmem_request::cluster_shmem_request(warp_inst_t* warp, addr_t address,
@@ -124,8 +155,40 @@ void Crossbar::Advance() {
     }
   }
 
-  // 3. Perform round-robin arbitration per output port
+  // 3. Arbitration per output port.
+  // collapse==2: SHARED-BW-POOL model — the output port's total bandwidth m_bandwidth is SPLIT
+  // among all k concurrent contenders (each gets m_bandwidth/k), draining ALL of them this cycle.
+  // This makes a large message under k-way contention take ~k x longer (aggregate bw does not grow
+  // with contenders), reproducing the silicon N->1 bandwidth collapse in a payload-DEPENDENT way.
+  if (sm2sm_collapse == 2) {
+    for (int out = 0; out < num_ports; ++out) {
+      int k = (int)requests[out].size();
+      if (k == 0) continue;
+      { static long _kh[16]={0}; if(k<16)_kh[k]++; static long _n=0;
+        if((++_n)%200000==1) fprintf(stderr,"[KHIST] k1=%ld k2=%ld k3=%ld k4=%ld k5=%ld k6=%ld k7=%ld k8=%ld\n",_kh[1],_kh[2],_kh[3],_kh[4],_kh[5],_kh[6],_kh[7],_kh[8]); }
+      int per = std::max(1, m_bandwidth / k);   // shared pool split among k contenders
+      for (int requester : requests[out]) {
+        Message& msg = input_queues[requester].front();
+        int send_amount = std::min(per, msg.size - msg.sent_bits);
+        msg.sent_bits += send_amount;
+        if (msg.sent_bits >= msg.size) {
+          in_flight.push_back({msg, m_time});
+          input_queues[requester].pop();
+        }
+      }
+    }
+    ++m_time;
+    return;
+  }
+
+  // 3b. Stock round-robin arbitration per output port (collapse 0=off, 1=scalar-factor)
+  // The slot loop below runs EXACTLY ONCE when sm2sm_service_slots <= 1, in which case this
+  // is the unmodified stock code path (one grant per output port per cycle). See the note at
+  // the sm2sm_service_slots definition for the silicon justification of S > 1.
+  const int n_slots = (sm2sm_service_slots > 1) ? sm2sm_service_slots : 1;
   for (int out = 0; out < num_ports; ++out) {
+    std::vector<int> granted;  // empty and unused when n_slots == 1
+    for (int slot = 0; slot < n_slots; ++slot) {
     if (!requests[out].empty()) {
       int chosen = -1;
       int start = rr_pointers[out];
@@ -134,6 +197,10 @@ void Crossbar::Advance() {
         int idx = (start + i) % num_ports;
         for (int requester : requests[out]) {
           if (requester == idx) {
+            // a requester may be granted at most one slot per cycle
+            if (n_slots > 1 &&
+                std::find(granted.begin(), granted.end(), idx) != granted.end())
+              continue;
             chosen = idx;
             rr_pointers[out] = (idx + 1) % num_ports;
             break;
@@ -143,15 +210,23 @@ void Crossbar::Advance() {
       }
 
       if (chosen != -1) {
+        if (n_slots > 1) granted.push_back(chosen);
         Message& msg = input_queues[chosen].front();
-        int send_amount = std::min(m_bandwidth, msg.size - msg.sent_bits);
+        int k = (int)requests[out].size();
+        int eff_bw = (sm2sm_collapse == 1)
+            ? std::max(1, (int)(m_bandwidth * sm2sm_collapse_factor(k)))
+            : m_bandwidth;
+        int send_amount = std::min(eff_bw, msg.size - msg.sent_bits);
         msg.sent_bits += send_amount;
 
         if (msg.sent_bits >= msg.size) {
           in_flight.push_back({msg, m_time});
           input_queues[chosen].pop();
         }
+      } else {
+        break;  // nothing left to grant on this port this cycle
       }
+    }
     }
   }
   ++m_time;

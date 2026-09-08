@@ -1,0 +1,11 @@
+# N=8 DECISIVE cells (defensible regime) 2026-08-30T10:36:48Z
+# COLS: T K LOCAL | tot g/f/t | comb g/f/t | tree/f tree/g | dram g/f/t | bit g/f/t | round_cyc
+T=1 K=32 L=16 | tot g=9718 f=9984 t=10344 | comb g=3111 f=3255 t=3502 | tree/f=1.036 tree/g=1.064 | dram g=32 f=0 t=0 | bit=1/1/1 | round_cyc=[1106,1106,1106]
+T=1 K=32 L=64 | tot g=10760 f=11028 t=11388 | comb g=3109 f=3255 t=3502 | tree/f=1.033 tree/g=1.058 | dram g=32 f=0 t=0 | bit=1/1/1 | round_cyc=[1106,1106,1106]
+T=1 K=256 L=16 | tot g=17539 f=28899 t=20817 | comb g=7912 f=18921 t=10726 | tree/f=0.720 tree/g=1.187 | dram g=256 f=0 t=0 | bit=1/1/1 | round_cyc=[3514,3514,3514]
+T=1 K=256 L=64 | tot g=25891 f=37251 t=29169 | comb g=7912 f=18921 t=10726 | tree/f=0.783 tree/g=1.127 | dram g=256 f=0 t=0 | bit=1/1/1 | round_cyc=[3514,3514,3514]
+T=0 K=32 L=16 | tot g=9520 f=9293 t=9913 | comb g=3104 f=2756 t=3263 | tree/f=1.067 tree/g=1.041 | dram g=32 f=0 t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+T=0 K=32 L=64 | tot g=10564 f=10337 t=10957 | comb g=3106 f=2756 t=3263 | tree/f=1.060 tree/g=1.037 | dram g=32 f=0 t=0 | bit=1/1/1 | round_cyc=[1035,1035,1035]
+T=0 K=256 L=16 | tot g=17165 f=23924 t=18714 | comb g=7906 f=14313 t=8990 | tree/f=0.782 tree/g=1.090 | dram g=256 f=0 t=0 | bit=1/1/1 | round_cyc=[2944,2944,2944]
+T=0 K=256 L=64 | tot g=25518 f=32276 t=27066 | comb g=7907 f=14313 t=8990 | tree/f=0.839 tree/g=1.061 | dram g=256 f=0 t=0 | bit=1/1/1 | round_cyc=[2944,2944,2944]
+N8_DECISIVE_DONE 2026-08-30T10:55:16Z

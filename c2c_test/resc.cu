@@ -55,6 +55,10 @@ namespace cg = cooperative_groups;
 #define MAX_CLUSTER_SIZE 8
 #endif
 
+#ifndef TILE_KB
+#define TILE_KB 0   /* dummy compute-tile dynamic SMEM (KB) reserved in ALL arms */
+#endif
+
 #ifndef BURST_FACTOR
 // The dynamic hot working set may occasionally expand to avg_elems * BURST_FACTOR,
 // but DSMEM must still reserve RESERVE_ELEMS at compile time.
@@ -231,6 +235,15 @@ void dynamic_mailbox_many_clusters(float* __restrict__ g_payload,
   if (reuse_passes < 1) reuse_passes = 1;
   if (burst_period < 1) burst_period = 1;
 
+  extern __shared__ float g_tile[];
+  const int TILE_ELEMS = (TILE_KB * 1024) / (int)sizeof(float);
+  // Reserve the tile for OCCUPANCY only: one O(1) write defeats DCE so ptxas keeps
+  // the allocation (occupancy tax applies via k.smem), without adding sim cycles
+  // proportional to tile size. We model the tile's capacity cost, not its compute.
+  if (TILE_ELEMS > 0 && tid == 0) {
+    g_tile[0] = (float)rank;
+    g_tile[TILE_ELEMS - 1] = (float)rank;  // touch both ends so full extent is live
+  }
   const int consumers = CLUSTER_SIZE - 1;
   const int hotset_elems = max(1, min(min(STRIDE_ELEMS, RESERVE_ELEMS), avg_elems * BURST_FACTOR));
 
@@ -460,10 +473,14 @@ int main(int argc, char** argv){
   CUDA_CHECK(cudaEventCreate(&ev1));
   CUDA_CHECK(cudaEventRecord(ev0));
 
+  size_t dyn_smem = (size_t)TILE_KB * 1024;
+  cudaFuncSetAttribute(dynamic_mailbox_many_clusters<2>, cudaFuncAttributeMaxDynamicSharedMemorySize, (int)dyn_smem);
+  cudaFuncSetAttribute(dynamic_mailbox_many_clusters<4>, cudaFuncAttributeMaxDynamicSharedMemorySize, (int)dyn_smem);
+  cudaFuncSetAttribute(dynamic_mailbox_many_clusters<8>, cudaFuncAttributeMaxDynamicSharedMemorySize, (int)dyn_smem);
   switch(cluster_size){
-    case 2: dynamic_mailbox_many_clusters<2><<<grid,block>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
-    case 4: dynamic_mailbox_many_clusters<4><<<grid,block>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
-    case 8: dynamic_mailbox_many_clusters<8><<<grid,block>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
+    case 2: dynamic_mailbox_many_clusters<2><<<grid,block,dyn_smem>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
+    case 4: dynamic_mailbox_many_clusters<4><<<grid,block,dyn_smem>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
+    case 8: dynamic_mailbox_many_clusters<8><<<grid,block,dyn_smem>>>(d_payload, d_meta, d_out, repeat, avg_elems, burst_period, reuse_passes); break;
   }
 
   CUDA_CHECK(cudaGetLastError());

@@ -1,0 +1,56 @@
+# MW skewed atomic-scatter contention sweep  2026-08-31T08:07:33Z
+# cfg_h20, cluster=8, payload=4B(32-bit atomic), UPD=512/rank, nclusters=8, block=64
+# arm0=correct-global  arm3=RESC_MW=1 global(owner-token)  arm-dsm=single-owner SMEM funnel
+# K skew hot_frac0 cyc_arm0 cyc_dsm cyc_arm3 dram0 dramDSM dram3 bit0 bitDSM bit3 arm3/dsm arm3/arm0 mw_fabric_msgs mw_tokens inj_events(dsm)
+K=32 skew=uniform hot=0.030 a0=17224 dsm=17471 a3=17864 dram=544/512/544 bit=1/1/1 arm3_beats_dsm=0.978x arm3_beats_a0=0.964x mwmsg=3731 tok=3731 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=3731 forward_downgrades=3731 atomic_local_owner=6949 atomic_nack=0 new_fabric_msgs=3731
+K=32 skew=zipf1.0 hot=0.253 a0=16981 dsm=18349 a3=16705 dram=544/512/544 bit=1/1/1 arm3_beats_dsm=1.098x arm3_beats_a0=1.017x mwmsg=6160 tok=6160 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=6160 forward_downgrades=6160 atomic_local_owner=7152 atomic_nack=0 new_fabric_msgs=6160
+K=32 skew=zipf1.5 hot=0.449 a0=16077 dsm=18059 a3=16320 dram=544/512/544 bit=1/1/1 arm3_beats_dsm=1.107x arm3_beats_a0=0.985x mwmsg=6852 tok=6852 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=6852 forward_downgrades=6852 atomic_local_owner=10676 atomic_nack=0 new_fabric_msgs=6852
+K=64 skew=uniform hot=0.015 a0=17016 dsm=17498 a3=16600 dram=576/512/576 bit=1/1/1 arm3_beats_dsm=1.054x arm3_beats_a0=1.025x mwmsg=6087 tok=6087 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=6087 forward_downgrades=6087 atomic_local_owner=7425 atomic_nack=0 new_fabric_msgs=6087
+K=64 skew=zipf1.0 hot=0.217 a0=16474 dsm=18735 a3=16306 dram=576/512/576 bit=1/1/1 arm3_beats_dsm=1.149x arm3_beats_a0=1.010x mwmsg=7481 tok=7481 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=7481 forward_downgrades=7481 atomic_local_owner=7247 atomic_nack=0 new_fabric_msgs=7481
+K=64 skew=zipf1.5 hot=0.430 a0=15650 dsm=18807 a3=15620 dram=576/512/576 bit=1/1/1 arm3_beats_dsm=1.204x arm3_beats_a0=1.002x mwmsg=8473 tok=8473 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=8473 forward_downgrades=8473 atomic_local_owner=9535 atomic_nack=0 new_fabric_msgs=8473
+K=256 skew=uniform hot=0.002 a0=16756 dsm=17598 a3=16344 dram=768/512/768 bit=1/1/1 arm3_beats_dsm=1.077x arm3_beats_a0=1.025x mwmsg=11413 tok=11413 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=11413 forward_downgrades=11413 atomic_local_owner=11395 atomic_nack=0 new_fabric_msgs=11413
+K=256 skew=zipf1.0 hot=0.160 a0=16775 dsm=18480 a3=17172 dram=768/512/768 bit=1/1/1 arm3_beats_dsm=1.076x arm3_beats_a0=0.977x mwmsg=9054 tok=9054 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=9054 forward_downgrades=9054 atomic_local_owner=9178 atomic_nack=0 new_fabric_msgs=9054
+K=256 skew=zipf1.5 hot=0.406 a0=16626 dsm=18905 a3=16917 dram=768/512/768 bit=1/1/1 arm3_beats_dsm=1.118x arm3_beats_a0=0.983x mwmsg=9656 tok=9656 injev_dsm=0
+    DSM_MWSTATS: [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=0 forward_downgrades=0 atomic_local_owner=0 atomic_nack=0 new_fabric_msgs=0
+    A3_MWSTATS:  [RESC_MW_STATS] mw_merge_entries=0 falsesharing_reads=0 sector_writebacks=0 atomic_upgradereq=9656 forward_downgrades=9656 atomic_local_owner=9072 atomic_nack=0 new_fabric_msgs=9656
+MW_HIST_SWEEP_DONE 2026-08-31T08:27:00Z
+
+# ============================================================================
+# VERDICT (locked decision rule, applied 2026-08-31 post-deadlock-fix)
+# ============================================================================
+# .so md5 = 1a2a46045fc819225427745e6d1e0a11 (FIXED, unchanged). src mtimes shader.cc/gpu-cache.cc = 2026-08-31 15:41:20 (UNCHANGED).
+# binary md5: hist_mw_base=c11d5ff947f3a9a958b977fbfc2b71dd  hist_mw=f987f1f5f617681982b566554811c11d
+# sanity gate before AND after: DSM=2656.0 GLOBAL=2868.0 ratio=0.926 (byte-identical).
+#
+# VERDICT = NULL (first clause: arm3 under 1.1x over the BETTER baseline across the whole sweep).
+#   better baseline = arm0 in ALL 9 cells (arm0 faster than arm-dsm everywhere).
+#   arm3/arm0 across sweep: 0.964 1.017 0.985 1.025 1.010 1.002 1.025 0.977 0.983  -> max 1.025x; arm3 SLOWER than arm0 in 4/9 cells. Never reaches 1.1x.
+#
+# This is a GENUINE mechanism null in the RIGHT regime (not HBM-bound, not fidelity dodge, not strawman):
+#   - BITIDENTICAL = 1/1/1 in ALL 9 cells (correctness precondition met; every cell VALID).
+#   - dram reads LOW + flat (arm-dsm=512 all; arm0/arm3=544/576/768 by K) -> injection/on-chip regime, NOT HBM-bound. No cell disqualified.
+#   - DSM DOES serialize (non-strawman): dsm/arm0 grows MONOTONICALLY with skew in every K row:
+#       K=32 : 1.014 -> 1.081 -> 1.123     K=64 : 1.028 -> 1.137 -> 1.202     K=256: 1.050 -> 1.101 -> 1.137
+#     = crossbar one-requester-per-output-port round-robin (sm_2_sm_network.cc Crossbar::Advance step 3b) funneling N updates through the hot-bin owner port.
+#     NOTE: the separate RESC_INJECT_STATS "events" counter reads 0 (that is the Experiment-B injection model, not engaged on this map_shared_rank path); the DSM serialization here is the crossbar port arbitration, observable as the monotone ratio above.
+#   - arm3 mechanism GENUINELY FIRES (not hollow): atomic_upgradereq = new_fabric_msgs = 3731..11413 (grows with K), forward_downgrades match, atomic_nack=0 (no failed handoff / no deadlock). Negative control stays bit-identical.
+#
+# WHY NULL (expected per pre-registration caveat): the deadlock fix keeps the marked atomic on the stock bypass-L1 path; the physical RMW still resolves at L2 and the owner-token migration is coherence BOOKKEEPING, not physical relocation of the RMW off L2. So arm3 and arm0 both serialize their RMW at the same L2 banks -> arm3 approx arm0. Token counters increment but do NOT redistribute the physical contention. This is the honest scientific answer, not a framing failure.
+#
+# PER-PRE-REGISTRATION RECOMMENDATION (lines 78-80): the mechanism needs a REDESIGN so the physical RMW is actually distributed across the fabric (not just bookkeeping) before any positive MW performance claim is possible. ASPLOS only; no venue pivot; no fabrication. Ceiling holds.
