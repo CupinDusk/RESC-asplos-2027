@@ -2,13 +2,14 @@
 
 ## Git 锚点
 
-- 计划私有仓库：`https://github.com/CupinDusk/RESC-asplos-2027`
+- 私有同步仓库：`https://github.com/CupinDusk/RESC-asplos-2027`
 - 迁移分支：`resc-handoff-20260909`
+- 代码与实验配方快照：`08d57ccdd8b4e8be5dd0ae82c490048906940e0b`
 - 已发表历史 tag：`resc-published-anchor-d3cc7ad7`
 - tag 指向：`d3cc7ad77326c22ed497ed66d8ec5916de47f99c`
 - 旧公开仓库 `https://github.com/CupinDusk/RESC` 不是本轮未发表代码的同步点。
 
-新私有仓库创建并推送完成后，其他机器应从迁移分支开始：
+仓库已于 2026-09-09 创建并推送，可见性已核验为 `PRIVATE`，默认分支为 `resc-handoff-20260909`。其他机器应从该分支开始：
 
 ```bash
 git clone --branch resc-handoff-20260909 \
