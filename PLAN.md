@@ -51,7 +51,7 @@
 - 提交并推送迁移分支与锚点 tag。
 - 验收：GitHub 报告仓库为 private；远端分支 commit 与本地一致；远端 tag 指向 `d3cc7ad7`。
 
-## Milestone 4：实验目录与结果快照（当前）
+## Milestone 4：实验目录与结果快照（已完成）
 
 - 修改文件：`TASK.md`、`PLAN.md`、`.gitignore`、`RESC-MIGRATION.md`、`c2c_test/archive_results_for_git.sh`、`c2c_test/RESULTS-MANIFEST.tsv`、白名单结果文件和 `c2c_test/**/*.log.gz`。
 - 对原始 `.log` 生成确定性 gzip 副本，不删除、截断或覆盖原文件。

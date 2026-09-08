@@ -5,6 +5,7 @@
 - 私有同步仓库：`https://github.com/CupinDusk/RESC-asplos-2027`
 - 迁移分支：`resc-handoff-20260909`
 - 代码与实验配方快照：`08d57ccdd8b4e8be5dd0ae82c490048906940e0b`
+- 实验目录与结果快照：`bec4f31099818c76e8e07c0aa6d10b9b2d58f1a1`
 - 已发表历史 tag：`resc-published-anchor-d3cc7ad7`
 - tag 指向：`d3cc7ad77326c22ed497ed66d8ec5916de47f99c`
 - 旧公开仓库 `https://github.com/CupinDusk/RESC` 不是本轮未发表代码的同步点。
