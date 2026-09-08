@@ -1,0 +1,8 @@
+# ExpB benefit(N) sweep  RESC_INJECT_BW=88  avg_elems=2048  cfg_h20 num_clusters=100 reuse=4
+# N cluster global dsm resc_charged  benefit=global/resc  resc_beats_dsm  checksum_match  inject_events avg_queue
+1 2 61537 58130 35274  1.7445  YES  IDENTICAL()  ev=848 aq=6.316
+2 3 57156 53396 33636  1.6993  YES  IDENTICAL()  ev=894 aq=4.041
+3 4 44623 42097 26857  1.6615  YES  IDENTICAL()  ev=1533 aq=1.838
+4 5 38150 39990 23989  1.5903  YES  IDENTICAL()  ev=2460 aq=1.339
+7 8 40299 53554 27751  1.4522  YES  IDENTICAL()  ev=3413 aq=2.304
+EXPB_SWEEP_DONE conservative_bw88

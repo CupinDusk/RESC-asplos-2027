@@ -1,0 +1,12 @@
+exit.code RECONSTRUCTED (=0), not written by the runner.
+
+I first quarantined this cell as INCOMPLETE. That was WRONG. Evidence the run
+finished normally, all from run.log:
+  - "GPGPU-Sim: *** exit detected ***" is the FINAL line (101545 of 101545)
+  - terminal stats present: gpu_tot_sim_cycle=1312406 gpu_tot_sim_insn=67101440
+  - [RESC_GEN_STATS] and [RESC_L1SPLIT_STATS] present (teardown-only blocks)
+  - MARKFRAC line with OUT_CHECKSUM == REF_CHECKSUM, BITIDENTICAL=1
+  - Reconfigure L1 cache to 64KB (intended config confirmed)
+Only the wrapper subshell -- killed when I cleaned up duplicate run_ws.sh
+drivers -- failed to write exit.code. Same situation as sweep/R2_cl64_pv0.
+Flagged so a reconstructed status is never mistaken for a runner-produced one.

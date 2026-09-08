@@ -1,0 +1,15 @@
+# Exp3 stencil co-demo NC=8 iters=16 cluster=4
+# tile arm cyc cta checksum
+32 cg 109790 16 sum=163873.181641
+32 dsm 116135 16 sum=163873.181641
+32 resc 85658 16 sum=163873.181641
+32 noncoh 86339 16 sum=163873.181641
+64 cg NA 16 NA
+64 dsm NA 13 NA
+64 resc 227715 16 sum=654251.927734
+64 noncoh 230682 16 sum=654251.927734
+96 cg NA 16 NA
+96 dsm NA 6 NA
+96 resc NA 16 NA
+96 noncoh NA 16 NA
+EXP3_DONE

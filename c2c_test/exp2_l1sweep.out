@@ -1,0 +1,9 @@
+# Exp2 L1-hit-cost sweep  pb=8192 reuse=8 cluster=8 N=7 NC=40 repeat=2
+# l1lat arm cyc cta checksum
+41 cg 75783 8 sum=5200.312245
+41 resc 38205 8 sum=5200.312245
+45 cg 75761 8 sum=5200.312245
+45 resc 38831 8 sum=5200.312245
+49 cg 75768 8 sum=5200.312245
+49 resc 39802 8 sum=5200.312245
+EXP2_DONE

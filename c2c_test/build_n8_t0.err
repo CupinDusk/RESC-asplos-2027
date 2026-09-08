@@ -1,0 +1,6 @@
+dcomb.cu(84): warning #177-D: variable "my_gpart" was declared but never referenced
+    int* my_gpart = g_part + (size_t)(cid*CS + rank)*PADK;
+         ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+

@@ -1,0 +1,11 @@
+exit.code was RECONSTRUCTED, not written by the runner.
+The host went down (4th outage, 2026-09-04) after this simulation had already
+finished but before its wrapper subshell wrote exit.code. Evidence the run
+completed normally, all from run.log:
+  - "GPGPU-Sim: *** exit detected ***" banner present (1 occurrence)
+  - terminal stats present: gpu_tot_sim_cycle = 407351, gpu_tot_sim_insn = 21095040
+  - MARKFRAC result line present with OUT_CHECKSUM == REF_CHECKSUM, BITIDENTICAL=1
+  - [RESC_RETAIN_STATS] and [RESC_GEN_STATS] both emitted (they print at teardown)
+Because the simulator emits these only at normal teardown, the data is complete.
+exit.code was set to 0 by hand on that basis. Flagged here so the reconstruction
+is never mistaken for a runner-produced exit status.

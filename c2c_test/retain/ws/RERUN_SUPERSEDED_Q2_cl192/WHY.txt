@@ -1,0 +1,5 @@
+Redundant re-run of Q2, stopped by exact PID (verified by /proc/PID/cwd) once
+the ORIGINAL Q2 cell was confirmed complete and restored. exit=143 = SIGTERM,
+i.e. deliberately stopped by me, NOT a simulator or host failure. Contains a
+partial log only and NO result: no exit-detected banner, no teardown counter
+blocks. Kept rather than deleted so the action is auditable.

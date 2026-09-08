@@ -1,0 +1,21 @@
+CW1_SWEEP_START 2026-08-30_00:23:19
+DONE_CELL h1_nc4_ring2 rc=0
+DONE_CELL h1_nc4_ring1 rc=0
+DONE_CELL h1_nc4_ring3 rc=0
+DONE_CELL h1_nc16_ring1 rc=0
+DONE_CELL h1_nc16_ring3 rc=0
+DONE_CELL h1_nc16_ring2 rc=0
+DONE_CELL h1_nc64_ring1 rc=0
+DONE_CELL h1_nc64_ring2 rc=0
+DONE_CELL h1_nc64_ring3 rc=0
+DONE_CELL h1_nc128_ring1 rc=0
+DONE_CELL h1_nc128_ring2 rc=0
+DONE_CELL h1_nc128_ring3 rc=0
+./cw1_driver.sh: line 19: 539188 Aborted                 RESC_GEN_RING=$ring timeout 5000 $BIN $nc $ns $lag $tl > run.log 2>&1
+DONE_CELL h1_nc256_ring1 rc=134
+./cw1_driver.sh: line 19: 550402 Aborted                 RESC_GEN_RING=$ring timeout 5000 $BIN $nc $ns $lag $tl > run.log 2>&1
+DONE_CELL h1_nc256_ring2 rc=134
+DONE_CELL h2_tl16_ring1 rc=0
+DONE_CELL h1_nc256_ring3 rc=0
+DONE_CELL h2_tl16_ring2 rc=0
+DONE_CELL h2_tl16_ring3 rc=0

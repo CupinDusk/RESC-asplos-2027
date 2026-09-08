@@ -94,23 +94,44 @@ CUDA          12.4.99
 - 顶层权威 `*.config`；
 - Shell/Python 运行和提取脚本；
 - `c2c_test/ptxas_shim/ptxas`；
-- 小型 `*.txt`、`*.dat`、`*.csv` 结果摘要；
+- 实验目录中的源码、运行配置、脚本、退出码、`*.txt`、`*.dat`、`*.csv`、`*.out` 和 `*.err`；
+- 所有实验原始 `*.log` 的确定性 `*.log.gz` 副本及 `c2c_test/RESULTS-MANIFEST.tsv`（排除 `bin/` 中的编译日志）；
 - `TASK.md`、`PLAN.md` 和本文。
 
 排除：
 
 - `build/` 和其他构建产物；
-- `*.log`、`*.out`、`*.err` 原始输出；
+- 未压缩 `*.log`（内容已由 `*.log.gz` 和 manifest 完整保存）；
 - `*.ptx`、`*.ptxas`、`*.sass`；
 - 实验二进制、共享库和静态库；
-- `run_*`、`*_run`、`exit.code`；
 - `*.bak*`、`*.MINE*` 备份。
+
+## 实验结果归档
+
+2026-09-09 全量扫描和归档结果：
+
+```text
+实验原始 log  2,010 个，7.766 GiB
+压缩 log       2,010 个，231.241 MiB
+最大 .log.gz   11,634,239 bytes
+manifest         2,010 条记录（加 1 行表头）
+```
+
+另有 21 个 `bin/` 目录下的空编译 log，与二进制一起排除。每条 manifest 记录原路径、原始字节数、原内容 SHA-256、gzip 路径、压缩字节数和 gzip SHA-256。压缩使用 `gzip -n -1`，因此不嵌入时间戳或原文件名。重新生成和校验：
+
+```bash
+./c2c_test/archive_results_for_git.sh
+find c2c_test -type f -name '*.log.gz' -print0 |
+  xargs -0 -r gzip -t --
+```
+
+新机器可直接使用 `zgrep`/`gzip -dc` 读取结果。如需恢复某个原始 log，将对应 `.log.gz` 解压到 manifest 记录的 `raw_path`；不要覆盖已存在的运行输出。
 
 ## 尚未随代码树提供的证据
 
 论文侧回答引用的 `*-prereg.md`、`*-result.md` 和论文 `data/*.dat` 当前不在此工作树，必须从论文/docflow 工作区另行导入或归档。缺少这些文件不影响保存当前源码，但在宣称完整 artifact/provenance 前必须补齐。
 
-原始运行日志也不进入 Git。需要另做清单式压缩归档并记录 SHA-256；不要用只匹配单层目录的 glob，也不要删除原始文件。
+未压缩原始运行日志不进入 Git，但内容已以递归扫描生成的逐文件 `*.log.gz` 及 SHA-256 manifest 进入同一仓库。原始文件未被删除、截断或覆盖。
 
 论文侧记录还引用 pre-patch `libcudart.so` MD5 `0a27b8aac382e749c66569ff706014f0`。迁移检查在当前可见的 `/legacy-research/owner` 工作区没有找到该文件，只找到了 post-patch `c6d27da00388e9b667ea73e85f79ac0f`。前者必须从论文侧归档或其他机器另行找回；目前不能声称两个已发表 build 均已归档。
 

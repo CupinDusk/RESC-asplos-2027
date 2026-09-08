@@ -1,0 +1,7 @@
+exit.code RECONSTRUCTED (=0), not written by the runner.
+Run finished normally: exit-detected banner present, terminal stats
+(gpu_tot_sim_cycle=842319 gpu_tot_sim_insn=46703360), GEN_STATS + L1SPLIT +
+RETAIN_STATS teardown blocks all present, MARKFRAC with BITIDENTICAL=1,
+Reconfigure L1 cache to 64KB. The wrapper subshell was killed by the host
+outage before writing exit.code. Flagged so a reconstructed status is never
+mistaken for a runner-produced one.

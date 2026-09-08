@@ -1,0 +1,16 @@
+RESC MULTI-WRITER DATA-CARRYING HARNESS (off-sim, real arrays)
+==============================================================
+
+PATH A -- false sharing, 200000 lines x 4 sectors = 800000 elements, 16 SMs
+  REAL per-sector merge : mismatches vs golden = 0   checksum=0x4b0ca9169736129f  (golden=0x4b0ca9169736129f)
+  LWW ablation          : mismatches vs golden = 600000   checksum=0x8302fe094dd02bff  <-- MUST be > 0
+  => Path A PASS (real bit-identical; ablation diverges)
+
+PATH B -- concurrent atomics, 50000 lines x 32 atomics = 1600000 RMWs, 16 SMs
+  REAL owner-token      : mismatches vs golden = 0   checksum=0xb0e35ab0b7186e7c  (golden=0xb0e35ab0b7186e7c)
+  no-token ablation     : mismatches vs golden = 50000   <-- MUST be > 0 (lost updates)
+  => Path B PASS (real bit-identical; ablation loses updates)
+
+==============================================================
+HARNESS VERDICT: PASS -- real protocol carries data bit-identically at stress scale; both
+        ablations diverge (mechanism necessary).

@@ -1,0 +1,146 @@
+RESC MULTI-WRITER COHERENCE -- OFF-SIM EXPLICIT-STATE MODEL CHECK
+tool: self-contained Python BFS/permutation enumerator (Murphi not
+installed on this host); methodology per Dill et al. ICCD 1992.
+modelled tree: RESC-c2c-wt gpu-cache.cc / gpu-cache.h (anchors in header)
+
+==========================================================================
+PART 1 -- REAL PROTOCOL: three invariants must all PASS
+==========================================================================
+--- (I1) data-value integrity / SWMR per sector (Path A) ---
+[PASS] I1  false-sharing, 2 SMs, 1 line, 4 sectors
+    orders_checked = 2
+
+[PASS] I1  false-sharing, 3 SMs, 1 line, 4 sectors
+    orders_checked = 6
+
+[PASS] I1  false-sharing, 4 SMs, 1 line, 4 sectors
+    orders_checked = 24
+
+--- (I2) merge commutativity + associativity (Path A) ---
+[PASS] I2  merge order-independence, 2 SMs
+    orders_checked = 2
+    delivered = (100, 101, -1, -1)
+
+[PASS] I2  merge order-independence, 3 SMs
+    orders_checked = 6
+    delivered = (100, 101, 102, -1)
+
+[PASS] I2  merge order-independence, 4 SMs
+    orders_checked = 24
+    delivered = (100, 101, 102, 103)
+
+--- (I3) atomic owner-token serialisation (Path B) ---
+[PASS] I3  2 concurrent cluster-scoped atomicAdd
+    base = 1000
+    sum_deltas = 21
+    final = 1021
+    orders_checked = 2
+    trace:
+        SM0: first atomic -> acquires token locally (no hop)
+              RMW at owner: acc = 1010 (+10)
+        SM1: UpgradeReq -> SM0 downgrades EM->FORWARD->INVALID (1 fabric hop); SM1 installs EM
+              RMW at owner: acc = 1021 (+11)
+
+[PASS] I3  3 concurrent cluster-scoped atomicAdd
+    base = 1000
+    sum_deltas = 33
+    final = 1033
+    orders_checked = 6
+    trace:
+        SM0: first atomic -> acquires token locally (no hop)
+              RMW at owner: acc = 1010 (+10)
+        SM1: UpgradeReq -> SM0 downgrades EM->FORWARD->INVALID (1 fabric hop); SM1 installs EM
+              RMW at owner: acc = 1021 (+11)
+        SM2: UpgradeReq -> SM1 downgrades EM->FORWARD->INVALID (1 fabric hop); SM2 installs EM
+              RMW at owner: acc = 1033 (+12)
+
+[PASS] I3  4 concurrent cluster-scoped atomicAdd
+    base = 1000
+    sum_deltas = 46
+    final = 1046
+    orders_checked = 24
+    trace:
+        SM0: first atomic -> acquires token locally (no hop)
+              RMW at owner: acc = 1010 (+10)
+        SM1: UpgradeReq -> SM0 downgrades EM->FORWARD->INVALID (1 fabric hop); SM1 installs EM
+              RMW at owner: acc = 1021 (+11)
+        SM2: UpgradeReq -> SM1 downgrades EM->FORWARD->INVALID (1 fabric hop); SM2 installs EM
+              RMW at owner: acc = 1033 (+12)
+        SM3: UpgradeReq -> SM2 downgrades EM->FORWARD->INVALID (1 fabric hop); SM3 installs EM
+              RMW at owner: acc = 1046 (+13)
+
+==========================================================================
+PART 2 -- ABLATIONS: both MUST produce a counterexample (FAIL)
+==========================================================================
+--- (Ablation-1) whole-line last-writer-wins (drop per-sector mask) ---
+[FAIL] Ablation-1  whole-line LWW, 2 SMs (expect lost-write CE)
+    invariant = I1 data-value integrity (SWMR per sector)
+    order = (0, 1)
+    trace:
+        SM0: write sector 0 = 100 (WT to L2; OR mask)
+        SM1: write sector 1 = 101 (WT to L2; OR mask)
+    sector = 0
+    expected = 100
+    got = -1
+    delivered_line = (-1, 101, -1, -1)
+    note = sector written by sid=0 lost; delivered value is STALE (STALE=-1 means the sector was never carried -> lost write)
+
+[FAIL] Ablation-1  whole-line LWW, 3 SMs (expect lost-write CE)
+    invariant = I1 data-value integrity (SWMR per sector)
+    order = (0, 1, 2)
+    trace:
+        SM0: write sector 0 = 100 (WT to L2; OR mask)
+        SM1: write sector 1 = 101 (WT to L2; OR mask)
+        SM2: write sector 2 = 102 (WT to L2; OR mask)
+    sector = 0
+    expected = 100
+    got = -1
+    delivered_line = (-1, -1, 102, -1)
+    note = sector written by sid=0 lost; delivered value is STALE (STALE=-1 means the sector was never carried -> lost write)
+
+[FAIL] Ablation-1  whole-line LWW, 4 SMs (expect lost-write CE)
+    invariant = I1 data-value integrity (SWMR per sector)
+    order = (0, 1, 2, 3)
+    trace:
+        SM0: write sector 0 = 100 (WT to L2; OR mask)
+        SM1: write sector 1 = 101 (WT to L2; OR mask)
+        SM2: write sector 2 = 102 (WT to L2; OR mask)
+        SM3: write sector 3 = 103 (WT to L2; OR mask)
+    sector = 0
+    expected = 100
+    got = -1
+    delivered_line = (-1, -1, -1, 103)
+    note = sector written by sid=0 lost; delivered value is STALE (STALE=-1 means the sector was never carried -> lost write)
+
+--- (Ablation-2) no owner-token: concurrent RMW race ---
+[FAIL] Ablation-2  no token, 2 atomics (expect lost-update CE)
+    invariant = I3 (violated by ablation): lost update under concurrent RMW
+    base = 1000
+    expected_final = 1021
+    got_final = 1011
+    lost = 10
+    trace:
+        SM0: READ acc -> 1000
+        SM1: READ acc -> 1000
+        SM0: WRITE acc = 1000 + 10 = 1010
+        SM1: WRITE acc = 1000 + 11 = 1011
+
+[FAIL] Ablation-2  no token, 3 atomics (expect lost-update CE)
+    invariant = I3 (violated by ablation): lost update under concurrent RMW
+    base = 1000
+    expected_final = 1033
+    got_final = 1022
+    lost = 11
+    trace:
+        SM0: READ acc -> 1000
+        SM0: WRITE acc = 1000 + 10 = 1010
+        SM1: READ acc -> 1010
+        SM2: READ acc -> 1010
+        SM1: WRITE acc = 1010 + 11 = 1021
+        SM2: WRITE acc = 1010 + 12 = 1022
+
+==========================================================================
+VERDICT
+==========================================================================
+ALL CHECKS AS EXPECTED: I1/I2/I3 PASS on the real protocol;
+both ablations produced counterexamples (mechanism is NECESSARY).

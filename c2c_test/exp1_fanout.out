@@ -1,0 +1,6 @@
+# Exp1 RESC fan-out sweep (special path = single-forwarder). small payload avg_elems=16 reuse=8
+# N cluster cyc readshare_special readshare_normal cta checksum
+1 2 17448 275 0 8 sum=90.976005
+3 4 19654 1185 0 8 sum=284.288013
+7 8 24496 2879 0 8 sum=655.088033
+EXP1_DONE
